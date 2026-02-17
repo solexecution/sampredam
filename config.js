@@ -18,33 +18,33 @@ window.CONFIG = {
   // SITE & SERVICES
   // ==================================================================
   site: {
-    url:             "https://sampredam.pages.dev",  // Your live site URL
+    url: "https://sampredam.pages.dev",  // Your live site URL
     umamiWebsiteId: "",   // Get from https://cloud.umami.is → Add website → Copy ID
-    formspreeId:     "",   // Get from https://formspree.io → Create form → Copy ID
+    formspreeId: "",   // Get from https://formspree.io → Create form → Copy ID
   },
 
   // ==================================================================
   // PROPERTY DETAILS
   // ==================================================================
   property: {
-    streetAddress:  "40 Sheridan Avenue",           // e.g. "42 Sheridan Avenue"
-    locality:       "Caversham, Reading",
-    postcode:       "RG4 7QD",
-    propertyType:   "Detached",           // e.g. "Semi-Detached", "Detached", "Terraced", "Flat"
-    price:          "525,000",           // e.g. "550,000" (just the number, £ is added automatically)
-    bedrooms:       "3",           // e.g. "3"
-    bathrooms:      "1",           // e.g. "2"
+    streetAddress: "40 Sheridan Avenue",           // e.g. "42 Sheridan Avenue"
+    locality: "Caversham, Reading",
+    postcode: "RG4 7QD",
+    propertyType: "Detached",           // e.g. "Semi-Detached", "Detached", "Terraced", "Flat"
+    price: "525,000",           // e.g. "550,000" (just the number, £ is added automatically)
+    bedrooms: "3",           // e.g. "3"
+    bathrooms: "1",           // e.g. "2"
     receptionRooms: "1",           // e.g. "2"
-    floorAreaSqFt:  "",           // e.g. "1,200"
-    floorAreaSqM:   "",           // e.g. "111"
-    garden:         "",           // e.g. "South-facing, rear"
-    gardenFacing:   "",           // e.g. "South" — used in highlights strip
-    parking:        "",           // e.g. "Driveway" or "Garage & Driveway"
-    epcRating:      "",           // e.g. "C"
-    councilTaxBand: "",           // e.g. "D"
-    tenure:         "",           // e.g. "Freehold" or "Leasehold"
-    yearBuilt:      "",           // e.g. "1930s" (optional)
-    chainStatus:    "",           // e.g. "No chain" or "Chain of 2"
+    floorAreaSqFt: "860",           // e.g. "1,200"
+    floorAreaSqM: "80",           // e.g. "111"
+    garden: "South-facing, rear",           // e.g. "South-facing, rear"
+    gardenFacing: "South",           // e.g. "South" — used in highlights strip
+    parking: "Garage & Driveway",           // e.g. "Driveway" or "Garage & Driveway"
+    epcRating: "D",           // e.g. "C"
+    councilTaxBand: "D",           // e.g. "D"
+    tenure: "Freehold",           // e.g. "Freehold" or "Leasehold"
+    yearBuilt: "1960s",           // e.g. "1930s" (optional)
+    chainStatus: "No chain",           // e.g. "No chain" or "Chain of 2"
   },
 
   // ==================================================================
@@ -66,12 +66,12 @@ window.CONFIG = {
   // icon options: "kitchen", "garden", "glazing", "heating", "parking", "rooms"
   // Set to [] to hide the features section.
   features: [
-    { title: "Modern Kitchen",      description: "Contemporary fitted kitchen with integrated appliances", icon: "kitchen" },
-    { title: "South-Facing Garden",  description: "Private garden bathed in sunlight throughout the day", icon: "garden" },
-    { title: "Double Glazing",       description: "Energy-efficient double glazing throughout",            icon: "glazing" },
-    { title: "Gas Central Heating",  description: "Efficient gas central heating system",                  icon: "heating" },
-    { title: "Off-Street Parking",   description: "Private driveway with space for vehicles",              icon: "parking" },
-    { title: "Spacious Rooms",       description: "Generous proportions throughout the property",          icon: "rooms" },
+    { title: "Modern Kitchen", description: "Contemporary fitted kitchen with integrated appliances", icon: "kitchen" },
+    { title: "South-Facing Garden", description: "Private garden bathed in sunlight throughout the day", icon: "garden" },
+    { title: "Double Glazing", description: "Energy-efficient double glazing throughout", icon: "glazing" },
+    { title: "Gas Central Heating", description: "Efficient gas central heating system", icon: "heating" },
+    { title: "Off-Street Parking", description: "Private driveway with space for vehicles", icon: "parking" },
+    { title: "Spacious Rooms", description: "Generous proportions throughout the property", icon: "rooms" },
   ],
 
   // ==================================================================
@@ -101,19 +101,19 @@ window.CONFIG = {
   // CONTACT DETAILS
   // ==================================================================
   contact: {
-    phone:        "",   // e.g. "+447123456789" (used in tel: link)
-    phoneDisplay: "",   // e.g. "07123 456 789" (shown on page)
-    whatsapp:     "",   // e.g. "447123456789" (no + or spaces, used in wa.me link)
-    email:        "",   // e.g. "john@example.com"
+    phone: "+447879773260",   // e.g. "+447123456789" (used in tel: link)
+    phoneDisplay: "07879773260",   // e.g. "07123 456 789" (shown on page)
+    whatsapp: "447879773260",   // e.g. "447123456789" (no + or spaces, used in wa.me link)
+    email: "vupointt@gmail.com",   // e.g. "john@example.com"
   },
 
   // ==================================================================
   // RUNNING COSTS (shown in FAQ)
   // ==================================================================
   runningCosts: {
-    councilTaxYearly:    "",   // e.g. "2,100"
-    energyBillsMonthly:  "",   // e.g. "150"
-    waterBillsYearly:    "",   // e.g. "400"
+    councilTaxYearly: "2,100",   // e.g. "2,100"
+    energyBillsMonthly: "150",   // e.g. "150"
+    waterBillsYearly: "400",   // e.g. "400"
   },
 
   // ==================================================================
@@ -122,22 +122,22 @@ window.CONFIG = {
   // Leave empty "" to use default answer text.
   // Set to a string to override. Set to false to hide that question entirely.
   faq: {
-    askingPrice:  "",   // Override the asking price FAQ answer
-    tenure:       "",   // Override the tenure FAQ answer
-    epc:          "",   // Override the EPC FAQ answer
-    viewings:     "",   // Override the viewings FAQ answer
-    privateSale:  "",   // Override the private sale FAQ answer
-    included:     "",   // Override the included items FAQ answer
-    chain:        "",   // Override the chain status FAQ answer
+    askingPrice: "",   // Override the asking price FAQ answer
+    tenure: "",   // Override the tenure FAQ answer
+    epc: "",   // Override the EPC FAQ answer
+    viewings: "",   // Override the viewings FAQ answer
+    privateSale: "",   // Override the private sale FAQ answer
+    included: "",   // Override the included items FAQ answer
+    chain: "",   // Override the chain status FAQ answer
     runningCosts: "",   // Override the running costs FAQ answer (auto-generated if empty but runningCosts above are filled)
-    survey:       "",   // Override the survey FAQ answer
-    makingOffer:  "",   // Override the making an offer FAQ answer
+    survey: "",   // Override the survey FAQ answer
+    makingOffer: "",   // Override the making an offer FAQ answer
   },
 
   // ==================================================================
   // EPC CERTIFICATE
   // ==================================================================
-  epcCertificateUrl: "",   // e.g. "https://find-energy-certificate.service.gov.uk/energy-certificate/XXXX-XXXX-XXXX"
+  epcCertificateUrl: "https://find-energy-certificate.service.gov.uk/energy-certificate/8583-6625-4040-1504-7922",   // e.g. "https://find-energy-certificate.service.gov.uk/energy-certificate/XXXX-XXXX-XXXX"
 
 };
 

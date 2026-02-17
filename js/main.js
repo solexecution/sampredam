@@ -44,21 +44,21 @@ function hide(el) {
 
 /* SVG icon map for features */
 const FEATURE_ICONS = {
-  kitchen:  '<svg class="feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 9h18v12H3z"/><path d="M9 9V5a3 3 0 016 0v4"/></svg>',
-  garden:   '<svg class="feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>',
-  glazing:  '<svg class="feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>',
-  heating:  '<svg class="feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 3v18M3 12h18"/><path d="M8 8l8 8M16 8l-8 8"/></svg>',
-  parking:  '<svg class="feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 21V8l9-5 9 5v13"/><path d="M9 21v-6h6v6"/></svg>',
-  rooms:    '<svg class="feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>',
+  kitchen: '<svg class="feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 9h18v12H3z"/><path d="M9 9V5a3 3 0 016 0v4"/></svg>',
+  garden: '<svg class="feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>',
+  glazing: '<svg class="feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>',
+  heating: '<svg class="feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 3v18M3 12h18"/><path d="M8 8l8 8M16 8l-8 8"/></svg>',
+  parking: '<svg class="feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 21V8l9-5 9 5v13"/><path d="M9 21v-6h6v6"/></svg>',
+  rooms: '<svg class="feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>',
 };
 
 /* SVG icons for highlights strip */
 const HIGHLIGHT_ICONS = {
-  bed:     '<svg class="highlight-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 7v11a2 2 0 002 2h14a2 2 0 002-2V7"/><path d="M1 7h22"/><path d="M6 20v-4a2 2 0 012-2h2a2 2 0 012 2v4"/></svg>',
-  bath:    '<svg class="highlight-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 12h16a1 1 0 011 1v3a2 2 0 01-2 2H5a2 2 0 01-2-2v-3a1 1 0 011-1z"/><path d="M6 12V5a2 2 0 012-2h1a2 2 0 012 2v7"/></svg>',
-  sqft:    '<svg class="highlight-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 3v18"/></svg>',
-  train:   '<svg class="highlight-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 4h4v4H4zM4 16h4v4H4z"/><path d="M6 8v8"/><rect x="14" y="6" width="6" height="12" rx="1"/><path d="M17 9v6"/></svg>',
-  garden:  '<svg class="highlight-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 3c-1.5 0-6 .5-6 5 0 3 2 5 4 7l2 2 2-2c2-2 4-4 4-7 0-4.5-4.5-5-6-5z"/><circle cx="12" cy="8" r="1.5"/><path d="M3 21h18"/></svg>',
+  bed: '<svg class="highlight-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 7v11a2 2 0 002 2h14a2 2 0 002-2V7"/><path d="M1 7h22"/><path d="M6 20v-4a2 2 0 012-2h2a2 2 0 012 2v4"/></svg>',
+  bath: '<svg class="highlight-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 12h16a1 1 0 011 1v3a2 2 0 01-2 2H5a2 2 0 01-2-2v-3a1 1 0 011-1z"/><path d="M6 12V5a2 2 0 012-2h1a2 2 0 012 2v7"/></svg>',
+  sqft: '<svg class="highlight-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 3v18"/></svg>',
+  train: '<svg class="highlight-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 4h4v4H4zM4 16h4v4H4z"/><path d="M6 8v8"/><rect x="14" y="6" width="6" height="12" rx="1"/><path d="M17 9v6"/></svg>',
+  garden: '<svg class="highlight-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 3c-1.5 0-6 .5-6 5 0 3 2 5 4 7l2 2 2-2c2-2 4-4 4-7 0-4.5-4.5-5-6-5z"/><circle cx="12" cy="8" r="1.5"/><path d="M3 21h18"/></svg>',
   parking: '<svg class="highlight-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 21V8l9-5 9 5v13"/><path d="M9 21v-6h6v6"/></svg>',
 };
 
@@ -93,8 +93,8 @@ function hydrateHero() {
 
   // Build specs line from available data
   const specs = [];
-  if (filled(P.bedrooms))     specs.push(`${P.bedrooms} Bedrooms`);
-  if (filled(P.bathrooms))    specs.push(`${P.bathrooms} Bathrooms`);
+  if (filled(P.bedrooms)) specs.push(`${P.bedrooms} Bedrooms`);
+  if (filled(P.bathrooms)) specs.push(`${P.bathrooms} Bathrooms`);
   if (filled(P.floorAreaSqFt)) specs.push(`${P.floorAreaSqFt} sq ft`);
 
   if (specs.length > 0) {
@@ -117,12 +117,12 @@ function hydrateHighlights() {
   const grid = document.getElementById('highlightsGrid');
   const items = [];
 
-  if (filled(P.bedrooms))      items.push({ icon: 'bed',     value: P.bedrooms,      label: 'Bedrooms' });
-  if (filled(P.bathrooms))     items.push({ icon: 'bath',    value: P.bathrooms,     label: 'Bathrooms' });
-  if (filled(P.floorAreaSqFt)) items.push({ icon: 'sqft',    value: P.floorAreaSqFt, label: 'Sq Ft' });
+  if (filled(P.bedrooms)) items.push({ icon: 'bed', value: P.bedrooms, label: 'Bedrooms' });
+  if (filled(P.bathrooms)) items.push({ icon: 'bath', value: P.bathrooms, label: 'Bathrooms' });
+  if (filled(P.floorAreaSqFt)) items.push({ icon: 'sqft', value: P.floorAreaSqFt, label: 'Sq Ft' });
   items.push({ icon: 'train', value: '25 min', label: 'To London Paddington' });
-  if (filled(P.gardenFacing))  items.push({ icon: 'garden',  value: P.gardenFacing,  label: 'Facing Garden' });
-  if (filled(P.parking))       items.push({ icon: 'parking', value: P.parking,       label: 'Parking' });
+  if (filled(P.gardenFacing)) items.push({ icon: 'garden', value: P.gardenFacing, label: 'Facing Garden' });
+  if (filled(P.parking)) items.push({ icon: 'parking', value: P.parking, label: 'Parking' });
 
   if (items.length <= 1) {
     // Only the train item — hide highlights section
@@ -178,17 +178,17 @@ function hydrateDetails() {
   // Specs list
   const specsList = document.getElementById('specsList');
   const specs = [
-    { label: 'Property Type',   value: P.propertyType },
-    { label: 'Bedrooms',        value: P.bedrooms },
-    { label: 'Bathrooms',       value: P.bathrooms },
+    { label: 'Property Type', value: P.propertyType },
+    { label: 'Bedrooms', value: P.bedrooms },
+    { label: 'Bathrooms', value: P.bathrooms },
     { label: 'Reception Rooms', value: P.receptionRooms },
-    { label: 'Floor Area',      value: filled(P.floorAreaSqFt) ? `${P.floorAreaSqFt} sq ft${filled(P.floorAreaSqM) ? ` / ${P.floorAreaSqM} sq m` : ''}` : '' },
-    { label: 'Garden',          value: P.garden },
-    { label: 'Parking',         value: P.parking },
-    { label: 'EPC Rating',      value: P.epcRating },
+    { label: 'Floor Area', value: filled(P.floorAreaSqFt) ? `${P.floorAreaSqFt} sq ft${filled(P.floorAreaSqM) ? ` / ${P.floorAreaSqM} sq m` : ''}` : '' },
+    { label: 'Garden', value: P.garden },
+    { label: 'Parking', value: P.parking },
+    { label: 'EPC Rating', value: P.epcRating },
     { label: 'Council Tax Band', value: P.councilTaxBand },
-    { label: 'Tenure',          value: P.tenure },
-    { label: 'Year Built',      value: P.yearBuilt },
+    { label: 'Tenure', value: P.tenure },
+    { label: 'Year Built', value: P.yearBuilt },
   ];
 
   // Only show specs that have values
@@ -606,7 +606,7 @@ function calculateMortgage() {
   let monthly = 0;
   if (monthlyRate > 0 && numPayments > 0 && principal > 0) {
     monthly = principal * (monthlyRate * Math.pow(1 + monthlyRate, numPayments))
-              / (Math.pow(1 + monthlyRate, numPayments) - 1);
+      / (Math.pow(1 + monthlyRate, numPayments) - 1);
   }
 
   const total = monthly * numPayments;
