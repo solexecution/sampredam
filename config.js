@@ -1,0 +1,317 @@
+/* =====================================================================
+   PROPERTY LISTING CONFIGURATION
+   =====================================================================
+   This file is your checklist. Fill in each field below.
+
+   Rules:
+   - Empty string ""  → that element will be HIDDEN on the website
+   - Filled value     → shown normally on the website
+   - If you forget to update a placeholder, it will be HIGHLIGHTED
+     with an orange border so you can spot it immediately
+
+   After editing, just refresh the browser to see changes.
+   ===================================================================== */
+
+window.CONFIG = {
+
+  // ==================================================================
+  // SITE & SERVICES
+  // ==================================================================
+  site: {
+    url:             "https://sampredam.pages.dev",  // Your live site URL
+    umamiWebsiteId: "",   // Get from https://cloud.umami.is → Add website → Copy ID
+    formspreeId:     "",   // Get from https://formspree.io → Create form → Copy ID
+  },
+
+  // ==================================================================
+  // PROPERTY DETAILS
+  // ==================================================================
+  property: {
+    streetAddress:  "40 Sheridan Avenue",           // e.g. "42 Sheridan Avenue"
+    locality:       "Caversham, Reading",
+    postcode:       "RG4 7QD",
+    propertyType:   "Detached",           // e.g. "Semi-Detached", "Detached", "Terraced", "Flat"
+    price:          "525,000",           // e.g. "550,000" (just the number, £ is added automatically)
+    bedrooms:       "3",           // e.g. "3"
+    bathrooms:      "1",           // e.g. "2"
+    receptionRooms: "1",           // e.g. "2"
+    floorAreaSqFt:  "",           // e.g. "1,200"
+    floorAreaSqM:   "",           // e.g. "111"
+    garden:         "",           // e.g. "South-facing, rear"
+    gardenFacing:   "",           // e.g. "South" — used in highlights strip
+    parking:        "",           // e.g. "Driveway" or "Garage & Driveway"
+    epcRating:      "",           // e.g. "C"
+    councilTaxBand: "",           // e.g. "D"
+    tenure:         "",           // e.g. "Freehold" or "Leasehold"
+    yearBuilt:      "",           // e.g. "1930s" (optional)
+    chainStatus:    "",           // e.g. "No chain" or "Chain of 2"
+  },
+
+  // ==================================================================
+  // PROPERTY DESCRIPTION
+  // ==================================================================
+  // Each string is a separate paragraph. Remove or add as needed.
+  // Leave the array empty [] to hide the description section.
+  description: [
+    "Step through the front door into a welcoming hallway flooded with natural light. This beautifully presented family home offers generous living space across well-proportioned rooms, perfect for modern family life.",
+    "The heart of the home is the stunning open-plan kitchen-diner, fitted with contemporary units and quality appliances. French doors open onto the south-facing garden, seamlessly connecting indoor and outdoor living.",
+    "Upstairs, the spacious bedrooms provide restful retreats, complemented by a modern family bathroom. The primary bedroom benefits from built-in wardrobes and lovely garden views.",
+    "Outside, the private south-facing garden is a real highlight, offering a perfect space for entertaining, gardening, or simply relaxing. A driveway provides off-street parking.",
+  ],
+
+  // ==================================================================
+  // KEY FEATURES (shown as cards below property details)
+  // ==================================================================
+  // Each feature: { title, description, icon }
+  // icon options: "kitchen", "garden", "glazing", "heating", "parking", "rooms"
+  // Set to [] to hide the features section.
+  features: [
+    { title: "Modern Kitchen",      description: "Contemporary fitted kitchen with integrated appliances", icon: "kitchen" },
+    { title: "South-Facing Garden",  description: "Private garden bathed in sunlight throughout the day", icon: "garden" },
+    { title: "Double Glazing",       description: "Energy-efficient double glazing throughout",            icon: "glazing" },
+    { title: "Gas Central Heating",  description: "Efficient gas central heating system",                  icon: "heating" },
+    { title: "Off-Street Parking",   description: "Private driveway with space for vehicles",              icon: "parking" },
+    { title: "Spacious Rooms",       description: "Generous proportions throughout the property",          icon: "rooms" },
+  ],
+
+  // ==================================================================
+  // GALLERY IMAGES
+  // ==================================================================
+  // Add your photos to the images/gallery/ folder, then list them here.
+  // Each entry: { src: "images/gallery/filename.jpg", alt: "Description" }
+  // Leave empty [] and placeholder boxes will show instead.
+  gallery: [
+    // { src: "images/gallery/01-front.jpg",    alt: "Front exterior" },
+    // { src: "images/gallery/02-living.jpg",   alt: "Living room" },
+    // { src: "images/gallery/03-kitchen.jpg",  alt: "Kitchen" },
+    // { src: "images/gallery/04-bedroom1.jpg", alt: "Primary bedroom" },
+    // { src: "images/gallery/05-bedroom2.jpg", alt: "Second bedroom" },
+    // { src: "images/gallery/06-bathroom.jpg", alt: "Bathroom" },
+    // { src: "images/gallery/07-garden.jpg",   alt: "Garden" },
+    // { src: "images/gallery/08-street.jpg",   alt: "Street view" },
+  ],
+
+  // Placeholder labels shown when no images are provided yet
+  galleryPlaceholders: [
+    "Front Exterior", "Living Room", "Kitchen", "Primary Bedroom",
+    "Second Bedroom", "Bathroom", "Garden", "Street View",
+  ],
+
+  // ==================================================================
+  // CONTACT DETAILS
+  // ==================================================================
+  contact: {
+    phone:        "",   // e.g. "+447123456789" (used in tel: link)
+    phoneDisplay: "",   // e.g. "07123 456 789" (shown on page)
+    whatsapp:     "",   // e.g. "447123456789" (no + or spaces, used in wa.me link)
+    email:        "",   // e.g. "john@example.com"
+  },
+
+  // ==================================================================
+  // RUNNING COSTS (shown in FAQ)
+  // ==================================================================
+  runningCosts: {
+    councilTaxYearly:    "",   // e.g. "2,100"
+    energyBillsMonthly:  "",   // e.g. "150"
+    waterBillsYearly:    "",   // e.g. "400"
+  },
+
+  // ==================================================================
+  // FAQ OVERRIDES
+  // ==================================================================
+  // Leave empty "" to use default answer text.
+  // Set to a string to override. Set to false to hide that question entirely.
+  faq: {
+    askingPrice:  "",   // Override the asking price FAQ answer
+    tenure:       "",   // Override the tenure FAQ answer
+    epc:          "",   // Override the EPC FAQ answer
+    viewings:     "",   // Override the viewings FAQ answer
+    privateSale:  "",   // Override the private sale FAQ answer
+    included:     "",   // Override the included items FAQ answer
+    chain:        "",   // Override the chain status FAQ answer
+    runningCosts: "",   // Override the running costs FAQ answer (auto-generated if empty but runningCosts above are filled)
+    survey:       "",   // Override the survey FAQ answer
+    makingOffer:  "",   // Override the making an offer FAQ answer
+  },
+
+  // ==================================================================
+  // EPC CERTIFICATE
+  // ==================================================================
+  epcCertificateUrl: "",   // e.g. "https://find-energy-certificate.service.gov.uk/energy-certificate/XXXX-XXXX-XXXX"
+
+};
+
+
+/* =====================================================================
+   WHERE TO POST YOUR LISTING
+   =====================================================================
+   This is your marketing checklist. Work through each tier.
+   Tick them off as you go (change status to "done").
+   ===================================================================== */
+
+window.WHERE_TO_POST = {
+
+  // ----- TIER 1: FREE LISTING SITES (do these first) -----
+  tier1_free_listings: [
+    {
+      name: "Strike (free Rightmove/Zoopla listing)",
+      url: "https://strike.co.uk",
+      notes: "FREE. Gets you on Rightmove, Zoopla & PrimeLocation. Includes photos & floorplan.",
+      status: "todo",
+    },
+    {
+      name: "Facebook Marketplace",
+      url: "https://www.facebook.com/marketplace",
+      notes: "Free. Massive local audience. Post with best photos and link to your site.",
+      status: "todo",
+    },
+    {
+      name: "Gumtree",
+      url: "https://www.gumtree.com",
+      notes: "Free classifieds. Post in Property For Sale > Reading.",
+      status: "todo",
+    },
+    {
+      name: "TheHouseShop",
+      url: "https://www.thehouseshop.com",
+      notes: "Free property marketplace for private sellers.",
+      status: "todo",
+    },
+    {
+      name: "NoAgent.Properties",
+      url: "https://www.noagent.properties",
+      notes: "Free FSBO platform. Professional listing tools.",
+      status: "todo",
+    },
+    {
+      name: "Listed By Owners",
+      url: "https://listedbyowners.co.uk",
+      notes: "Free private seller listings.",
+      status: "todo",
+    },
+  ],
+
+  // ----- TIER 2: LOCAL COMMUNITY (maximum local reach) -----
+  tier2_local_community: [
+    {
+      name: "Nextdoor - Caversham",
+      url: "https://nextdoor.co.uk",
+      notes: "Free neighbourhood network. Post in Caversham/Caversham Heights area. Very effective for local reach.",
+      status: "todo",
+    },
+    {
+      name: "Facebook: Caversham & Emmer Green Buy, Sell & Free Stuff",
+      url: "https://www.facebook.com/groups/",
+      notes: "Search for this group on Facebook. Request to join, then post listing.",
+      status: "todo",
+    },
+    {
+      name: "Facebook: Caversham Community Group",
+      url: "https://www.facebook.com/groups/",
+      notes: "General Caversham community group. Check posting rules first.",
+      status: "todo",
+    },
+    {
+      name: "Facebook: Reading Buy and Sell",
+      url: "https://www.facebook.com/groups/",
+      notes: "Wider Reading buy/sell group.",
+      status: "todo",
+    },
+    {
+      name: "Facebook: Reading Property / Houses for Sale Reading",
+      url: "https://www.facebook.com/groups/",
+      notes: "Property-specific Reading groups. Search Facebook for current active groups.",
+      status: "todo",
+    },
+    {
+      name: "VarageSale - Reading UK",
+      url: "https://www.varagesale.com/reading-uk-buy-and-sell",
+      notes: "Free verified marketplace. Hundreds of Reading families active.",
+      status: "todo",
+    },
+    {
+      name: "Reading Forum",
+      url: "https://reading-forum.co.uk",
+      notes: "Community forum for Reading. Check if property posts are allowed.",
+      status: "todo",
+    },
+    {
+      name: "Caversham.org.uk",
+      url: "https://caversham.org.uk",
+      notes: "Local Caversham community site with directory/bulletin.",
+      status: "todo",
+    },
+  ],
+
+  // ----- TIER 3: SOCIAL MEDIA (amplify reach) -----
+  tier3_social_media: [
+    {
+      name: "Instagram Post & Reels",
+      url: "https://www.instagram.com",
+      notes: "Post carousel of best photos + video Reel tour. Use hashtags: #UKProperty #PropertyForSale #Caversham #Reading #Berkshire #HouseForSale #JustListed #HouseTour",
+      status: "todo",
+    },
+    {
+      name: "Twitter/X",
+      url: "https://twitter.com",
+      notes: "Post with photos. Use: #CavershamProperty #ReadingHomes #PropertyForSale #ReadingUK #RG4. Tag @rdgchronicle",
+      status: "todo",
+    },
+    {
+      name: "LinkedIn",
+      url: "https://www.linkedin.com",
+      notes: "Great for London commuter audience. Post as a personal update with property link. Use: #UKProperty #Reading #Berkshire",
+      status: "todo",
+    },
+    {
+      name: "TikTok Video Tour",
+      url: "https://www.tiktok.com",
+      notes: "Short walkthrough video. Use: #UKProperty #HouseTour #PropertyForSale #Reading #HouseForSale #FirstTimeHomeowner",
+      status: "todo",
+    },
+    {
+      name: "WhatsApp Groups",
+      url: "",
+      notes: "Share the link in any relevant local WhatsApp groups you're in.",
+      status: "todo",
+    },
+    {
+      name: "Reddit r/HousingUK",
+      url: "https://www.reddit.com/r/HousingUK/",
+      notes: "467k members. Frame as sharing experience of private selling, not hard sell. Check rules first.",
+      status: "todo",
+    },
+  ],
+
+  // ----- TIER 4: LOCAL MEDIA -----
+  tier4_local_media: [
+    {
+      name: "Reading Chronicle (classified ad)",
+      url: "https://www.readingchronicle.co.uk",
+      notes: "Weekly newspaper (Thursdays). Email news@readingchronicle.co.uk or call 0118 955 3311 for classified rates.",
+      status: "todo",
+    },
+    {
+      name: "Berkshire Live / Get Reading",
+      url: "https://www.getreading.co.uk",
+      notes: "Online news for Reading. Check if they have a classifieds section.",
+      status: "todo",
+    },
+    {
+      name: "Reading Today Online",
+      url: "https://rdg.today",
+      notes: "Local online news. May have community board.",
+      status: "todo",
+    },
+  ],
+
+  // ----- BUDGET PAID OPTION -----
+  paid_options: [
+    {
+      name: "Yopa (hybrid estate agent)",
+      url: "https://www.yopa.co.uk",
+      notes: "From £999. Includes local agent, Rightmove/Zoopla, photography, viewings management. Good if you want professional support.",
+      status: "todo",
+    },
+  ],
+};
