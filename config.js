@@ -68,10 +68,28 @@ window.CONFIG = {
   features: [
     { title: "Modern Kitchen", description: "Contemporary fitted kitchen with integrated appliances", icon: "kitchen" },
     { title: "South-Facing Garden", description: "Private garden bathed in sunlight throughout the day", icon: "garden" },
-    { title: "Double Glazing", description: "Energy-efficient double glazing throughout", icon: "glazing" },
+    { title: "UPVC Double Glazing", description: "Energy-efficient UPVC double glazing throughout", icon: "glazing" },
     { title: "Gas Central Heating", description: "Efficient gas central heating system", icon: "heating" },
     { title: "Off-Street Parking", description: "Private driveway with space for vehicles", icon: "parking" },
     { title: "Spacious Rooms", description: "Generous proportions throughout the property", icon: "rooms" },
+    { title: "Extension Potential", description: "Scope for further extension, subject to planning consents", icon: "rooms" },
+  ],
+
+  // ==================================================================
+  // ROOM-BY-ROOM BREAKDOWN
+  // ==================================================================
+  // Each room: { name, dimensions, description }
+  // Leave dimensions "" to hide them. Leave the array [] to hide this section.
+  rooms: [
+    { name: "Hallway", dimensions: "", description: "Welcoming entrance flooded with natural light" },
+    { name: "Living Room", dimensions: "", description: "Double glazed, spacious reception room" },
+    { name: "Kitchen/Diner", dimensions: "", description: "Contemporary fitted kitchen with integrated appliances, French doors to garden" },
+    { name: "Primary Bedroom", dimensions: "", description: "Double glazed, built-in wardrobes, garden views" },
+    { name: "Bedroom 2", dimensions: "", description: "Double bedroom" },
+    { name: "Bedroom 3", dimensions: "", description: "Double bedroom" },
+    { name: "Bathroom", dimensions: "", description: "Modern family bathroom" },
+    { name: "Garden", dimensions: "", description: "Private south-facing rear garden" },
+    { name: "Garage & Driveway", dimensions: "", description: "Off-street parking" },
   ],
 
   // ==================================================================

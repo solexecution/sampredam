@@ -77,8 +77,7 @@
   <header class="hero" id="hero">
     <div class="hero-overlay"></div>
     <div class="hero-content">
-      <span class="hero-badge">New to Market</span>
-      <h1>Your Dream Home in Caversham, Reading</h1>
+      <h1>Your forever home in Caversham, Reading</h1>
       <p class="hero-specs" id="heroSpecs"></p>
       <p class="hero-price" id="heroPrice"></p>
       <div class="hero-actions">
@@ -124,6 +123,7 @@
   <section class="section" id="details">
     <div class="container">
       <h2 class="section-title">About This Home</h2>
+      <div class="room-breakdown" id="roomBreakdown"></div>
       <div class="details-grid">
         <div class="details-description" id="detailsDescription"></div>
         <div class="details-specs">
@@ -211,7 +211,9 @@
 
       <div class="price-context">
         <p>Average property prices in RG4 7 are approximately <strong>&pound;590,000</strong>, with values growing
-          <strong>32% year-on-year</strong>. Caversham remains one of the most desirable areas in Berkshire.
+          <strong>32% year-on-year</strong>. A comparable 3-bedroom detached home on nearby Cedarwood Crescent is
+          currently marketed at <strong>&pound;715,000</strong>. Caversham remains one of the most desirable areas in
+          Berkshire.
         </p>
       </div>
     </div>
@@ -274,37 +276,39 @@
   <section class="section" id="contact">
     <div class="container">
       <h2 class="section-title">Arrange a Viewing</h2>
-      <p class="section-subtitle">Get in touch &mdash; we'd love to show you around</p>
-      <div class="contact-grid">
-        <div class="contact-form-wrapper" id="contactFormWrapper">
-          <form action="#" method="POST" class="contact-form" id="contactForm" data-umami-event="contact-form-submit">
-            <div class="form-field">
-              <label for="name">Name *</label>
-              <input type="text" id="name" name="name" required placeholder="Your full name">
+      <p class="section-subtitle">Pick a slot and reach out &mdash; we'll confirm within the hour</p>
+      <div class="viewing-scheduler">
+        <div class="viewing-picker">
+          <h3>When would you like to view?</h3>
+          <div class="picker-row">
+            <div class="picker-field">
+              <label for="viewingDay">Day</label>
+              <select id="viewingDay">
+                <option value="">Choose a day…</option>
+              </select>
             </div>
-            <div class="form-field">
-              <label for="email">Email *</label>
-              <input type="email" id="email" name="email" required placeholder="your@email.com">
+            <div class="picker-field">
+              <label for="viewingTime">Time</label>
+              <select id="viewingTime">
+                <option value="">Choose a time…</option>
+                <option value="09:00">09:00</option>
+                <option value="10:00">10:00</option>
+                <option value="11:00">11:00</option>
+                <option value="12:00">12:00</option>
+                <option value="13:00">13:00</option>
+                <option value="14:00">14:00</option>
+                <option value="15:00">15:00</option>
+                <option value="16:00">16:00</option>
+                <option value="17:00">17:00</option>
+                <option value="18:00">18:00</option>
+                <option value="19:00">19:00</option>
+              </select>
             </div>
-            <div class="form-field">
-              <label for="phone">Phone</label>
-              <input type="tel" id="phone" name="phone" placeholder="Your phone number">
-            </div>
-            <div class="form-field">
-              <label for="message">Message</label>
-              <textarea id="message" name="message" rows="4" placeholder="I'd like to arrange a viewing..."></textarea>
-            </div>
-            <!-- Honeypot for spam protection -->
-            <input type="text" name="_gotcha" style="display:none">
-            <button type="submit" class="btn btn-primary form-submit">Send Enquiry</button>
-          </form>
-        </div>
-        <div class="contact-direct">
-          <h3>Or contact us directly</h3>
-          <div class="contact-buttons" id="contactButtons"></div>
-          <div class="viewing-note">
-            <p><strong>Weekend viewings available</strong> &mdash; book now to secure your preferred slot.</p>
           </div>
+        </div>
+        <div class="viewing-actions">
+          <h3>Get in touch</h3>
+          <div class="contact-buttons" id="contactButtons"></div>
         </div>
       </div>
     </div>
