@@ -42,7 +42,7 @@
 
 html {
   scroll-behavior: smooth;
-  scroll-padding-top: 80px;
+  scroll-padding-top: 70px;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -602,7 +602,7 @@ a:hover {
   font-size: 0.95rem;
 }
 
-.room-row:nth-child(even) {
+.room-row:nth-of-type(even) {
   background: var(--color-bg-alt);
   border-radius: var(--radius);
 }
@@ -1364,46 +1364,197 @@ a:hover {
   }
 }
 
-/* --- Referral Tag (tooltip on share button) --- */
-.referral-tag {
-  position: absolute;
-  left: 100%;
-  top: 50%;
-  transform: translateY(-50%);
-  margin-left: 0.6rem;
+
+/* --- Floor Plans --- */
+.floor-plans {
+  margin-bottom: 3rem;
+}
+
+.floor-plans h3 {
+  font-family: var(--font-heading);
+  color: var(--color-primary);
+  margin-bottom: 1.25rem;
+  font-size: 1.3rem;
+}
+
+.floorplan-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+}
+
+@media (min-width: 768px) {
+  .floorplan-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.floorplan-item {
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  border: 1px solid var(--color-border);
+  background: var(--color-bg-alt);
+  display: flex;
+  flex-direction: column;
+}
+
+.floorplan-item img {
+  width: 100%;
+  aspect-ratio: 4/3;
+  object-fit: contain;
+  padding: 0.75rem;
+  background: white;
+}
+
+.floorplan-placeholder-item {
+  aspect-ratio: 4/3;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  text-align: center;
+  padding: 1rem;
+  background: linear-gradient(135deg, var(--color-bg-alt), var(--color-bg));
+  border: 2px dashed var(--color-border);
+  cursor: default;
+}
+
+.floorplan-placeholder-icon {
+  width: 44px;
+  height: 44px;
+  color: var(--color-primary);
+  opacity: 0.25;
+}
+
+.floorplan-label {
+  font-weight: 600;
+  color: var(--color-primary);
+  font-size: 0.875rem;
+  padding: 0.5rem 0.75rem;
+  text-align: center;
+  border-top: 1px solid var(--color-border);
+}
+
+.floorplan-placeholder-item .floorplan-label {
+  padding: 0;
+  border-top: none;
+}
+
+.floorplan-hint {
+  font-size: 0.7rem;
+  color: var(--color-text-light);
+  opacity: 0.6;
+}
+
+/* --- Open House Slots --- */
+.open-house-heading {
+  font-family: var(--font-heading);
+  color: var(--color-primary);
+  font-size: 1rem;
+  margin-bottom: 0.75rem;
+}
+
+.open-house-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.open-house-slot {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.875rem 1.25rem;
   background: var(--color-primary);
   color: var(--color-text-inverse);
-  font-size: 0.7rem;
-  font-weight: 600;
-  padding: 0.35rem 0.65rem;
-  border-radius: 6px;
-  white-space: nowrap;
+  border-radius: var(--radius-sm);
+  text-decoration: none;
+  transition: all var(--transition);
+  font-size: 0.95rem;
+}
+
+.open-house-slot:hover {
+  background: var(--color-primary-light);
+  color: var(--color-text-inverse);
+  transform: translateY(-1px);
   box-shadow: var(--shadow);
-  pointer-events: none;
+}
+
+.open-house-slot svg {
+  flex-shrink: 0;
+  opacity: 0.7;
+}
+
+.slot-date {
+  font-weight: 600;
+  flex: 1;
+}
+
+.slot-time {
+  opacity: 0.8;
+  white-space: nowrap;
+  font-size: 0.875rem;
+}
+
+.open-house-or {
+  font-size: 0.8rem;
+  color: var(--color-text-light);
+  text-align: center;
+  margin-bottom: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* --- Floating WhatsApp Button --- */
+.float-whatsapp {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  z-index: 950;
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  background: var(--color-success);
+  color: var(--color-text-inverse);
+  padding: 0.875rem 1.5rem;
+  border-radius: 50px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  text-decoration: none;
+  box-shadow: 0 4px 16px rgba(37, 211, 102, 0.4);
   opacity: 0;
-  transition: opacity 0.3s ease;
-  letter-spacing: 0.2px;
+  transform: translateY(12px);
+  pointer-events: none;
+  transition: opacity 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease, background 0.2s ease;
 }
 
-.referral-tag::before {
-  content: '';
-  position: absolute;
-  right: 100%;
-  top: 50%;
-  transform: translateY(-50%);
-  border: 5px solid transparent;
-  border-right-color: var(--color-primary);
-}
-
-
-.share-toggle:hover .referral-tag,
-.share-toggle:focus .referral-tag {
+.float-whatsapp.visible {
   opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.float-whatsapp:hover {
+  color: var(--color-text-inverse);
+  background: var(--color-success-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 24px rgba(37, 211, 102, 0.5);
 }
 
 @media (max-width: 767px) {
-  .referral-tag {
-    display: none;
+  .float-whatsapp {
+    bottom: 80px;
+    right: 1rem;
+    padding: 0.75rem 1.25rem;
+    font-size: 0.875rem;
+  }
+
+  .float-whatsapp.visible {
+    transform: translateY(0);
+  }
+
+  .float-whatsapp:hover {
+    transform: translateY(-2px);
   }
 }
 

@@ -18,9 +18,8 @@ window.CONFIG = {
   // SITE & SERVICES
   // ==================================================================
   site: {
-    url: "https://sampredam.pages.dev",  // Your live site URL
+    url: "https://40sheridan.xyz",  // Your live site URL
     umamiWebsiteId: "",   // Get from https://cloud.umami.is → Add website → Copy ID
-    formspreeId: "",   // Get from https://formspree.io → Create form → Copy ID
   },
 
   // ==================================================================
@@ -37,14 +36,19 @@ window.CONFIG = {
     receptionRooms: "1",           // e.g. "2"
     floorAreaSqFt: "860",           // e.g. "1,200"
     floorAreaSqM: "80",           // e.g. "111"
-    garden: "South-facing, rear",           // e.g. "South-facing, rear"
-    gardenFacing: "South",           // e.g. "South" — used in highlights strip
-    parking: "Garage & Driveway",           // e.g. "Driveway" or "Garage & Driveway"
+    garden: "Sunny rear garden",             // e.g. "South-facing, rear"
+    gardenFacing: "Sunny",           // shown in highlights strip — e.g. "South", "Sunny", "West"
+    parking: "2 cars",               // keep short — shown in highlights strip
+    walkToStation: "",               // e.g. "12 min" walk/drive to Reading station (leave "" to hide)
     epcRating: "D",           // e.g. "C"
     councilTaxBand: "D",           // e.g. "D"
     tenure: "Freehold",           // e.g. "Freehold" or "Leasehold"
     yearBuilt: "1960s",           // e.g. "1930s" (optional)
     chainStatus: "No chain",           // e.g. "No chain" or "Chain of 2"
+
+    // Optional: override the price-context blurb in the Location section.
+    // HTML allowed. Leave "" to use the default text.
+    priceContext: "",
   },
 
   // ==================================================================
@@ -54,9 +58,10 @@ window.CONFIG = {
   // Leave the array empty [] to hide the description section.
   description: [
     "Step through the front door into a welcoming hallway flooded with natural light. This beautifully presented family home offers generous living space across well-proportioned rooms, perfect for modern family life.",
-    "The heart of the home is the stunning open-plan kitchen-diner, fitted with contemporary units and quality appliances. French doors open onto the south-facing garden, seamlessly connecting indoor and outdoor living.",
+    "The heart of the home is the stunning open-plan kitchen-diner, fitted with contemporary units and quality appliances. French doors open onto the sunny garden, seamlessly connecting indoor and outdoor living.",
     "Upstairs, the spacious bedrooms provide restful retreats, complemented by a modern family bathroom. The primary bedroom benefits from built-in wardrobes and lovely garden views.",
-    "Outside, the private south-facing garden is a real highlight, offering a perfect space for entertaining, gardening, or simply relaxing. A driveway provides off-street parking.",
+    "Outside, the large private rear garden enjoys a sunny aspect and is a genuine highlight. A generous paved patio is perfect for al fresco dining and BBQs, while the lawn beyond offers space for children and gardening alike.",
+    "A standout feature is the fully insulated garden office with floor-to-ceiling double glazing across two separate rooms — a rare and versatile space ideal for working from home, a studio, a gym, or a creative retreat. The private driveway easily fits two cars, with additional on-street parking right outside.",
   ],
 
   // ==================================================================
@@ -66,13 +71,9 @@ window.CONFIG = {
   // icon options: "kitchen", "garden", "glazing", "heating", "parking", "rooms"
   // Set to [] to hide the features section.
   features: [
-    { title: "Modern Kitchen", description: "Contemporary fitted kitchen with integrated appliances", icon: "kitchen" },
-    { title: "South-Facing Garden", description: "Private garden bathed in sunlight throughout the day", icon: "garden" },
-    { title: "UPVC Double Glazing", description: "Energy-efficient UPVC double glazing throughout", icon: "glazing" },
-    { title: "Gas Central Heating", description: "Efficient gas central heating system", icon: "heating" },
-    { title: "Off-Street Parking", description: "Private driveway with space for vehicles", icon: "parking" },
-    { title: "Spacious Rooms", description: "Generous proportions throughout the property", icon: "rooms" },
-    { title: "Extension Potential", description: "Scope for further extension, subject to planning consents", icon: "rooms" },
+    { title: "Garden Office (2 rooms)", description: "Fully insulated, floor-to-ceiling double-glazed garden office with two separate rooms — perfect for working from home", icon: "glazing" },
+    { title: "Sunny Garden & Patio", description: "Large private garden with a sunny aspect, plus a generous paved patio — perfect for al fresco dining and BBQs", icon: "garden" },
+    { title: "Easy Parking — 2 Cars", description: "Private driveway comfortably fits two cars, with on-street parking right outside too", icon: "parking" },
   ],
 
   // ==================================================================
@@ -88,8 +89,11 @@ window.CONFIG = {
     { name: "Bedroom 2", dimensions: "", description: "Double bedroom" },
     { name: "Bedroom 3", dimensions: "", description: "Double bedroom" },
     { name: "Bathroom", dimensions: "", description: "Modern family bathroom" },
-    { name: "Garden", dimensions: "", description: "Private south-facing rear garden" },
-    { name: "Garage & Driveway", dimensions: "", description: "Off-street parking" },
+    { name: "Garden Office — Room 1", dimensions: "", description: "Fully insulated, floor-to-ceiling double glazing" },
+    { name: "Garden Office — Room 2", dimensions: "", description: "Fully insulated, floor-to-ceiling double glazing" },
+    { name: "Patio", dimensions: "", description: "Large paved sunny patio, ideal for BBQs and outdoor entertaining" },
+    { name: "Garden", dimensions: "", description: "Large private rear garden with sunny aspect" },
+    { name: "Driveway", dimensions: "", description: "Private driveway with space for two cars" },
   ],
 
   // ==================================================================
@@ -99,6 +103,10 @@ window.CONFIG = {
   // Each entry: { src: "images/gallery/filename.jpg", alt: "Description" }
   // Leave empty [] and placeholder boxes will show instead.
   gallery: [
+    // Uncomment and add real photos as you get them.
+    // The two aerial entries below go live as soon as you drop the files in images/gallery/
+    { src: "images/gallery/aerial-garden.jpg",  alt: "Aerial view — garden, patio and garden office" },
+    { src: "images/gallery/aerial-street.jpg",  alt: "Aerial view — street and plot context" },
     // { src: "images/gallery/01-front.jpg",    alt: "Front exterior" },
     // { src: "images/gallery/02-living.jpg",   alt: "Living room" },
     // { src: "images/gallery/03-kitchen.jpg",  alt: "Kitchen" },
@@ -107,6 +115,32 @@ window.CONFIG = {
     // { src: "images/gallery/06-bathroom.jpg", alt: "Bathroom" },
     // { src: "images/gallery/07-garden.jpg",   alt: "Garden" },
     // { src: "images/gallery/08-street.jpg",   alt: "Street view" },
+  ],
+
+  // ==================================================================
+  // FLOOR PLANS
+  // ==================================================================
+  // Each entry: { label, src }
+  // src: path to image e.g. "images/floorplan-ground.jpg", or "" for placeholder.
+  floorPlans: [
+    { label: "Ground Floor",  src: "" },
+    { label: "First Floor",   src: "" },
+    { label: "Garden Office", src: "" },
+    // Aerial screenshot makes a good stand-in until a proper plan is drawn.
+    // Drop the file and uncomment the src below:
+    { label: "Garden & Patio", src: "" },
+    // { label: "Garden & Patio", src: "images/gallery/aerial-street.jpg" },
+  ],
+
+  // ==================================================================
+  // OPEN HOUSE SLOTS
+  // ==================================================================
+  // Pre-set viewing slots shown as one-click WhatsApp buttons.
+  // Each entry: { date: "Saturday 1 March 2026", time: "11:00 – 13:00" }
+  // Leave empty [] to hide the section entirely.
+  openHouse: [
+    // { date: "Saturday 1 March 2026",  time: "11:00 – 13:00" },
+    // { date: "Sunday 2 March 2026",    time: "10:00 – 12:00" },
   ],
 
   // Placeholder labels shown when no images are provided yet

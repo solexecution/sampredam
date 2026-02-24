@@ -16,6 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
   hydrateRooms();
   hydrateDetails();
   hydrateFeatures();
+  hydrateLocation();
   hydrateFaq();
   hydrateContact();
   hydrateShareLinks();
@@ -23,12 +24,18 @@ document.addEventListener('DOMContentLoaded', () => {
   hydrateSchema();
   hydrateMeta();
 
+  hydrateFloorPlans();
+  hydrateFloatWhatsapp();
+
   initNavigation();
   initGallery();
   initMortgageCalculator();
   initShareBar();
   initCopyLink();
   initScrollAnimations();
+  initSectionTracking();
+  initScrollDepthTracking();
+  initFloatWhatsapp();
   calculateMortgage();
 });
 
@@ -80,13 +87,26 @@ function hydrateServices() {
 }
 
 function hydrateHero() {
+  // Badge — "Freehold · No Chain"
+  const heroBadge = document.getElementById('heroBadge');
+  if (heroBadge) {
+    const parts = [];
+    if (filled(P.tenure)) parts.push(P.tenure);
+    if (filled(P.chainStatus)) parts.push(P.chainStatus);
+    if (parts.length > 0) {
+      heroBadge.textContent = parts.join(' · ');
+    } else {
+      hide(heroBadge);
+    }
+  }
+
   const heroSpecs = document.getElementById('heroSpecs');
   const heroPrice = document.getElementById('heroPrice');
 
   // Build specs line from available data
   const specs = [];
-  if (filled(P.bedrooms)) specs.push(`${P.bedrooms} Bedrooms`);
-  if (filled(P.bathrooms)) specs.push(`${P.bathrooms} Bathrooms`);
+  if (filled(P.bedrooms)) specs.push(`${P.bedrooms} ${P.bedrooms === '1' ? 'Bedroom' : 'Bedrooms'}`);
+  if (filled(P.bathrooms)) specs.push(`${P.bathrooms} ${P.bathrooms === '1' ? 'Bathroom' : 'Bathrooms'}`);
   if (filled(P.floorAreaSqFt)) specs.push(`${P.floorAreaSqFt} sq ft`);
 
   if (specs.length > 0) {
@@ -109,12 +129,13 @@ function hydrateHighlights() {
   const grid = document.getElementById('highlightsGrid');
   const items = [];
 
-  if (filled(P.bedrooms)) items.push({ icon: 'bed', value: P.bedrooms, label: 'Bedrooms' });
-  if (filled(P.bathrooms)) items.push({ icon: 'bath', value: P.bathrooms, label: 'Bathrooms' });
+  if (filled(P.bedrooms)) items.push({ icon: 'bed', value: P.bedrooms, label: P.bedrooms === '1' ? 'Bedroom' : 'Bedrooms' });
+  if (filled(P.bathrooms)) items.push({ icon: 'bath', value: P.bathrooms, label: P.bathrooms === '1' ? 'Bathroom' : 'Bathrooms' });
   if (filled(P.floorAreaSqFt)) items.push({ icon: 'sqft', value: P.floorAreaSqFt, label: 'Sq Ft' });
-  items.push({ icon: 'train', value: '25 min', label: 'To London Paddington' });
-  if (filled(P.gardenFacing)) items.push({ icon: 'garden', value: P.gardenFacing, label: 'Facing Garden' });
-  if (filled(P.parking)) items.push({ icon: 'parking', value: P.parking, label: 'Parking' });
+  if (filled(P.walkToStation)) items.push({ icon: 'train', value: P.walkToStation, label: 'To Reading Station' });
+  items.push({ icon: 'train', value: '25 min', label: 'Reading → Paddington' });
+  if (filled(P.gardenFacing)) items.push({ icon: 'garden', value: P.gardenFacing, label: 'Garden' });
+  if (filled(P.parking)) items.push({ icon: 'parking', value: P.parking, label: 'Easy Parking' });
 
   if (items.length <= 1) {
     // Only the train item — hide highlights section
@@ -234,6 +255,48 @@ function hydrateFeatures() {
       <p>${f.description}</p>
     </div>
   `).join('');
+}
+
+function hydrateFloorPlans() {
+  const container = document.getElementById('floorPlans');
+  const plans = C.floorPlans || [];
+
+  if (plans.length === 0) {
+    hide(container);
+    return;
+  }
+
+  const blueprintSvg = `<svg class="floorplan-placeholder-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.25" aria-hidden="true">
+    <rect x="2" y="2" width="20" height="20" rx="1"/>
+    <path d="M2 8h12v12H2"/><path d="M8 8v12"/><path d="M2 14h6"/>
+    <path d="M14 8h8"/><path d="M14 13h8"/><path d="M14 18h8"/>
+  </svg>`;
+
+  const tiles = plans.map(plan => {
+    if (filled(plan.src)) {
+      return `
+        <div class="floorplan-item">
+          <img src="${plan.src}" alt="${plan.label} floor plan" loading="lazy">
+          <span class="floorplan-label">${plan.label}</span>
+        </div>`;
+    }
+    return `
+      <div class="floorplan-item floorplan-placeholder-item">
+        ${blueprintSvg}
+        <span class="floorplan-label">${plan.label}</span>
+        <span class="floorplan-hint">Add image to config.js</span>
+      </div>`;
+  }).join('');
+
+  container.innerHTML = `<h3>Floor Plans</h3><div class="floorplan-grid">${tiles}</div>`;
+}
+
+function hydrateLocation() {
+  const el = document.getElementById('priceContextPara');
+  if (!el) return;
+  if (filled(P.priceContext)) {
+    el.innerHTML = P.priceContext;
+  }
 }
 
 function hydrateFaq() {
@@ -358,6 +421,29 @@ function hydrateContact() {
     }
   }
 
+  // Open house slots
+  const openHouseContainer = document.getElementById('openHouseSlots');
+  const openHouseSlots = C.openHouse || [];
+  if (openHouseContainer && openHouseSlots.length > 0) {
+    const address = `${P.streetAddress || ''} ${P.postcode || ''}`.trim();
+    const calIcon = `<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>`;
+    const slotsHtml = openHouseSlots.map(slot => {
+      const msg = encodeURIComponent(`Hi! I'd like to attend the open house on ${slot.date} at ${slot.time}. Re: ${address}. See you there!`);
+      const href = filled(CONTACT.whatsapp)
+        ? `https://wa.me/${CONTACT.whatsapp}?text=${msg}`
+        : `mailto:${CONTACT.email || ''}?subject=${encodeURIComponent('Open House — ' + address)}&body=${msg}`;
+      return `<a href="${href}" target="_blank" rel="noopener" class="open-house-slot" data-umami-event="open-house-click" data-umami-event-date="${slot.date}">
+        ${calIcon}<span class="slot-date">${slot.date}</span><span class="slot-time">${slot.time}</span>
+      </a>`;
+    }).join('');
+    openHouseContainer.innerHTML = `
+      <h4 class="open-house-heading">Open House</h4>
+      <div class="open-house-list">${slotsHtml}</div>
+      <p class="open-house-or">or pick your own time below</p>`;
+  } else if (openHouseContainer) {
+    hide(openHouseContainer);
+  }
+
   // Helper: get selected viewing slot text
   function getSlotText() {
     const day = document.getElementById('viewingDay')?.value || '';
@@ -471,7 +557,7 @@ function hydrateSchema() {
     name: `Family Home for Sale - ${P.streetAddress ? P.streetAddress + ', ' : ''}Caversham, Reading ${P.postcode || 'RG4 7QD'}`,
     description: (C.description || []).join(' ').substring(0, 300),
     datePosted: '2026-02-17',
-    url: SITE.url || 'https://sampredam.pages.dev/',
+    url: SITE.url || 'https://40sheridan.xyz/',
   };
 
   if (filled(P.price)) {
@@ -501,7 +587,7 @@ function hydrateSchema() {
 }
 
 function hydrateMeta() {
-  const url = SITE.url || 'https://sampredam.pages.dev';
+  const url = SITE.url || 'https://40sheridan.xyz';
   const setAttr = (id, attr, val) => {
     const el = document.getElementById(id);
     if (el && val) el.setAttribute(attr, val);
@@ -726,6 +812,95 @@ function showCopyTooltip(el, text) {
   el.appendChild(tip);
   tip.style.cssText = 'left:50%;transform:translateX(-50%);bottom:120%';
   setTimeout(() => tip.remove(), 2000);
+}
+
+/* --- Floating WhatsApp --- */
+function hydrateFloatWhatsapp() {
+  const btn = document.getElementById('floatWhatsapp');
+  if (!btn) return;
+
+  if (!filled(CONTACT.whatsapp)) {
+    hide(btn);
+    return;
+  }
+
+  const address = `${P.streetAddress || ''} ${P.postcode || ''}`.trim();
+  const msg = encodeURIComponent(`Hi! I'd like to arrange a viewing of ${address}. Is that possible?`);
+  btn.href = `https://wa.me/${CONTACT.whatsapp}?text=${msg}`;
+  btn.removeAttribute('hidden');
+}
+
+function initFloatWhatsapp() {
+  const btn = document.getElementById('floatWhatsapp');
+  if (!btn || btn.hidden) return;
+
+  let contactVisible = false;
+
+  const contactSection = document.getElementById('contact');
+  if (contactSection) {
+    new IntersectionObserver((entries) => {
+      contactVisible = entries[0].isIntersecting;
+      update();
+    }, { threshold: 0.3 }).observe(contactSection);
+  }
+
+  function update() {
+    btn.classList.toggle('visible', window.scrollY > 300 && !contactVisible);
+  }
+
+  window.addEventListener('scroll', update, { passive: true });
+}
+
+/* --- Umami: Section Reach Tracking (funnel) --- */
+function initSectionTracking() {
+  const sections = [
+    { id: 'gallery',    label: 'gallery' },
+    { id: 'details',    label: 'details' },
+    { id: 'location',   label: 'location' },
+    { id: 'calculator', label: 'calculator' },
+    { id: 'faq',        label: 'faq' },
+    { id: 'contact',    label: 'contact' },
+  ];
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const label = entry.target.dataset.trackSection;
+        if (typeof umami !== 'undefined') {
+          umami.track('section-reached', { section: label });
+        }
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.2 });
+
+  sections.forEach(({ id, label }) => {
+    const el = document.getElementById(id);
+    if (el) {
+      el.dataset.trackSection = label;
+      observer.observe(el);
+    }
+  });
+}
+
+/* --- Umami: Scroll Depth Tracking --- */
+function initScrollDepthTracking() {
+  const milestones = [25, 50, 75, 100];
+  const reached = new Set();
+
+  window.addEventListener('scroll', () => {
+    const pct = Math.round(
+      ((window.scrollY + window.innerHeight) / document.documentElement.scrollHeight) * 100
+    );
+    milestones.forEach(m => {
+      if (pct >= m && !reached.has(m)) {
+        reached.add(m);
+        if (typeof umami !== 'undefined') {
+          umami.track('scroll-depth', { depth: m + '%' });
+        }
+      }
+    });
+  }, { passive: true });
 }
 
 /* --- Scroll Animations --- */

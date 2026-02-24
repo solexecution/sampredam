@@ -1,0 +1,17 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:reports.ofsted.gov.uk)",
+      "WebFetch(domain:snobe.co.uk)",
+      "WebFetch(domain:files.ofsted.gov.uk)",
+      "WebFetch(domain:housemetric.co.uk)",
+      "WebFetch(domain:www.rightmove.co.uk)",
+      "WebFetch(domain:www.zoopla.co.uk)",
+      "WebFetch(domain:www.getthedata.com)",
+      "WebFetch(domain:www.propertymarketintel.com)",
+      "WebFetch(domain:nethouseprices.com)",
+      "WebFetch(domain:themovemarket.com)",
+      "Bash(git -C \"c:/Users/marku/Documents/GitHub/sampredam\" remote -v)"
+    ]
+  }
+}
