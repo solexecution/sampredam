@@ -762,12 +762,26 @@ function initParkCarousel() {
   carousel.addEventListener('mouseenter', () => clearInterval(timer));
   carousel.addEventListener('mouseleave', startTimer);
 
-  // Swipe support
+  // Swipe + tap support
   let touchX = 0;
-  carousel.addEventListener('touchstart', (e) => { touchX = e.touches[0].clientX; clearInterval(timer); }, { passive: true });
+  let touchY = 0;
+  let touchTime = 0;
+  carousel.addEventListener('touchstart', (e) => {
+    touchX = e.touches[0].clientX;
+    touchY = e.touches[0].clientY;
+    touchTime = Date.now();
+    clearInterval(timer);
+  }, { passive: true });
   carousel.addEventListener('touchend', (e) => {
-    const diff = touchX - e.changedTouches[0].clientX;
-    if (Math.abs(diff) > 40) goTo(diff > 0 ? (current + 1) % slides.length : (current - 1 + slides.length) % slides.length);
+    const dx = touchX - e.changedTouches[0].clientX;
+    const dy = touchY - e.changedTouches[0].clientY;
+    const dt = Date.now() - touchTime;
+    if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy)) {
+      goTo(dx > 0 ? (current + 1) % slides.length : (current - 1 + slides.length) % slides.length);
+    } else if (Math.abs(dx) < 10 && Math.abs(dy) < 10 && dt < 300) {
+      // Tap — open lightbox
+      openLightbox(current);
+    }
     startTimer();
   }, { passive: true });
 
@@ -805,11 +819,21 @@ function initParkCarousel() {
     lbCaption.textContent = images[lbIdx].caption;
   }
 
+  // Desktop click
   slides.forEach((s, i) => s.addEventListener('click', () => openLightbox(i)));
   document.getElementById('lightboxClose').addEventListener('click', closeLightbox);
   document.getElementById('lightboxPrev').addEventListener('click', () => lbNav(-1));
   document.getElementById('lightboxNext').addEventListener('click', () => lbNav(1));
   lb.addEventListener('click', (e) => { if (e.target === lb) closeLightbox(); });
+
+  // Lightbox touch swipe
+  let lbTouchX = 0;
+  lb.addEventListener('touchstart', (e) => { lbTouchX = e.touches[0].clientX; }, { passive: true });
+  lb.addEventListener('touchend', (e) => {
+    const diff = lbTouchX - e.changedTouches[0].clientX;
+    if (Math.abs(diff) > 50) lbNav(diff > 0 ? 1 : -1);
+  }, { passive: true });
+
   document.addEventListener('keydown', (e) => {
     if (lb.hidden) return;
     if (e.key === 'Escape') closeLightbox();
