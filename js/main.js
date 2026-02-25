@@ -770,6 +770,52 @@ function initParkCarousel() {
     if (Math.abs(diff) > 40) goTo(diff > 0 ? (current + 1) % slides.length : (current - 1 + slides.length) % slides.length);
     startTimer();
   }, { passive: true });
+
+  // Lightbox
+  const lb = document.getElementById('lightbox');
+  const lbImg = document.getElementById('lightboxImg');
+  const lbCaption = document.getElementById('lightboxCaption');
+  let lbIdx = 0;
+  const images = Array.from(slides).map(s => ({
+    src: s.querySelector('img').src,
+    alt: s.querySelector('img').alt,
+    caption: s.querySelector('.park-carousel-caption').textContent,
+  }));
+
+  function openLightbox(idx) {
+    lbIdx = idx;
+    lbImg.src = images[idx].src;
+    lbImg.alt = images[idx].alt;
+    lbCaption.textContent = images[idx].caption;
+    lb.hidden = false;
+    clearInterval(timer);
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeLightbox() {
+    lb.hidden = true;
+    document.body.style.overflow = '';
+    startTimer();
+  }
+
+  function lbNav(dir) {
+    lbIdx = (lbIdx + dir + images.length) % images.length;
+    lbImg.src = images[lbIdx].src;
+    lbImg.alt = images[lbIdx].alt;
+    lbCaption.textContent = images[lbIdx].caption;
+  }
+
+  slides.forEach((s, i) => s.addEventListener('click', () => openLightbox(i)));
+  document.getElementById('lightboxClose').addEventListener('click', closeLightbox);
+  document.getElementById('lightboxPrev').addEventListener('click', () => lbNav(-1));
+  document.getElementById('lightboxNext').addEventListener('click', () => lbNav(1));
+  lb.addEventListener('click', (e) => { if (e.target === lb) closeLightbox(); });
+  document.addEventListener('keydown', (e) => {
+    if (lb.hidden) return;
+    if (e.key === 'Escape') closeLightbox();
+    if (e.key === 'ArrowLeft') lbNav(-1);
+    if (e.key === 'ArrowRight') lbNav(1);
+  });
 }
 
 /* --- Mortgage Calculator --- */
