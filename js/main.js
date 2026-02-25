@@ -36,6 +36,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initSectionTracking();
   initScrollDepthTracking();
   initFloatWhatsapp();
+  initParkCarousel();
   calculateMortgage();
 });
 
@@ -718,6 +719,56 @@ function initGallery() {
   lightbox.addEventListener('touchend', (e) => {
     const diff = touchStartX - e.changedTouches[0].screenX;
     if (Math.abs(diff) > 50) navigate(diff > 0 ? 1 : -1);
+  }, { passive: true });
+}
+
+/* --- Park Carousel --- */
+function initParkCarousel() {
+  const carousel = document.getElementById('parkCarousel');
+  if (!carousel) return;
+  const track = carousel.querySelector('.park-carousel-track');
+  const slides = track.querySelectorAll('.park-carousel-slide');
+  const dotsContainer = document.getElementById('parkCarouselDots');
+  if (slides.length < 2) return;
+
+  let current = 0;
+  let timer;
+
+  // Build dots
+  slides.forEach((_, i) => {
+    const dot = document.createElement('button');
+    dot.className = 'park-carousel-dot' + (i === 0 ? ' active' : '');
+    dot.setAttribute('aria-label', 'Slide ' + (i + 1));
+    dot.addEventListener('click', () => goTo(i));
+    dotsContainer.appendChild(dot);
+  });
+
+  function goTo(idx) {
+    current = idx;
+    track.style.transform = 'translateX(-' + (current * 100) + '%)';
+    dotsContainer.querySelectorAll('.park-carousel-dot').forEach((d, i) => {
+      d.classList.toggle('active', i === current);
+    });
+  }
+
+  function next() { goTo((current + 1) % slides.length); }
+
+  // Auto-advance every 4s
+  function startTimer() { timer = setInterval(next, 4000); }
+  function resetTimer() { clearInterval(timer); startTimer(); }
+  startTimer();
+
+  // Pause on hover
+  carousel.addEventListener('mouseenter', () => clearInterval(timer));
+  carousel.addEventListener('mouseleave', startTimer);
+
+  // Swipe support
+  let touchX = 0;
+  carousel.addEventListener('touchstart', (e) => { touchX = e.touches[0].clientX; clearInterval(timer); }, { passive: true });
+  carousel.addEventListener('touchend', (e) => {
+    const diff = touchX - e.changedTouches[0].clientX;
+    if (Math.abs(diff) > 40) goTo(diff > 0 ? (current + 1) % slides.length : (current - 1 + slides.length) % slides.length);
+    startTimer();
   }, { passive: true });
 }
 
