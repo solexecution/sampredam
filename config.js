@@ -57,7 +57,7 @@ window.CONFIG = {
   // Each string is a separate paragraph. Remove or add as needed.
   // Leave the array empty [] to hide the description section.
   description: [
-    "Step through the front door into a welcoming hallway flooded with natural light. This beautifully presented family home offers generous living space across well-proportioned rooms, perfect for modern family life.",
+    "Step through the front door into a welcoming hallway filled with natural light. This beautifully presented family home offers generous living space across well-proportioned rooms, perfect for modern family life.",
     "The heart of the home is the stunning open-plan kitchen-diner, fitted with contemporary units and quality appliances. French doors open onto the sunny garden, seamlessly connecting indoor and outdoor living.",
     "Upstairs, the spacious bedrooms provide restful retreats, complemented by a modern family bathroom. The primary bedroom benefits from built-in wardrobes and lovely garden views.",
     "Outside, the large private rear garden enjoys a sunny aspect and is a genuine highlight. A generous paved patio is perfect for al fresco dining and BBQs, while the lawn beyond offers space for children and gardening alike.",

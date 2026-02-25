@@ -669,18 +669,20 @@ const Lightbox = (function () {
 
   function update() {
     const item = images[cur];
-    const isVideo = item.src.match(/\.(mp4|webm|ogg)$/i);
+    const isVideo = item.isVideo || item.src.match(/\.(mp4|webm|ogg)$/i);
     console.log('[Lightbox] update() cur:', cur, 'src:', item.src, 'isVideo:', isVideo);
 
     if (isVideo) {
       img.hidden = true;
       video.hidden = false;
-      video.src = item.src;
-      video.play().catch(e => console.warn('[Lightbox] Autoplay failed:', e));
+      if (video.src !== item.src) {
+        video.src = item.src;
+        video.load();
+      }
+      video.play().catch(e => console.warn('[Lightbox] Play failed:', e));
     } else {
       video.hidden = true;
       video.pause();
-      video.src = '';
       img.hidden = false;
       img.src = item.src;
       img.alt = item.alt;
@@ -745,16 +747,27 @@ const Lightbox = (function () {
 /* --- Gallery Lightbox --- */
 function initGallery() {
   const galleryItems = document.querySelectorAll('.gallery-item');
-  const images = [];
+  const items = [];
   galleryItems.forEach(item => {
-    const img = item.querySelector('img');
-    if (img) images.push({ src: img.src, alt: img.alt });
-  });
-  if (images.length === 0) return;
-  galleryItems.forEach((item, i) => {
-    if (item.querySelector('img')) {
-      item.addEventListener('click', () => Lightbox.open(images, i));
+    const isVideo = item.getAttribute('data-video') === 'true';
+    if (isVideo) {
+      // For videos, we use the video source, but the clickable element has an img inside it as a poster
+      const img = item.querySelector('img');
+      // We look for the video source in the config or we infer it. 
+      // A better way is to pass the full gallery config to initGallery or read it from the DOM.
+      // Since hydrateGallery already knows the src, let's just find the corresponding config item.
+      const src = C.gallery.find(g => g.alt === img.alt)?.src;
+      items.push({ src, alt: img.alt, isVideo: true });
+    } else {
+      const img = item.querySelector('img');
+      if (img) items.push({ src: img.src, alt: img.alt, isVideo: false });
     }
+  });
+
+  if (items.length === 0) return;
+
+  galleryItems.forEach((item, i) => {
+    item.addEventListener('click', () => Lightbox.open(items, i));
   });
 }
 
