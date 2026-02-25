@@ -276,7 +276,7 @@ a:hover {
   text-align: center;
   color: var(--color-text-inverse);
   /* TODO: Replace with actual hero image */
-  background: var(--color-primary) url('../images/gallery/bugs_bottom_2.jpg') center/cover no-repeat;
+  background: var(--color-primary) url('../images/gallery/hall_staircase.jpg') center/cover no-repeat;
 }
 
 .hero-overlay {

@@ -104,7 +104,8 @@ window.CONFIG = {
   // Each entry: { src: "images/gallery/filename.jpg", alt: "Description" }
   // Leave empty [] and placeholder boxes will show instead.
   gallery: [
-    { src: "images/gallery/Stairs.mp4", alt: "Cinematic Stairs View", poster: "images/gallery/balmore_walk_1.jpg" },
+    { src: "images/gallery/Stairs.mp4", alt: "Cinematic Stairs View", poster: "images/gallery/hall_staircase.jpg" },
+    { src: "images/gallery/hall_staircase.jpg", alt: "Entrance Hall and Staircase" },
     { src: "images/gallery/balmore_walk_1.jpg", alt: "Balmore Walk - View 1" },
     { src: "images/gallery/balmore_walk_2.jpg", alt: "Balmore Walk - View 2" },
     { src: "images/gallery/bugs_bottom_1.jpg", alt: "Bugs Bottom - View 1" },
