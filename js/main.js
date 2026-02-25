@@ -610,7 +610,9 @@ function hydrateMeta() {
   if (filled(P.price)) {
     const priceNum = parseInt(P.price.replace(/,/g, ''));
     if (priceNum > 0) {
-      document.getElementById('calcPrice').value = priceNum;
+      const slider = document.getElementById('calcPrice');
+      slider.max = Math.max(parseInt(slider.max), priceNum);
+      slider.value = priceNum;
     }
   }
 }
@@ -721,20 +723,8 @@ function initGallery() {
 
 /* --- Mortgage Calculator --- */
 function initMortgageCalculator() {
-  const calcButton = document.getElementById('calcButton');
-  const depositSlider = document.getElementById('calcDeposit');
-  const depositDisplay = document.getElementById('depositDisplay');
-
-  depositSlider.addEventListener('input', () => {
-    depositDisplay.textContent = depositSlider.value + '%';
-  });
-
-  calcButton.addEventListener('click', calculateMortgage);
-
-  document.querySelectorAll('.calc-field input[type="number"]').forEach(input => {
-    input.addEventListener('keypress', (e) => {
-      if (e.key === 'Enter') calculateMortgage();
-    });
+  ['calcPrice', 'calcDeposit', 'calcRate', 'calcTerm'].forEach(id => {
+    document.getElementById(id).addEventListener('input', calculateMortgage);
   });
 }
 
@@ -749,6 +739,12 @@ function calculateMortgage() {
   const monthlyRate = rate / 100 / 12;
   const numPayments = term * 12;
 
+  // Update slider labels
+  document.getElementById('priceDisplay').textContent = formatCurrency(price);
+  document.getElementById('depositDisplay').textContent = depositPercent + '% \u00b7 ' + formatCurrency(deposit);
+  document.getElementById('rateDisplay').textContent = parseFloat(rate).toFixed(1) + '%';
+  document.getElementById('termDisplay').textContent = term + ' yrs';
+
   let monthly = 0;
   if (monthlyRate > 0 && numPayments > 0 && principal > 0) {
     monthly = principal * (monthlyRate * Math.pow(1 + monthlyRate, numPayments))
@@ -756,13 +752,24 @@ function calculateMortgage() {
   }
 
   const total = monthly * numPayments;
+  const interest = total - principal;
   const daily = monthly / 30.44;
 
   document.getElementById('calcMonthly').textContent = formatCurrency(monthly);
   document.getElementById('calcLoan').textContent = formatCurrency(principal);
+  document.getElementById('calcInterest').textContent = formatCurrency(interest);
   document.getElementById('calcTotal').textContent = formatCurrency(total);
-  document.getElementById('calcDaily').textContent =
-    monthly > 0 ? `That's approximately ${formatCurrency(daily)} per day` : '';
+  document.getElementById('calcDaily').textContent = monthly > 0 ? formatCurrency(daily) + ' / day' : '';
+
+  // Repayment bar
+  const bar = document.getElementById('calcRepayBar');
+  if (monthly > 0 && total > 0) {
+    bar.hidden = false;
+    document.getElementById('calcRepayPrincipal').style.width = (principal / total * 100).toFixed(1) + '%';
+    document.getElementById('calcRepayInterest').style.width = (interest / total * 100).toFixed(1) + '%';
+  } else {
+    bar.hidden = true;
+  }
 
   if (typeof umami !== 'undefined') {
     umami.track('mortgage-calculate', { price, deposit: depositPercent, monthlyPayment: Math.round(monthly) });

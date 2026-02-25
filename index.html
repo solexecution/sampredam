@@ -227,38 +227,59 @@
       <div class="calculator-card">
         <div class="calc-inputs">
           <div class="calc-field">
-            <label for="calcPrice">Property Price (&pound;)</label>
-            <input type="number" id="calcPrice" value="500000" min="0" step="1000">
+            <div class="calc-field-header">
+              <label for="calcPrice">Property Price</label>
+              <span class="calc-field-val" id="priceDisplay">&pound;525,000</span>
+            </div>
+            <input type="range" id="calcPrice" min="100000" max="1000000" value="525000" step="5000">
           </div>
           <div class="calc-field">
-            <label for="calcDeposit">Deposit (%)</label>
-            <input type="range" id="calcDeposit" min="5" max="50" value="10">
-            <span class="calc-range-value" id="depositDisplay">10%</span>
+            <div class="calc-field-header">
+              <label for="calcDeposit">Deposit</label>
+              <span class="calc-field-val" id="depositDisplay">10% &middot; &pound;52,500</span>
+            </div>
+            <input type="range" id="calcDeposit" min="5" max="50" value="10" step="1">
           </div>
           <div class="calc-field">
-            <label for="calcRate">Interest Rate (%)</label>
-            <input type="number" id="calcRate" value="4.5" min="0" max="15" step="0.1">
+            <div class="calc-field-header">
+              <label for="calcRate">Interest Rate</label>
+              <span class="calc-field-val" id="rateDisplay">4.5%</span>
+            </div>
+            <input type="range" id="calcRate" min="1" max="10" value="4.5" step="0.1">
           </div>
           <div class="calc-field">
-            <label for="calcTerm">Term (years)</label>
-            <input type="number" id="calcTerm" value="25" min="5" max="40" step="1">
+            <div class="calc-field-header">
+              <label for="calcTerm">Mortgage Term</label>
+              <span class="calc-field-val" id="termDisplay">25 yrs</span>
+            </div>
+            <input type="range" id="calcTerm" min="5" max="40" value="25" step="1">
           </div>
-          <button class="btn btn-primary calc-btn" id="calcButton" data-umami-event="mortgage-calculate">
-            Calculate
-          </button>
         </div>
         <div class="calc-results" id="calcResults">
           <div class="calc-monthly">
-            <span class="calc-label">Estimated Monthly Payment</span>
+            <span class="calc-label">Monthly Payment</span>
             <span class="calc-amount" id="calcMonthly">&pound;0</span>
+            <span class="calc-daily" id="calcDaily"></span>
+          </div>
+          <div class="calc-repay-bar" id="calcRepayBar" hidden>
+            <div class="calc-repay-principal" id="calcRepayPrincipal"></div>
+            <div class="calc-repay-interest" id="calcRepayInterest"></div>
           </div>
           <div class="calc-breakdown">
-            <p>Loan amount: <strong id="calcLoan">&pound;0</strong></p>
-            <p>Total repayable: <strong id="calcTotal">&pound;0</strong></p>
-            <p class="calc-daily" id="calcDaily"></p>
+            <div class="calc-breakdown-row">
+              <span>Loan amount</span>
+              <strong id="calcLoan">&mdash;</strong>
+            </div>
+            <div class="calc-breakdown-row">
+              <span>Interest paid</span>
+              <strong id="calcInterest">&mdash;</strong>
+            </div>
+            <div class="calc-breakdown-row">
+              <span>Total repayable</span>
+              <strong id="calcTotal">&mdash;</strong>
+            </div>
           </div>
-          <p class="calc-disclaimer">For illustration purposes only. Seek independent financial advice before making
-            decisions.</p>
+          <p class="calc-disclaimer">For illustration only. Seek independent financial advice.</p>
         </div>
       </div>
     </div>
