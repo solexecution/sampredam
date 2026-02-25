@@ -82,7 +82,7 @@ window.CONFIG = {
   // Each room: { name, dimensions, description }
   // Leave dimensions "" to hide them. Leave the array [] to hide this section.
   rooms: [
-    { name: "Hallway", dimensions: "", description: "Welcoming entrance flooded with natural light" },
+    { name: "Hallway", dimensions: "", description: "Welcoming entrance filled with natural light" },
     { name: "Living Room", dimensions: "", description: "Double glazed, spacious reception room" },
     { name: "Kitchen/Diner", dimensions: "", description: "Contemporary fitted kitchen with integrated appliances, French doors to garden" },
     { name: "Primary Bedroom", dimensions: "", description: "Double glazed, built-in wardrobes, garden views" },
