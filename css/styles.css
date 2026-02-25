@@ -816,7 +816,6 @@ a:hover {
 
 /* --- Park List (compact) --- */
 .park-list {
-  columns: 2;
   column-gap: 0.75rem;
 }
 
@@ -839,6 +838,24 @@ a:hover {
 
 .park-list a:hover {
   text-decoration: underline;
+}
+
+.park-list li {
+  display: flex !important;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.park-rating {
+  color: var(--color-accent);
+  font-weight: 700;
+  font-size: 0.75rem;
+  white-space: nowrap;
+}
+
+.park-rating small {
+  font-weight: 400;
+  opacity: 0.6;
 }
 
 /* --- Park Carousel (inside location card) --- */
