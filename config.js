@@ -103,18 +103,11 @@ window.CONFIG = {
   // Each entry: { src: "images/gallery/filename.jpg", alt: "Description" }
   // Leave empty [] and placeholder boxes will show instead.
   gallery: [
-    // Uncomment and add real photos as you get them.
-    // The two aerial entries below go live as soon as you drop the files in images/gallery/
-    { src: "images/gallery/aerial-garden.jpg",  alt: "Aerial view — garden, patio and garden office" },
-    { src: "images/gallery/aerial-street.jpg",  alt: "Aerial view — street and plot context" },
-    // { src: "images/gallery/01-front.jpg",    alt: "Front exterior" },
-    // { src: "images/gallery/02-living.jpg",   alt: "Living room" },
-    // { src: "images/gallery/03-kitchen.jpg",  alt: "Kitchen" },
-    // { src: "images/gallery/04-bedroom1.jpg", alt: "Primary bedroom" },
-    // { src: "images/gallery/05-bedroom2.jpg", alt: "Second bedroom" },
-    // { src: "images/gallery/06-bathroom.jpg", alt: "Bathroom" },
-    // { src: "images/gallery/07-garden.jpg",   alt: "Garden" },
-    // { src: "images/gallery/08-street.jpg",   alt: "Street view" },
+    // Temporary park images as failsafe placeholders:
+    { src: "images/gallery/balmore_walk_1.jpg", alt: "Balmore Walk - View 1" },
+    { src: "images/gallery/balmore_walk_2.jpg", alt: "Balmore Walk - View 2" },
+    { src: "images/gallery/bugs_bottom_1.jpg", alt: "Bugs Bottom - View 1" },
+    { src: "images/gallery/bugs_bottom_2.jpg", alt: "Bugs Bottom - View 2" },
   ],
 
   // ==================================================================
@@ -123,13 +116,10 @@ window.CONFIG = {
   // Each entry: { label, src }
   // src: path to image e.g. "images/floorplan-ground.jpg", or "" for placeholder.
   floorPlans: [
-    { label: "Ground Floor",  src: "" },
-    { label: "First Floor",   src: "" },
-    { label: "Garden Office", src: "" },
-    // Aerial screenshot makes a good stand-in until a proper plan is drawn.
-    // Drop the file and uncomment the src below:
-    { label: "Garden & Patio", src: "" },
-    // { label: "Garden & Patio", src: "images/gallery/aerial-street.jpg" },
+    { label: "Ground Floor", src: "images/gallery/balmore_walk_1.jpg" },
+    { label: "First Floor", src: "images/gallery/balmore_walk_2.jpg" },
+    { label: "Garden Office", src: "images/gallery/bugs_bottom_1.jpg" },
+    { label: "Garden & Patio", src: "images/gallery/bugs_bottom_2.jpg" },
   ],
 
   // ==================================================================
