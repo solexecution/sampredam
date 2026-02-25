@@ -159,12 +159,18 @@ function hydrateGallery() {
   const placeholders = C.galleryPlaceholders || [];
 
   if (gallery.length > 0) {
-    // Real images
-    grid.innerHTML = gallery.map((img, i) => `
-      <div class="gallery-item" data-umami-event="gallery-image-click" data-umami-event-image="${img.alt}">
-        <img src="${img.src}" alt="${img.alt}" loading="${i === 0 ? 'eager' : 'lazy'}">
-      </div>
-    `).join('');
+    // Real images/videos
+    grid.innerHTML = gallery.map((item, i) => {
+      const isVideo = item.src.match(/\.(mp4|webm|ogg)$/i);
+      return `
+        <div class="gallery-item" 
+             data-umami-event="gallery-image-click" 
+             data-umami-event-image="${item.alt}"
+             ${isVideo ? 'data-video="true"' : ''}>
+          <img src="${item.poster || item.src}" alt="${item.alt}" loading="${i === 0 ? 'eager' : 'lazy'}">
+        </div>
+      `;
+    }).join('');
   } else {
     // Placeholder boxes
     const placeholderSvg = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>';
@@ -653,18 +659,33 @@ function initNavigation() {
 const Lightbox = (function () {
   const lb = document.getElementById('lightbox');
   console.log('[Lightbox] element:', lb);
-  if (!lb) { console.warn('[Lightbox] NO lightbox element found!'); return { open() {}, close() {} }; }
+  if (!lb) { console.warn('[Lightbox] NO lightbox element found!'); return { open() { }, close() { } }; }
   const img = lb.querySelector('.lightbox-img');
+  const video = lb.querySelector('.lightbox-video');
   const counter = lb.querySelector('.lightbox-counter');
-  console.log('[Lightbox] img:', img, 'counter:', counter);
   let images = [];
   let cur = 0;
   let onCloseCallback = null;
 
   function update() {
-    console.log('[Lightbox] update() cur:', cur, 'src:', images[cur]?.src);
-    img.src = images[cur].src;
-    img.alt = images[cur].alt;
+    const item = images[cur];
+    const isVideo = item.src.match(/\.(mp4|webm|ogg)$/i);
+    console.log('[Lightbox] update() cur:', cur, 'src:', item.src, 'isVideo:', isVideo);
+
+    if (isVideo) {
+      img.hidden = true;
+      video.hidden = false;
+      video.src = item.src;
+      video.play().catch(e => console.warn('[Lightbox] Autoplay failed:', e));
+    } else {
+      video.hidden = true;
+      video.pause();
+      video.src = '';
+      img.hidden = false;
+      img.src = item.src;
+      img.alt = item.alt;
+    }
+
     if (counter) counter.textContent = (cur + 1) + ' of ' + images.length;
   }
 
@@ -675,19 +696,19 @@ const Lightbox = (function () {
     onCloseCallback = onClose || null;
     update();
     lb.hidden = false;
-    console.log('[Lightbox] hidden set to false, adding .active class');
-    requestAnimationFrame(() => {
-      lb.classList.add('active');
-      console.log('[Lightbox] .active added, classList:', lb.className);
-      console.log('[Lightbox] computed style — opacity:', getComputedStyle(lb).opacity, 'visibility:', getComputedStyle(lb).visibility, 'display:', getComputedStyle(lb).display);
-    });
+    requestAnimationFrame(() => lb.classList.add('active'));
     document.body.style.overflow = 'hidden';
     document.addEventListener('keydown', handleKeys);
   }
 
   function close() {
     lb.classList.remove('active');
-    setTimeout(() => { lb.hidden = true; img.src = ''; }, 300);
+    setTimeout(() => {
+      lb.hidden = true;
+      img.src = '';
+      video.pause();
+      video.src = '';
+    }, 300);
     document.body.style.overflow = '';
     document.removeEventListener('keydown', handleKeys);
     if (onCloseCallback) onCloseCallback();
@@ -964,12 +985,12 @@ function initFloatWhatsapp() {
 /* --- Umami: Section Reach Tracking (funnel) --- */
 function initSectionTracking() {
   const sections = [
-    { id: 'gallery',    label: 'gallery' },
-    { id: 'details',    label: 'details' },
-    { id: 'location',   label: 'location' },
+    { id: 'gallery', label: 'gallery' },
+    { id: 'details', label: 'details' },
+    { id: 'location', label: 'location' },
     { id: 'calculator', label: 'calculator' },
-    { id: 'faq',        label: 'faq' },
-    { id: 'contact',    label: 'contact' },
+    { id: 'faq', label: 'faq' },
+    { id: 'contact', label: 'contact' },
   ];
 
   const observer = new IntersectionObserver((entries) => {

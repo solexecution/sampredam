@@ -116,6 +116,7 @@
     <button class="lightbox-next" aria-label="Next image">&#8250;</button>
     <div class="lightbox-content">
       <img class="lightbox-img" id="lightboxImg" src="" alt="">
+      <video class="lightbox-video" id="lightboxVideo" controls loop playsinline hidden></video>
       <p class="lightbox-counter" id="lightboxCounter"></p>
     </div>
   </div>
@@ -170,11 +171,16 @@
           </div>
           <h3>Commuter's Dream</h3>
           <ul>
-            <li><a href="https://www.gwr.com/stations-and-destinations/popular-routes/london-to-reading" target="_blank" rel="noopener"><strong>25 minutes</strong> to London Paddington (GWR)</a></li>
-            <li><a href="https://www.nationalrail.co.uk/live-trains/departures/reading/london-paddington/" target="_blank" rel="noopener">Trains every <strong>10 minutes</strong></a></li>
-            <li><a href="https://tfl.gov.uk/elizabeth-line/stop/910GRDNGSTN/reading-rail-station" target="_blank" rel="noopener"><strong>Elizabeth Line</strong> direct to central London</a></li>
-            <li><a href="https://www.google.com/maps/dir/Sheridan+Avenue,+Caversham,+Reading/M4+Junction+11,+Reading" target="_blank" rel="noopener">M4 motorway <strong>10 minutes</strong> away</a></li>
-            <li><a href="https://www.google.com/maps/dir/Sheridan+Avenue,+Caversham,+Reading/A33+Relief+Road,+Reading" target="_blank" rel="noopener">Easy access to M40 and A33</a></li>
+            <li><a href="https://www.gwr.com/stations-and-destinations/popular-routes/london-to-reading" target="_blank"
+                rel="noopener"><strong>25 minutes</strong> to London Paddington (GWR)</a></li>
+            <li><a href="https://www.nationalrail.co.uk/live-trains/departures/reading/london-paddington/"
+                target="_blank" rel="noopener">Trains every <strong>10 minutes</strong></a></li>
+            <li><a href="https://tfl.gov.uk/elizabeth-line/stop/910GRDNGSTN/reading-rail-station" target="_blank"
+                rel="noopener"><strong>Elizabeth Line</strong> direct to central London</a></li>
+            <li><a href="https://www.google.com/maps/dir/Sheridan+Avenue,+Caversham,+Reading/M4+Junction+11,+Reading"
+                target="_blank" rel="noopener">M4 motorway <strong>10 minutes</strong> away</a></li>
+            <li><a href="https://www.google.com/maps/dir/Sheridan+Avenue,+Caversham,+Reading/A33+Relief+Road,+Reading"
+                target="_blank" rel="noopener">Easy access to M40 and A33</a></li>
           </ul>
         </div>
         <div class="location-card">
@@ -196,10 +202,10 @@
         <div class="location-card">
           <div class="location-card-icon">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-              <path d="M12 22s-8-6-8-13a8 8 0 0116 0c0 7-8 13-8 13z"/>
-              <path d="M12 9c0 2-2 4-2 6h4c0-2-2-4-2-6z"/>
-              <path d="M8 13c-2 1-4 0-4 0s1-3 3-4"/>
-              <path d="M16 13c2 1 4 0 4 0s-1-3-3-4"/>
+              <path d="M12 22s-8-6-8-13a8 8 0 0116 0c0 7-8 13-8 13z" />
+              <path d="M12 9c0 2-2 4-2 6h4c0-2-2-4-2-6z" />
+              <path d="M8 13c-2 1-4 0-4 0s1-3 3-4" />
+              <path d="M16 13c2 1 4 0 4 0s-1-3-3-4" />
             </svg>
           </div>
           <h3>Parks &amp; Green Spaces</h3>
@@ -225,17 +231,27 @@
             <div class="park-carousel-dots" id="parkCarouselDots"></div>
           </div>
           <ul class="park-list">
-            <li><a href="https://www.google.com/maps/search/?api=1&amp;query=Balmore+Walk+Caversham+Reading" target="_blank" rel="noopener">Balmore Walk</a> <span class="park-rating">4.5 <small>(79)</small></span></li>
-            <li><a href="https://www.google.com/maps/search/?api=1&amp;query=Bugs+Bottom+Caversham+Reading" target="_blank" rel="noopener">Bugs Bottom</a> <span class="park-rating">4.6 <small>(174)</small></span></li>
-            <li><a href="https://www.google.com/maps/search/?api=1&amp;query=Christchurch+Meadows+Reading" target="_blank" rel="noopener">Christchurch Meadows</a> <span class="park-rating">4.5 <small>(1.2k)</small></span></li>
-            <li><a href="https://www.google.com/maps/search/?api=1&amp;query=Caversham+Court+Gardens+Reading" target="_blank" rel="noopener">Caversham Court</a> <span class="park-rating">4.6 <small>(787)</small></span></li>
-            <li><a href="https://www.google.com/maps/search/?api=1&amp;query=Albert+Road+Park+Reading" target="_blank" rel="noopener">Albert Rd Park</a> <span class="park-rating">4.5 <small>(156)</small></span></li>
+            <li><a href="https://www.google.com/maps/search/?api=1&amp;query=Balmore+Walk+Caversham+Reading"
+                target="_blank" rel="noopener">Balmore Walk</a> <span class="park-rating">4.5 <small>(79)</small></span>
+            </li>
+            <li><a href="https://www.google.com/maps/search/?api=1&amp;query=Bugs+Bottom+Caversham+Reading"
+                target="_blank" rel="noopener">Bugs Bottom</a> <span class="park-rating">4.6 <small>(174)</small></span>
+            </li>
+            <li><a href="https://www.google.com/maps/search/?api=1&amp;query=Christchurch+Meadows+Reading"
+                target="_blank" rel="noopener">Christchurch Meadows</a> <span class="park-rating">4.5
+                <small>(1.2k)</small></span></li>
+            <li><a href="https://www.google.com/maps/search/?api=1&amp;query=Caversham+Court+Gardens+Reading"
+                target="_blank" rel="noopener">Caversham Court</a> <span class="park-rating">4.6
+                <small>(787)</small></span></li>
+            <li><a href="https://www.google.com/maps/search/?api=1&amp;query=Albert+Road+Park+Reading" target="_blank"
+                rel="noopener">Albert Rd Park</a> <span class="park-rating">4.5 <small>(156)</small></span></li>
           </ul>
         </div>
         <div class="location-card">
           <div class="location-card-icon">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-              <path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z" />
+              <path
+                d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z" />
             </svg>
           </div>
           <h3>Village Feel, City Access</h3>
@@ -445,10 +461,11 @@
   </footer>
 
   <!-- ========== FLOATING WHATSAPP ========== -->
-  <a href="#" id="floatWhatsapp" class="float-whatsapp" hidden
-    data-umami-event="float-whatsapp" aria-label="WhatsApp Us">
+  <a href="#" id="floatWhatsapp" class="float-whatsapp" hidden data-umami-event="float-whatsapp"
+    aria-label="WhatsApp Us">
     <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true">
-      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+      <path
+        d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
     </svg>
     <span>WhatsApp Us</span>
   </a>
