@@ -167,7 +167,7 @@ window.CONFIG = {
   faq: {
     askingPrice: "",   // Override the asking price FAQ answer
     tenure: "",   // Override the tenure FAQ answer
-    epc: "The property has an energy rating of D. You can <a href='https://find-energy-certificate.service.gov.uk/energy-certificate/8583-6625-4040-1504-7922' target='_blank' rel='noopener'>view the full EPC certificate online here</a>.",   // Override the EPC FAQ answer
+    epc: "The property has an energy rating of D. You can <a href='https://find-energy-certificate.service.gov.uk/energy-certificate/8583-6625-4040-1504-7922' target='_blank' rel='noopener'>view the official government EPC certificate here</a>.",   // Override the EPC FAQ answer
     viewings: "",   // Override the viewings FAQ answer
     privateSale: "",   // Override the private sale FAQ answer
     included: "",   // Override the included items FAQ answer
