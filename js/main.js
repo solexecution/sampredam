@@ -649,77 +649,92 @@ function initNavigation() {
   });
 }
 
-/* --- Gallery Lightbox --- */
-function initGallery() {
-  const lightbox = document.getElementById('lightbox');
-  const lightboxImg = document.getElementById('lightboxImg');
-  const lightboxCounter = document.getElementById('lightboxCounter');
-  const galleryItems = document.querySelectorAll('.gallery-item');
+/* --- Shared Lightbox Controller --- */
+const Lightbox = (function () {
+  const lb = document.getElementById('lightbox');
+  console.log('[Lightbox] element:', lb);
+  if (!lb) { console.warn('[Lightbox] NO lightbox element found!'); return { open() {}, close() {} }; }
+  const img = lb.querySelector('.lightbox-img');
+  const counter = lb.querySelector('.lightbox-counter');
+  console.log('[Lightbox] img:', img, 'counter:', counter);
+  let images = [];
+  let cur = 0;
+  let onCloseCallback = null;
 
-  const images = [];
-  galleryItems.forEach(item => {
-    const img = item.querySelector('img');
-    if (img) {
-      images.push({ src: img.src, alt: img.alt });
-    }
-  });
+  function update() {
+    console.log('[Lightbox] update() cur:', cur, 'src:', images[cur]?.src);
+    img.src = images[cur].src;
+    img.alt = images[cur].alt;
+    if (counter) counter.textContent = (cur + 1) + ' of ' + images.length;
+  }
 
-  if (images.length === 0) return; // No real images, skip lightbox
-
-  let currentIndex = 0;
-
-  function openLightbox(index) {
-    if (!images[index]) return;
-    currentIndex = index;
-    lightboxImg.src = images[currentIndex].src;
-    lightboxImg.alt = images[currentIndex].alt;
-    lightboxCounter.textContent = `${currentIndex + 1} of ${images.length}`;
-    lightbox.hidden = false;
-    requestAnimationFrame(() => lightbox.classList.add('active'));
+  function open(imgs, index, onClose) {
+    console.log('[Lightbox] open() called, images:', imgs.length, 'index:', index);
+    images = imgs;
+    cur = index;
+    onCloseCallback = onClose || null;
+    update();
+    lb.hidden = false;
+    console.log('[Lightbox] hidden set to false, adding .active class');
+    requestAnimationFrame(() => {
+      lb.classList.add('active');
+      console.log('[Lightbox] .active added, classList:', lb.className);
+      console.log('[Lightbox] computed style — opacity:', getComputedStyle(lb).opacity, 'visibility:', getComputedStyle(lb).visibility, 'display:', getComputedStyle(lb).display);
+    });
     document.body.style.overflow = 'hidden';
     document.addEventListener('keydown', handleKeys);
   }
 
-  function closeLightbox() {
-    lightbox.classList.remove('active');
-    setTimeout(() => { lightbox.hidden = true; lightboxImg.src = ''; }, 300);
+  function close() {
+    lb.classList.remove('active');
+    setTimeout(() => { lb.hidden = true; img.src = ''; }, 300);
     document.body.style.overflow = '';
     document.removeEventListener('keydown', handleKeys);
+    if (onCloseCallback) onCloseCallback();
   }
 
   function navigate(dir) {
-    currentIndex = (currentIndex + dir + images.length) % images.length;
-    lightboxImg.src = images[currentIndex].src;
-    lightboxImg.alt = images[currentIndex].alt;
-    lightboxCounter.textContent = `${currentIndex + 1} of ${images.length}`;
+    cur = (cur + dir + images.length) % images.length;
+    update();
   }
 
   function handleKeys(e) {
-    if (e.key === 'Escape') closeLightbox();
+    if (e.key === 'Escape') close();
     else if (e.key === 'ArrowLeft') navigate(-1);
     else if (e.key === 'ArrowRight') navigate(1);
   }
 
-  // Only bind click to items that have real images
-  galleryItems.forEach((item, i) => {
-    if (item.querySelector('img')) {
-      item.addEventListener('click', () => openLightbox(i));
-    }
-  });
-
-  lightbox.querySelector('.lightbox-close').addEventListener('click', closeLightbox);
-  lightbox.querySelector('.lightbox-prev').addEventListener('click', () => navigate(-1));
-  lightbox.querySelector('.lightbox-next').addEventListener('click', () => navigate(1));
-  lightbox.addEventListener('click', (e) => {
-    if (e.target === lightbox || e.target.classList.contains('lightbox-content')) closeLightbox();
+  lb.querySelector('.lightbox-close').addEventListener('click', close);
+  lb.querySelector('.lightbox-prev').addEventListener('click', () => navigate(-1));
+  lb.querySelector('.lightbox-next').addEventListener('click', () => navigate(1));
+  lb.addEventListener('click', (e) => {
+    if (e.target === lb || e.target.classList.contains('lightbox-content')) close();
   });
 
   let touchStartX = 0;
-  lightbox.addEventListener('touchstart', (e) => { touchStartX = e.changedTouches[0].screenX; }, { passive: true });
-  lightbox.addEventListener('touchend', (e) => {
+  lb.addEventListener('touchstart', (e) => { touchStartX = e.changedTouches[0].screenX; }, { passive: true });
+  lb.addEventListener('touchend', (e) => {
     const diff = touchStartX - e.changedTouches[0].screenX;
     if (Math.abs(diff) > 50) navigate(diff > 0 ? 1 : -1);
   }, { passive: true });
+
+  return { open, close };
+})();
+
+/* --- Gallery Lightbox --- */
+function initGallery() {
+  const galleryItems = document.querySelectorAll('.gallery-item');
+  const images = [];
+  galleryItems.forEach(item => {
+    const img = item.querySelector('img');
+    if (img) images.push({ src: img.src, alt: img.alt });
+  });
+  if (images.length === 0) return;
+  galleryItems.forEach((item, i) => {
+    if (item.querySelector('img')) {
+      item.addEventListener('click', () => Lightbox.open(images, i));
+    }
+  });
 }
 
 /* --- Park Carousel --- */
@@ -780,65 +795,32 @@ function initParkCarousel() {
       goTo(dx > 0 ? (current + 1) % slides.length : (current - 1 + slides.length) % slides.length);
     } else if (Math.abs(dx) < 10 && Math.abs(dy) < 10 && dt < 300) {
       // Tap — open lightbox
-      openLightbox(current);
+      console.log('[ParkCarousel] TAP detected, dx:', dx, 'dy:', dy, 'dt:', dt);
+      openParkLightbox(current);
     }
     startTimer();
   }, { passive: true });
 
-  // Lightbox
-  const lb = document.getElementById('lightbox');
-  const lbImg = document.getElementById('lightboxImg');
-  const lbCaption = document.getElementById('lightboxCaption');
-  let lbIdx = 0;
-  const images = Array.from(slides).map(s => ({
+  // Lightbox — reuse the shared Lightbox controller
+  const parkImages = Array.from(slides).map(s => ({
     src: s.querySelector('img').src,
     alt: s.querySelector('img').alt,
-    caption: s.querySelector('.park-carousel-caption').textContent,
   }));
 
-  function openLightbox(idx) {
-    lbIdx = idx;
-    lbImg.src = images[idx].src;
-    lbImg.alt = images[idx].alt;
-    lbCaption.textContent = images[idx].caption;
-    lb.hidden = false;
+  console.log('[ParkCarousel] parkImages built:', parkImages.length, parkImages);
+
+  function openParkLightbox(idx) {
+    console.log('[ParkCarousel] openParkLightbox called, idx:', idx);
     clearInterval(timer);
-    document.body.style.overflow = 'hidden';
-  }
-
-  function closeLightbox() {
-    lb.hidden = true;
-    document.body.style.overflow = '';
-    startTimer();
-  }
-
-  function lbNav(dir) {
-    lbIdx = (lbIdx + dir + images.length) % images.length;
-    lbImg.src = images[lbIdx].src;
-    lbImg.alt = images[lbIdx].alt;
-    lbCaption.textContent = images[lbIdx].caption;
+    Lightbox.open(parkImages, idx, startTimer);
   }
 
   // Desktop click
-  slides.forEach((s, i) => s.addEventListener('click', () => openLightbox(i)));
-  document.getElementById('lightboxClose').addEventListener('click', closeLightbox);
-  document.getElementById('lightboxPrev').addEventListener('click', () => lbNav(-1));
-  document.getElementById('lightboxNext').addEventListener('click', () => lbNav(1));
-  lb.addEventListener('click', (e) => { if (e.target === lb) closeLightbox(); });
-
-  // Lightbox touch swipe
-  let lbTouchX = 0;
-  lb.addEventListener('touchstart', (e) => { lbTouchX = e.touches[0].clientX; }, { passive: true });
-  lb.addEventListener('touchend', (e) => {
-    const diff = lbTouchX - e.changedTouches[0].clientX;
-    if (Math.abs(diff) > 50) lbNav(diff > 0 ? 1 : -1);
-  }, { passive: true });
-
-  document.addEventListener('keydown', (e) => {
-    if (lb.hidden) return;
-    if (e.key === 'Escape') closeLightbox();
-    if (e.key === 'ArrowLeft') lbNav(-1);
-    if (e.key === 'ArrowRight') lbNav(1);
+  slides.forEach((s, i) => {
+    s.addEventListener('click', () => {
+      console.log('[ParkCarousel] slide clicked, i:', i);
+      openParkLightbox(i);
+    });
   });
 }
 
