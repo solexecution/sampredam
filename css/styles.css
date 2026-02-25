@@ -269,7 +269,7 @@ a:hover {
 /* --- Hero --- */
 .hero {
   position: relative;
-  min-height: 100vh;
+  min-height: 120vh;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -277,8 +277,7 @@ a:hover {
   color: var(--color-text-inverse);
   /* TODO: Replace with actual hero image */
   background: var(--color-primary) url('../images/gallery/hall_staircase.jpg') center/cover no-repeat;
-  background-position: center 30%;
-  /* Focus slightly higher to show the stairs/hallway nicely */
+  background-position: center top;
 }
 
 .hero-overlay {
