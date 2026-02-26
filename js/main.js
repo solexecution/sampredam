@@ -38,6 +38,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initFloatWhatsapp();
   initParkCarousel();
   initHeroCarousel();
+  initFloorPlanGallery();
   calculateMortgage();
 });
 
@@ -1113,4 +1114,20 @@ function initHeroCarousel() {
 
     console.log(`[Hero] Cross-fading to: ${nextImage}`);
   }, intervalTime);
+}
+
+/* --- Floor Plan Lightbox --- */
+function initFloorPlanGallery() {
+  const plans = document.querySelectorAll('.floorplan-item img');
+  if (plans.length === 0) return;
+
+  const items = Array.from(plans).map(img => ({
+    src: img.src,
+    alt: img.alt,
+    isVideo: false
+  }));
+
+  plans.forEach((img, i) => {
+    img.addEventListener('click', () => Lightbox.open(items, i));
+  });
 }

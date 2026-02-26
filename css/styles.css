@@ -909,6 +909,16 @@ a:hover {
   white-space: nowrap;
 }
 
+/* --- Floor Plans Interactive --- */
+.floorplan-item img {
+  cursor: pointer;
+  transition: transform var(--transition);
+}
+
+.floorplan-item img:hover {
+  transform: scale(1.02);
+}
+
 .park-rating small {
   font-weight: 400;
   opacity: 0.6;
