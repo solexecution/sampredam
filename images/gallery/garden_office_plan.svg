@@ -9,6 +9,7 @@
     .floor-title { fill: none; stroke: #ddd; stroke-width: 1.5; font-family: 'Segoe UI', Arial, sans-serif; font-size: 60px; font-weight: 700; text-anchor: end; }
     .door-leaf { fill: none; stroke: #333; stroke-width: 2.5; }
     .door-arc { fill: none; stroke: #ccc; stroke-width: 1; }
+    .window-glass { fill: none; stroke: #7fb1d8; stroke-width: 1.5; }
   </style>
 
   <!-- Title (matching outlined style) -->
@@ -19,9 +20,19 @@
   <line x1="100" y1="150" x2="100" y2="450" class="wall" /> <!-- Left -->
   <line x1="700" y1="150" x2="700" y2="450" class="wall" /> <!-- Right -->
   
-  <!-- Bottom Wall with Opening -->
-  <!-- Opening from x=570 to 650 (80px wide, 50px from right corner at 700) -->
-  <line x1="100" y1="450" x2="570" y2="450" class="wall" />
+  <!-- Bottom Wall with Windows and Doors -->
+  <!-- Solid wall from 100 to 180 (80cm) -->
+  <line x1="100" y1="450" x2="180" y2="450" class="wall" />
+  
+  <!-- Left Room Window (180 to 350) -->
+  <line x1="180" y1="448" x2="350" y2="448" class="window-glass" />
+  <line x1="180" y1="452" x2="350" y2="452" class="window-glass" />
+  
+  <!-- Right Room Window (350 to 570) -->
+  <line x1="350" y1="448" x2="570" y2="448" class="window-glass" />
+  <line x1="350" y1="452" x2="570" y2="452" class="window-glass" />
+  
+  <!-- Solid wall on far right after entrance door -->
   <line x1="650" y1="450" x2="700" y2="450" class="wall" />
 
   <!-- Professional Door Symbol (Single Inward Swing) -->
