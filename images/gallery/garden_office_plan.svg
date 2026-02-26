@@ -6,66 +6,46 @@
     .dim-text { fill: #e74c3c; font-family: 'Segoe UI', Arial, sans-serif; font-size: 14px; font-weight: 600; text-anchor: middle; }
     .room-label { fill: #333; font-family: 'Segoe UI', Arial, sans-serif; font-size: 22px; font-weight: 700; text-anchor: middle; }
     .area-label { fill: #666; font-family: 'Segoe UI', Arial, sans-serif; font-size: 15px; text-anchor: middle; }
-    .floor-title { fill: none; stroke: #ccc; stroke-width: 2; font-family: 'Segoe UI', Arial, sans-serif; font-size: 60px; font-weight: 700; text-anchor: end; }
-    .door { fill: none; stroke: #333; stroke-width: 2; stroke-dasharray: 4; }
-    .door-swing { fill: none; stroke: #333; stroke-width: 1; }
+    .floor-title { fill: none; stroke: #ddd; stroke-width: 1.5; font-family: 'Segoe UI', Arial, sans-serif; font-size: 60px; font-weight: 700; text-anchor: end; }
+    .door-leaf { fill: none; stroke: #333; stroke-width: 2.5; }
+    .door-arc { fill: none; stroke: #ccc; stroke-width: 1; }
   </style>
 
-  <!-- Title in Top Right (matching other plans) -->
+  <!-- Title (matching outlined style) -->
   <text x="750" y="80" class="floor-title">Garden Office</text>
 
   <!-- Main Walls -->
-  <!-- Top Wall -->
-  <line x1="100" y1="150" x2="700" y2="150" class="wall" />
-  <!-- Left Wall -->
-  <line x1="100" y1="150" x2="100" y2="450" class="wall" />
-  <!-- Right Wall -->
-  <line x1="700" y1="150" x2="700" y2="450" class="wall" />
+  <line x1="100" y1="150" x2="700" y2="150" class="wall" /> <!-- Top -->
+  <line x1="100" y1="150" x2="100" y2="450" class="wall" /> <!-- Left -->
+  <line x1="700" y1="150" x2="700" y2="450" class="wall" /> <!-- Right -->
   
-  <!-- Bottom Wall with Door Opening -->
-  <!-- Bottom wall is 600px long (from x=100 to 700) -->
-  <!-- Corner is at 700. Offset 50px (50cm) from corner -> x=650 -->
-  <!-- Door is 80px (80cm) wide -> x from 570 to 650 -->
+  <!-- Bottom Wall with Opening -->
+  <!-- Opening from x=570 to 650 (80px wide, 50px from right corner at 700) -->
   <line x1="100" y1="450" x2="570" y2="450" class="wall" />
   <line x1="650" y1="450" x2="700" y2="450" class="wall" />
 
-  <!-- Door Swing (Room 2) -->
-  <!-- Door hinged at x=650, swings inward (up) -->
-  <path d="M 650 450 A 80 80 0 0 1 570 370" class="door-swing" />
-  <line x1="650" y1="450" x2="650" y2="370" class="door-swing" /> <!-- Optional door leaf indicator -->
+  <!-- Professional Door Symbol (Single Inward Swing) -->
+  <!-- Opening at 570 - 650. Door hinged at 650 -->
+  <line x1="650" y1="450" x2="590" y2="390" class="door-leaf" /> <!-- Angled leaf -->
+  <path d="M 570 450 A 80 80 0 0 1 590 390" class="door-arc" /> <!-- Thin arc -->
 
-  <!-- Internal Divider Wall (offset for thickness) -->
+  <!-- Internal Divider -->
   <line x1="350" y1="150" x2="350" y2="450" class="wall" />
 
-  <!-- Room Labels -->
+  <!-- Labels -->
   <text x="225" y="290" class="room-label">Office Room 1</text>
   <text x="225" y="315" class="area-label">7.5 m² / 81 ft²</text>
   
   <text x="525" y="290" class="room-label">Office Room 2</text>
   <text x="525" y="315" class="area-label">10.2 m² / 110 ft²</text>
 
-  <!-- Dimensions: Total Width (6.0m) -->
+  <!-- Dimensions -->
   <line x1="100" y1="120" x2="700" y2="120" class="dim-line" />
-  <line x1="100" y1="110" x2="100" y2="130" class="dim-line" />
-  <line x1="700" y1="110" x2="700" y2="130" class="dim-line" />
   <text x="400" y="110" class="dim-text">6000</text>
-
-  <!-- Dimensions: Room 1 Width (2.5m) -->
   <line x1="100" y1="480" x2="350" y2="480" class="dim-line" />
-  <line x1="100" y1="470" x2="100" y2="490" class="dim-line" />
-  <line x1="350" y1="470" x2="350" y2="490" class="dim-line" />
   <text x="225" y="475" class="dim-text">2500</text>
-
-  <!-- Dimensions: Room 2 Width (3.4m) -->
   <line x1="360" y1="480" x2="700" y2="480" class="dim-line" />
-  <line x1="360" y1="470" x2="360" y2="490" class="dim-line" />
-  <line x1="700" y1="470" x2="700" y2="490" class="dim-line" />
   <text x="530" y="475" class="dim-text">3400</text>
-
-  <!-- Dimensions: Total Depth (3.0m) -->
   <line x1="70" y1="150" x2="70" y2="450" class="dim-line" />
-  <line x1="60" y1="150" x2="80" y2="150" class="dim-line" />
-  <line x1="60" y1="450" x2="80" y2="450" class="dim-line" />
   <text x="60" y="300" class="dim-text" transform="rotate(-90 60,300)">3000</text>
-  
 </svg>
