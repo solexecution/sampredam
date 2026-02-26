@@ -113,6 +113,18 @@ window.CONFIG = {
   ],
 
   // ==================================================================
+  // HERO IMAGES (cycled every 10 seconds)
+  // ==================================================================
+  heroImages: [
+    "images/gallery/balmore_walk_2.jpg",
+    "images/gallery/office_room_1.jpg",
+    "images/gallery/hall_staircase.jpg",
+    "images/gallery/balmore_walk_1.jpg",
+    "images/gallery/bugs_bottom_1.jpg",
+    "images/gallery/bugs_bottom_2.jpg",
+  ],
+
+  // ==================================================================
   // FLOOR PLANS
   // ==================================================================
   // Each entry: { label, src }

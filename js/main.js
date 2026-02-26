@@ -37,6 +37,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initScrollDepthTracking();
   initFloatWhatsapp();
   initParkCarousel();
+  initHeroCarousel();
   calculateMortgage();
 });
 
@@ -1067,4 +1068,49 @@ function initScrollAnimations() {
   }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
 
   els.forEach(el => observer.observe(el));
+}
+
+/* --- Hero Background Carousel --- */
+function initHeroCarousel() {
+  const bg1 = document.getElementById('heroBg1');
+  const bg2 = document.getElementById('heroBg2');
+  if (!bg1 || !bg2) return;
+
+  const images = window.CONFIG?.heroImages || [];
+  if (images.length === 0) return;
+
+  let currentIdx = 0;
+  const intervalTime = 10000; // 10 seconds
+  let activeBg = bg1;
+  let inactiveBg = bg2;
+
+  // Set initial image
+  bg1.style.backgroundImage = `url('${images[0]}')`;
+  bg1.style.opacity = '1';
+  bg2.style.opacity = '0';
+
+  if (images.length < 2) return;
+
+  // Preload remaining images
+  images.slice(1).forEach(src => {
+    const img = new Image();
+    img.src = src;
+  });
+
+  setInterval(() => {
+    currentIdx = (currentIdx + 1) % images.length;
+    const nextImage = images[currentIdx];
+
+    // Cross-fade logic
+    inactiveBg.style.backgroundImage = `url('${nextImage}')`;
+    inactiveBg.style.opacity = '1';
+    activeBg.style.opacity = '0';
+
+    // Swap roles
+    let temp = activeBg;
+    activeBg = inactiveBg;
+    inactiveBg = temp;
+
+    console.log(`[Hero] Cross-fading to: ${nextImage}`);
+  }, intervalTime);
 }
