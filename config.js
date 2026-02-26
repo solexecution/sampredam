@@ -132,6 +132,7 @@ window.CONFIG = {
   floorPlans: [
     { label: "Ground Floor", src: "images/gallery/Caversham_plans.jpg" },
     { label: "First Floor", src: "images/gallery/Caversham_plans_f2.jpg" },
+    { label: "Garden Office", src: "images/gallery/garden_office_plan.svg" },
   ],
 
   // ==================================================================

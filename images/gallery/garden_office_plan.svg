@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" style="background-color: white;">
+  <!-- Style Definition -->
+  <style>
+    .wall { fill: none; stroke: #333; stroke-width: 4; }
+    .dim-line { fill: none; stroke: #e74c3c; stroke-width: 1.5; }
+    .dim-text { fill: #e74c3c; font-family: 'Segoe UI', Arial, sans-serif; font-size: 14px; font-weight: 600; text-anchor: middle; }
+    .room-label { fill: #333; font-family: 'Segoe UI', Arial, sans-serif; font-size: 24px; font-weight: 700; text-anchor: middle; }
+    .area-label { fill: #666; font-family: 'Segoe UI', Arial, sans-serif; font-size: 16px; text-anchor: middle; }
+    .title { fill: #333; font-family: 'Segoe UI', Arial, sans-serif; font-size: 48px; font-weight: 300; stroke: #333; stroke-width: 1; fill: none; }
+  </style>
+
+  <!-- Title -->
+  <text x="50" y="80" class="title">Garden Office</text>
+
+  <!-- Main Outer Walls -->
+  <rect x="100" y="150" width="600" height="300" class="wall" />
+  
+  <!-- Internal Divider Wall -->
+  <line x1="350" y1="150" x2="350" y2="450" class="wall" />
+
+  <!-- Room Labels -->
+  <text x="225" y="290" class="room-label">Office Room 1</text>
+  <text x="225" y="320" class="area-label">7.5 m² / 81 ft²</text>
+  
+  <text x="525" y="290" class="room-label">Office Room 2</text>
+  <text x="525" y="320" class="area-label">10.2 m² / 110 ft²</text>
+
+  <!-- Dimensions: Total Width (6.0m) -->
+  <line x1="100" y1="120" x2="700" y2="120" class="dim-line" />
+  <line x1="100" y1="110" x2="100" y2="130" class="dim-line" />
+  <line x1="700" y1="110" x2="700" y2="130" class="dim-line" />
+  <text x="400" y="110" class="dim-text">6000</text>
+
+  <!-- Dimensions: Room 1 Width (2.5m) -->
+  <line x1="100" y1="480" x2="350" y2="480" class="dim-line" />
+  <line x1="100" y1="470" x2="100" y2="490" class="dim-line" />
+  <line x1="350" y1="470" x2="350" y2="490" class="dim-line" />
+  <text x="225" y="475" class="dim-text">2500</text>
+
+  <!-- Dimensions: Room 2 Width (3.4m + wall allowance) -->
+  <line x1="350" y1="480" x2="700" y2="480" class="dim-line" />
+  <line x1="350" y1="470" x2="350" y2="490" class="dim-line" />
+  <line x1="700" y1="470" x2="700" y2="490" class="dim-line" />
+  <text x="525" y="475" class="dim-text">3400</text>
+
+  <!-- Dimensions: Total Depth (3.0m) -->
+  <line x1="70" y1="150" x2="70" y2="450" class="dim-line" />
+  <line x1="60" y1="150" x2="80" y2="150" class="dim-line" />
+  <line x1="60" y1="450" x2="80" y2="450" class="dim-line" />
+  <text x="60" y="300" class="dim-text" transform="rotate(-90 60,300)">3000</text>
+  
+</svg>
