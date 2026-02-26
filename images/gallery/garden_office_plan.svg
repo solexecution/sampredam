@@ -29,8 +29,10 @@
   <line x1="650" y1="450" x2="590" y2="390" class="door-leaf" /> <!-- Angled leaf -->
   <path d="M 570 450 A 80 80 0 0 1 590 390" class="door-arc" /> <!-- Thin arc -->
 
-  <!-- Internal Divider -->
-  <line x1="350" y1="150" x2="350" y2="450" class="wall" />
+  <!-- Internal Divider with 70cm Sliding Door at the bottom -->
+  <line x1="350" y1="150" x2="350" y2="380" class="wall" />
+  <line x1="347" y1="380" x2="347" y2="445" class="door-leaf" style="stroke-width: 2px;" />
+  <line x1="353" y1="385" x2="353" y2="450" class="door-leaf" style="stroke-width: 2px;" />
 
   <!-- Labels -->
   <text x="225" y="290" class="room-label">Office Room 1</text>
