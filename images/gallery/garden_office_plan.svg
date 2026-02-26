@@ -2,6 +2,7 @@
   <!-- Style Definition -->
   <style>
     .wall-outer { fill: none; stroke: #333; stroke-width: 8; stroke-linecap: square; }
+    .wall-empty { fill: none; stroke: white; stroke-width: 4; stroke-linecap: square; }
     .wall-inner { fill: none; stroke: #333; stroke-width: 4; stroke-linecap: square; }
     .dim-line { fill: none; stroke: #e74c3c; stroke-width: 1.5; }
     .dim-text { fill: #e74c3c; font-family: 'Segoe UI', Arial, sans-serif; font-size: 14px; font-weight: 600; text-anchor: middle; }
@@ -16,14 +17,21 @@
   <!-- Title (matching outlined style) -->
   <text x="750" y="80" class="floor-title">Garden Office</text>
 
-  <!-- Main Walls -->
-  <line x1="100" y1="150" x2="700" y2="150" class="wall-outer" /> <!-- Top -->
-  <line x1="100" y1="150" x2="100" y2="450" class="wall-outer" /> <!-- Left -->
-  <line x1="700" y1="150" x2="700" y2="450" class="wall-outer" /> <!-- Right -->
-  
-  <!-- Bottom Wall with Windows and Doors -->
-  <!-- Solid wall from 100 to 180 (80cm) -->
-  <line x1="100" y1="450" x2="180" y2="450" class="wall-outer" />
+  <!-- Main Walls (Double line effect) -->
+  <g class="wall-outer">
+    <line x1="100" y1="150" x2="700" y2="150" /> <!-- Top -->
+    <line x1="100" y1="150" x2="100" y2="450" /> <!-- Left -->
+    <line x1="700" y1="150" x2="700" y2="450" /> <!-- Right -->
+    <line x1="100" y1="450" x2="180" y2="450" /> <!-- Bot L solid -->
+    <line x1="650" y1="450" x2="700" y2="450" /> <!-- Bot R solid -->
+  </g>
+  <g class="wall-empty">
+    <line x1="100" y1="150" x2="700" y2="150" /> <!-- Top -->
+    <line x1="100" y1="150" x2="100" y2="450" /> <!-- Left -->
+    <line x1="700" y1="150" x2="700" y2="450" /> <!-- Right -->
+    <line x1="100" y1="450" x2="180" y2="450" /> <!-- Bot L solid -->
+    <line x1="650" y1="450" x2="700" y2="450" /> <!-- Bot R solid -->
+  </g>
   
   <!-- Left Room Window (180 to 350) -->
   <line x1="180" y1="448" x2="350" y2="448" class="window-glass" />
@@ -32,9 +40,6 @@
   <!-- Right Room Window (350 to 570) -->
   <line x1="350" y1="448" x2="570" y2="448" class="window-glass" />
   <line x1="350" y1="452" x2="570" y2="452" class="window-glass" />
-  
-  <!-- Solid wall on far right after entrance door -->
-  <line x1="650" y1="450" x2="700" y2="450" class="wall-outer" />
 
   <!-- Professional Door Symbol (Single Inward Swing) -->
   <!-- Opening at 570 - 650. Door hinged at 650 -->
