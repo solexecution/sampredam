@@ -688,6 +688,14 @@ const Lightbox = (function () {
       img.hidden = false;
       img.src = item.src;
       img.alt = item.alt;
+      // Force SVGs to scale up
+      if (item.src.toLowerCase().endsWith('.svg')) {
+        img.style.width = '1000px';
+        img.style.height = 'auto';
+      } else {
+        img.style.width = '';
+        img.style.height = '';
+      }
     }
 
     if (counter) counter.textContent = (cur + 1) + ' of ' + images.length;
