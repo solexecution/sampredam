@@ -130,10 +130,8 @@ window.CONFIG = {
   // Each entry: { label, src }
   // src: path to image e.g. "images/floorplan-ground.jpg", or "" for placeholder.
   floorPlans: [
-    { label: "Ground Floor", src: "images/gallery/balmore_walk_1.jpg" },
-    { label: "First Floor", src: "images/gallery/balmore_walk_2.jpg" },
-    { label: "Garden Office", src: "images/gallery/bugs_bottom_1.jpg" },
-    { label: "Garden & Patio", src: "images/gallery/bugs_bottom_2.jpg" },
+    { label: "Ground Floor", src: "images/gallery/Caversham_plans.jpg" },
+    { label: "First Floor", src: "images/gallery/Caversham_plans_f2.jpg" },
   ],
 
   // ==================================================================
