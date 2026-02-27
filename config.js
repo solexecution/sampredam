@@ -103,14 +103,32 @@ window.CONFIG = {
   // Add your photos to the images/gallery/ folder, then list them here.
   // Each entry: { src: "images/gallery/filename.jpg", alt: "Description" }
   // Leave empty [] and placeholder boxes will show instead.
-  gallery: [],
-  // Add your photos here once you have them, e.g.:
-  // { src: "images/gallery/front_exterior.jpg", alt: "Front Exterior" },
+  gallery: [
+    { src: "images/gallery/balmore_walk_1.jpg", alt: "Front Exterior — View 1" },
+    { src: "images/gallery/balmore_walk_2.jpg", alt: "Front Exterior — View 2" },
+    { src: "images/gallery/back_garden.png", alt: "Rear Garden" },
+    { src: "images/gallery/patio_bbq.png", alt: "Patio & BBQ Area" },
+    { src: "images/gallery/bugs_bottom_1.jpg", alt: "Bugs Bottom — View 1" },
+    { src: "images/gallery/bugs_bottom_2.jpg", alt: "Bugs Bottom — View 2" },
+    { src: "images/gallery/hall_staircase.jpg", alt: "Entrance Hall & Staircase" },
+    { src: "images/gallery/dining_living_rooms.png", alt: "Dining & Living Room" },
+    { src: "images/gallery/living_room.png", alt: "Living Room" },
+    { src: "images/gallery/garden_office_front.png", alt: "Garden Office — Exterior" },
+    { src: "images/gallery/office_room_1.jpg", alt: "Garden Office — Room 1" },
+    { src: "images/gallery/office_room_1a.jpg", alt: "Garden Office — Room 2" },
+  ],
 
   // ==================================================================
   // HERO IMAGES (cycled every 10 seconds)
   // ==================================================================
-  heroImages: [],
+  heroImages: [
+    "images/gallery/balmore_walk_2.jpg",
+    "images/gallery/back_garden.png",
+    "images/gallery/patio_bbq.png",
+    "images/gallery/dining_living_rooms.png",
+    "images/gallery/garden_office_front.png",
+    "images/gallery/hall_staircase.jpg",
+  ],
 
   // ==================================================================
   // FLOOR PLANS
