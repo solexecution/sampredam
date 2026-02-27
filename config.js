@@ -89,12 +89,12 @@ window.CONFIG = {
     { name: "Bedroom 2", dimensions: "", description: "Well-proportioned double bedroom overlooking the garden" },
     { name: "Bedroom 3", dimensions: "", description: "South-facing third bedroom, ideal as a child's room or home office" },
     { name: "Bathroom", dimensions: "", description: "Modern family bathroom serving all three bedrooms" },
-    { name: "Garden Office — Room 1", dimensions: "2.5m × 3m", description: "Focus room for desk work. Fully insulated, floor-to-ceiling double glazing, peaceful garden setting" },
-    { name: "Garden Office — Room 2", dimensions: "3.4m × 3m", description: "Meeting or creative room. Fully insulated, floor-to-ceiling double glazing, with entrance doors" },
     { name: "Patio", dimensions: "", description: "Generous paved sun terrace — ideal for BBQs and summer evenings" },
     { name: "Garden", dimensions: "", description: "Large private rear garden with sunny aspect, mature planting, lawn and fruit trees" },
     { name: "Front Garden", dimensions: "", description: "Landscaped front garden with south-facing seating area" },
     { name: "Driveway", dimensions: "", description: "Private driveway fitting two cars comfortably, with a roofed storage area for bikes and sports equipment" },
+    { name: "Garden Office — Room 1", dimensions: "2.5m × 3m", description: "Focus room for desk work. Fully insulated, floor-to-ceiling double glazing, peaceful garden setting" },
+    { name: "Garden Office — Room 2", dimensions: "3.4m × 3m", description: "Meeting or creative room. Fully insulated, floor-to-ceiling double glazing, with entrance doors" },
   ],
 
   // ==================================================================
@@ -103,26 +103,14 @@ window.CONFIG = {
   // Add your photos to the images/gallery/ folder, then list them here.
   // Each entry: { src: "images/gallery/filename.jpg", alt: "Description" }
   // Leave empty [] and placeholder boxes will show instead.
-  gallery: [
-    { src: "images/gallery/office_room_1.jpg", alt: "Modern Garden Office" },
-    { src: "images/gallery/hall_staircase.jpg", alt: "Entrance Hall and Staircase" },
-    { src: "images/gallery/balmore_walk_1.jpg", alt: "Balmore Walk - View 1" },
-    { src: "images/gallery/balmore_walk_2.jpg", alt: "Balmore Walk - View 2" },
-    { src: "images/gallery/bugs_bottom_1.jpg", alt: "Bugs Bottom - View 1" },
-    { src: "images/gallery/bugs_bottom_2.jpg", alt: "Bugs Bottom - View 2" },
-  ],
+  gallery: [],
+  // Add your photos here once you have them, e.g.:
+  // { src: "images/gallery/front_exterior.jpg", alt: "Front Exterior" },
 
   // ==================================================================
   // HERO IMAGES (cycled every 10 seconds)
   // ==================================================================
-  heroImages: [
-    "images/gallery/balmore_walk_2.jpg",
-    "images/gallery/office_room_1.jpg",
-    "images/gallery/hall_staircase.jpg",
-    "images/gallery/balmore_walk_1.jpg",
-    "images/gallery/bugs_bottom_1.jpg",
-    "images/gallery/bugs_bottom_2.jpg",
-  ],
+  heroImages: [],
 
   // ==================================================================
   // FLOOR PLANS
