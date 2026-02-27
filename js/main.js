@@ -26,6 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   hydrateFloorPlans();
   hydrateFloatWhatsapp();
+  hydrateSocialProof();
 
   initNavigation();
   initGallery();
@@ -39,8 +40,85 @@ document.addEventListener('DOMContentLoaded', () => {
   initParkCarousel();
   initHeroCarousel();
   initFloorPlanGallery();
+  initStickyCta();
   calculateMortgage();
 });
+
+/* ==============================
+   SOCIAL PROOF WIDGET
+   Fetches Umami page views (if configured) + shows viewingsBooked count.
+   ============================== */
+async function hydrateSocialProof() {
+  const sp = (C.socialProof || {});
+  if (!sp.showWidget) return;
+
+  const bar = document.getElementById('socialProofBar');
+  const textEl = document.getElementById('socialProofText');
+  if (!bar || !textEl) return;
+
+  const viewings = Number(sp.viewingsBooked) || 0;
+  let pageViews = null;
+
+  // Try to fetch page view count from Umami API
+  if (filled(SITE.umamiWebsiteId)) {
+    try {
+      const end = Date.now();
+      const start = end - 7 * 24 * 60 * 60 * 1000; // Last 7 days
+      const res = await fetch(
+        `https://api.umami.is/v1/websites/${SITE.umamiWebsiteId}/stats?startAt=${start}&endAt=${end}`,
+        { headers: { 'Accept': 'application/json' } }
+      );
+      if (res.ok) {
+        const json = await res.json();
+        pageViews = json?.pageviews?.value;
+      }
+    } catch (_) { /* silently ignore — Umami may require auth token */ }
+  }
+
+  const parts = [];
+  if (pageViews && pageViews > 10) {
+    parts.push(`${pageViews.toLocaleString()} people viewed this listing this week`);
+  }
+  if (viewings > 0) {
+    parts.push(`${viewings} viewing${viewings === 1 ? '' : 's'} already booked`);
+  }
+
+  if (parts.length > 0) {
+    textEl.textContent = parts.join(' · ');
+    bar.removeAttribute('hidden');
+  }
+}
+
+/* ==============================
+   STICKY MOBILE CTA
+   Appears after scrolling past the hero on mobile.
+   ============================== */
+function initStickyCta() {
+  const bar = document.getElementById('stickyCta');
+  if (!bar) return;
+  bar.removeAttribute('hidden');
+
+  const hero = document.getElementById('hero');
+  const contact = document.getElementById('contact');
+
+  const observer = new IntersectionObserver(entries => {
+    const heroVisible = entries.find(e => e.target === hero);
+    const contactVisible = entries.find(e => e.target === contact);
+
+    const heroGone = heroVisible ? !heroVisible.isIntersecting : true;
+    const contactGone = contactVisible ? !contactVisible.isIntersecting : true;
+
+    if (heroGone && contactGone) {
+      bar.classList.add('visible');
+    } else {
+      bar.classList.remove('visible');
+    }
+  }, { threshold: 0.1 });
+
+  observer.observe(hero);
+  if (contact) observer.observe(contact);
+}
+
 
 /* ==============================
    HELPER: check if value is filled
