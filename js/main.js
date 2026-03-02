@@ -42,6 +42,11 @@ document.addEventListener('DOMContentLoaded', () => {
   initFloorPlanGallery();
   initStickyCta();
   calculateMortgage();
+
+  // Auction & Referral features
+  handleBuyerReferral();  // must run before renderAuctionBanner so ref is in state
+  renderAuctionBanner();
+  renderShareAndEarnSection();
 });
 
 /* ==============================
@@ -311,6 +316,7 @@ function hydrateDetails() {
     { label: 'Parking', value: P.parking },
     { label: 'EPC Rating', value: P.epcRating },
     { label: 'Council Tax Band', value: P.councilTaxBand },
+    { label: 'Broadband', value: P.broadband },
     { label: 'Tenure', value: P.tenure },
     { label: 'Year Built', value: P.yearBuilt },
   ];
@@ -1216,4 +1222,337 @@ function initFloorPlanGallery() {
   plans.forEach((img, i) => {
     img.addEventListener('click', () => Lightbox.open(items, i));
   });
+}
+
+/* ==============================
+   AUCTION BANNER & COUNTDOWN
+   ============================== */
+function renderAuctionBanner() {
+  const auc = C.auction || {};
+  if (!auc.enabled) return;
+
+  const banner = document.getElementById('auctionBanner');
+  if (!banner) return;
+  banner.removeAttribute('hidden');
+
+  // Hero badge override
+  const heroBadge = document.getElementById('heroBadge');
+  if (heroBadge && filled(auc.heroBadge)) {
+    heroBadge.textContent = auc.heroBadge;
+  }
+
+  // Label + deadline human-readable text
+  const labelEl = document.getElementById('auctionLabel');
+  if (labelEl && filled(auc.label)) labelEl.textContent = auc.label;
+
+  const deadlineEl = document.getElementById('auctionDeadlineText');
+  const deadline = auc.deadline ? new Date(auc.deadline) : null;
+  if (deadlineEl && deadline) {
+    deadlineEl.textContent = deadline.toLocaleDateString('en-GB', {
+      weekday: 'long', day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit'
+    });
+  }
+
+  // Guide price
+  const gpEl = document.getElementById('auctionGuidePrice');
+  if (gpEl && filled(auc.guidePrice)) {
+    gpEl.innerHTML = `${auc.guidePriceLabel || 'Offers in excess of'} <strong>&pound;${auc.guidePrice}</strong>`;
+  }
+
+  // Small print
+  const spEl = document.getElementById('auctionSmallPrint');
+  if (spEl && filled(auc.smallPrint)) spEl.textContent = auc.smallPrint;
+
+  // CTA button → WhatsApp with pre-filled offer message
+  const cta = document.getElementById('auctionCta');
+  if (cta) {
+    if (filled(auc.ctaText)) cta.textContent = auc.ctaText;
+    const address = `${P.streetAddress || '40 Sheridan Avenue'} ${P.postcode || 'RG4 7QD'}`.trim();
+    const deadlineStr = deadline
+      ? deadline.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' })
+      : 'the deadline';
+    const refId = localStorage.getItem('referredBy') || '';
+    const refNote = refId ? ` (Referred by ${refId})` : '';
+    const waMsg = encodeURIComponent(
+      `Hi! I'd like to submit an offer on ${address} before the ${deadlineStr} deadline. Please get in touch to discuss.${refNote}`
+    );
+    const waNum = CONTACT.whatsapp || (C.referral || {}).whatsapp || '';
+    if (filled(waNum)) {
+      cta.href = `https://wa.me/${waNum}?text=${waMsg}`;
+      cta.target = '_blank';
+      cta.rel = 'noopener';
+    } else if (filled(CONTACT.phone)) {
+      cta.href = `tel:${CONTACT.phone}`;
+    }
+  }
+
+  // Countdown ticker
+  if (!deadline) return;
+  const cdDays = document.getElementById('cdDays');
+  const cdHours = document.getElementById('cdHours');
+  const cdMins = document.getElementById('cdMins');
+  const cdSecs = document.getElementById('cdSecs');
+
+  function pad(n) { return String(n).padStart(2, '0'); }
+
+  function tick() {
+    const now = new Date();
+    const diff = deadline - now;
+    if (diff <= 0) {
+      if (cdDays) cdDays.textContent = '00';
+      if (cdHours) cdHours.textContent = '00';
+      if (cdMins) cdMins.textContent = '00';
+      if (cdSecs) cdSecs.textContent = '00';
+      const labelEl2 = document.getElementById('auctionLabel');
+      if (labelEl2) labelEl2.textContent = 'Deadline Reached';
+      return;
+    }
+    const totalSecs = Math.floor(diff / 1000);
+    const s = totalSecs % 60;
+    const m = Math.floor(totalSecs / 60) % 60;
+    const h = Math.floor(totalSecs / 3600) % 24;
+    const d = Math.floor(totalSecs / 86400);
+    if (cdDays) cdDays.textContent = d;
+    if (cdHours) cdHours.textContent = pad(h);
+    if (cdMins) cdMins.textContent = pad(m);
+    if (cdSecs) cdSecs.textContent = pad(s);
+  }
+  tick();
+  setInterval(tick, 1000);
+}
+
+/* ==============================
+   BUYER REFERRAL DETECTION
+   Reads ?ref= from URL, stores it, shows notice bar,
+   and appends ref to WhatsApp contact links.
+   ============================== */
+function handleBuyerReferral() {
+  const params = new URLSearchParams(window.location.search);
+  const incomingRef = params.get('ref');
+  if (!incomingRef) return;
+
+  // Store the ref so contact buttons can use it
+  localStorage.setItem('referredBy', incomingRef);
+
+  // Show the referral notice bar
+  const bar = document.getElementById('referralNoticeBar');
+  if (bar) {
+    bar.removeAttribute('hidden');
+    // Push the navbar down so it doesn't overlap
+    const navbar = document.getElementById('navbar');
+    if (navbar) {
+      const barHeight = bar.offsetHeight || 36;
+      navbar.style.top = barHeight + 'px';
+    }
+  }
+
+  // Clean the URL without triggering a page reload
+  const cleanUrl = window.location.pathname + (window.location.hash || '');
+  history.replaceState(null, '', cleanUrl);
+}
+
+/* ==============================
+   SHARE & EARN SECTION
+   ============================== */
+function getOrCreateRefId() {
+  let id = localStorage.getItem('myRefId');
+  if (!id) {
+    const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+    id = 'REF-' + Array.from({ length: 4 }, () => chars[Math.floor(Math.random() * chars.length)]).join('');
+    localStorage.setItem('myRefId', id);
+  }
+  return id;
+}
+
+function renderShareAndEarnSection() {
+  const ref = (C.referral || {});
+  if (!ref.enabled) return;
+
+  const section = document.getElementById('shareEarnSection');
+  if (!section) return;
+  section.removeAttribute('hidden');
+
+  // Reward amount labels
+  const reward = ref.reward || '100';
+  ['referralRewardAmount', 'referralRewardSub', 'claimAmount'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.textContent = reward;
+  });
+
+  // Populate T&C list
+  const tncList = document.getElementById('tncList');
+  if (tncList && Array.isArray(ref.terms)) {
+    tncList.innerHTML = ref.terms.map(t => `<li>${t}</li>`).join('');
+  }
+
+  // T&C modal open/close
+  const modal = document.getElementById('tncModal');
+  document.getElementById('openTncBtn')?.addEventListener('click', () => {
+    if (modal) { modal.removeAttribute('hidden'); document.body.style.overflow = 'hidden'; }
+  });
+  document.getElementById('closeTncBtn')?.addEventListener('click', () => {
+    if (modal) { modal.hidden = true; document.body.style.overflow = ''; }
+  });
+  modal?.addEventListener('click', (e) => {
+    if (e.target === modal) { modal.hidden = true; document.body.style.overflow = ''; }
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && modal && !modal.hidden) { modal.hidden = true; document.body.style.overflow = ''; }
+  });
+
+  // Generate ref link button
+  const generateBtn = document.getElementById('generateRefBtn');
+  const linkBox = document.getElementById('shareLinkBox');
+  const linkInput = document.getElementById('referralLinkInput');
+  const earnButtons = document.getElementById('shareEarnButtons');
+  const claimBtn = document.getElementById('claimReferralBtn');
+
+  generateBtn?.addEventListener('click', () => {
+    const refId = getOrCreateRefId();
+    const baseUrl = SITE.url || window.location.origin;
+    const refUrl = `${baseUrl}/?ref=${refId}`;
+
+    // Show the personalised link
+    if (linkInput) linkInput.value = refUrl;
+    if (linkBox) linkBox.removeAttribute('hidden');
+    if (earnButtons) earnButtons.removeAttribute('hidden');
+    if (claimBtn) claimBtn.removeAttribute('hidden');
+    generateBtn.textContent = 'Your link is ready — share below';
+    generateBtn.disabled = true;
+
+    // Wire share buttons with the referral URL embedded
+    const siteTitle = encodeURIComponent(`This Caversham home is exactly what you're looking for 🏡`);
+    const refEnc = encodeURIComponent(refUrl);
+    const waShareText = encodeURIComponent(
+      `🏡 Check out this stunning 3-bed family home in Caversham, Reading — private sale, no agent fees, no chain!\n\n${refUrl}\n\n⏳ Best offers deadline: 31 March 2026`
+    );
+
+    const waBtn = document.getElementById('earnShareWhatsApp');
+    const fbBtn = document.getElementById('earnShareFacebook');
+    const twBtn = document.getElementById('earnShareTwitter');
+    const liBtn = document.getElementById('earnShareLinkedIn');
+
+    if (waBtn) waBtn.href = `https://api.whatsapp.com/send?text=${waShareText}`;
+    if (fbBtn) fbBtn.href = `https://www.facebook.com/sharer/sharer.php?u=${refEnc}`;
+    if (twBtn) twBtn.href = `https://twitter.com/intent/tweet?url=${refEnc}&text=${siteTitle}%20%23CavershamProperty%20%23HouseForSale`;
+    if (liBtn) liBtn.href = `https://www.linkedin.com/sharing/share-offsite/?url=${refEnc}`;
+
+    // Claim button → WhatsApp with pre-filled claim message
+    if (claimBtn) {
+      const waNum = ref.whatsapp || CONTACT.whatsapp || '';
+      const claimMsg = encodeURIComponent(
+        `Hi! I'd like to claim the £${reward} referral reward for 40 Sheridan Avenue. My referral code is ${refId}. I have a screenshot of my share post to prove I shared it before the buyer made contact. Please let me know the next steps.`
+      );
+      claimBtn.addEventListener('click', () => {
+        if (filled(waNum)) {
+          window.open(`https://wa.me/${waNum}?text=${claimMsg}`, '_blank', 'noopener');
+        }
+      });
+    }
+  });
+
+  // Copy referral link button
+  document.getElementById('copyRefLink')?.addEventListener('click', () => {
+    const val = document.getElementById('referralLinkInput')?.value;
+    if (!val) return;
+    navigator.clipboard.writeText(val).then(() => {
+      const btn = document.getElementById('copyRefLink');
+      if (btn) { btn.style.color = 'var(--color-success)'; setTimeout(() => { btn.style.color = ''; }, 1500); }
+    }).catch(() => {
+      document.getElementById('referralLinkInput')?.select();
+    });
+  });
+
+  // Floating share toast
+  initShareToast();
+}
+
+/* ==============================
+   FLOATING SHARE TOAST
+   One unified entry point — replaces the circular share button.
+   Shows after 2s, stays until user dismisses. After close, a
+   compact pill remains so the offer is never totally hidden.
+   Auto-hides when the Share & Earn section is in view.
+   ============================== */
+function initShareToast() {
+  const toast = document.getElementById('shareToast');
+  if (!toast) return;
+
+  // Hide the generic floating share bar — the toast replaces it
+  const shareBar = document.getElementById('shareBar');
+  if (shareBar) shareBar.style.display = 'none';
+
+  let suppressedBySection = false;
+  let shown = false;
+
+  function showToast() {
+    if (suppressedBySection) return;
+    shown = true;
+    toast.removeAttribute('hidden');
+    toast.getBoundingClientRect(); // force reflow for transition
+    toast.classList.add('share-toast--visible');
+  }
+
+  function hideToastTemporarily() {
+    if (!shown) return;
+    toast.classList.remove('share-toast--visible');
+  }
+
+  function restoreToast() {
+    if (!shown || toast.hidden) return; // already dismissed by user
+    toast.removeAttribute('hidden');
+    toast.getBoundingClientRect();
+    toast.classList.add('share-toast--visible');
+  }
+
+  function dismissToast() {
+    shown = false;
+    toast.classList.remove('share-toast--visible');
+    toast.addEventListener('transitionend', () => {
+      toast.hidden = true;
+      showMiniPill(); // leave a subtle persistent entry point
+    }, { once: true });
+  }
+
+  function showMiniPill() {
+    const pill = document.getElementById('shareToastPill');
+    if (!pill) return;
+    pill.removeAttribute('hidden');
+    pill.getBoundingClientRect();
+    pill.classList.add('share-toast-pill--visible');
+    pill.addEventListener('click', () => {
+      pill.hidden = true;
+      pill.classList.remove('share-toast-pill--visible');
+      shown = true;
+      toast.removeAttribute('hidden');
+      toast.getBoundingClientRect();
+      toast.classList.add('share-toast--visible');
+    });
+  }
+
+  // Hide toast while the Share & Earn section is visible
+  const section = document.getElementById('shareEarnSection');
+  if (section && 'IntersectionObserver' in window) {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          suppressedBySection = true;
+          hideToastTemporarily();
+        } else {
+          suppressedBySection = false;
+          restoreToast();
+        }
+      });
+    }, { threshold: 0.1 });
+    observer.observe(section);
+  }
+
+  // Close button
+  document.getElementById('shareToastClose')?.addEventListener('click', dismissToast);
+
+  // CTA — dismiss toast (scroll handled by anchor href)
+  document.getElementById('shareToastCta')?.addEventListener('click', dismissToast);
+
+  // Show after 2 seconds
+  setTimeout(showToast, 2000);
 }

@@ -42,6 +42,7 @@ window.CONFIG = {
     walkToStation: "",               // e.g. "12 min" walk/drive to Reading station (leave "" to hide)
     epcRating: "D",           // e.g. "C"
     councilTaxBand: "D",           // e.g. "D"
+    broadband: "Full fibre (FTTP) — up to 1 Gbps available",  // leave "" to hide
     tenure: "Freehold",           // e.g. "Freehold" or "Leasehold"
     yearBuilt: "1960s",           // e.g. "1930s" (optional)
     chainStatus: "No chain",           // e.g. "No chain" or "Chain of 2"
@@ -210,6 +211,58 @@ window.CONFIG = {
   // EPC CERTIFICATE
   // ==================================================================
   epcCertificateUrl: "https://find-energy-certificate.service.gov.uk/energy-certificate/8583-6625-4040-1504-7922",   // e.g. "https://find-energy-certificate.service.gov.uk/energy-certificate/XXXX-XXXX-XXXX"
+
+  // ==================================================================
+  // AUCTION / DEADLINE SALE
+  // ==================================================================
+  // Set enabled: false to completely hide the auction banner.
+  auction: {
+    enabled: true,
+
+    // ISO 8601 date-time — UK local time. Format: "YYYY-MM-DDTHH:MM:SS"
+    deadline: "2026-03-31T18:00:00",
+
+    // Label shown above the countdown timer
+    label: "Best Offers By",
+
+    // Guide price framing (£ is added automatically)
+    guidePrice: "525,000",
+    guidePriceLabel: "Offers in excess of",
+
+    // Hero badge text (replaces the tenure/chain badge while auction is active)
+    heroBadge: "No Chain \u00b7 Best Offers By 31 March",
+
+    // CTA button label inside the auction banner
+    ctaText: "Submit Your Best Offer",
+
+    // Small print shown below the CTA
+    smallPrint: "All offers considered. Sellers reserve the right to accept any offer at any time before the deadline.",
+  },
+
+  // ==================================================================
+  // REFERRAL REWARD
+  // ==================================================================
+  // Set enabled: false to hide the Share & Earn section entirely.
+  referral: {
+    enabled: true,
+
+    // Reward amount in £ shown in the UI
+    reward: "100",
+
+    // WhatsApp number for claim messages (no + or spaces)
+    whatsapp: "447879773260",
+
+    // Terms & Conditions bullets — shown in the T&C modal
+    terms: [
+      "Share must be made before the sale completes.",
+      "You must provide a screenshot of your share post with a visible date/timestamp proving you shared before the buyer made contact.",
+      "The buyer must confirm in writing (WhatsApp or email to the sellers) that they discovered the property via your specific share.",
+      "Only the first confirmed referral source per buyer is eligible.",
+      "Reward of £100 is paid within 14 days of sale completion.",
+      "Sellers reserve the right to verify and decline ineligible claims at their sole discretion.",
+      "No cash alternative is offered in advance of completion.",
+    ],
+  },
 
 };
 
