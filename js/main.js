@@ -1707,8 +1707,8 @@ function initSchoolsSection() {
       return `<tr data-school-index="${school.originalIndex}" class="schools-row" tabindex="0">
         <td>${school.originalIndex + 1}</td>
         <td><strong>${school.name}</strong></td>
-        <td>${school.gender}</td>
-        <td>${school.ageMin}–${school.ageMax}</td>
+        <td class="hide-mobile">${school.gender}</td>
+        <td class="hide-mobile">${school.ageMin}–${school.ageMax}</td>
         <td><span class="ofsted-badge ${cls}">${school.ofsted}</span></td>
         <td>${school.distanceMiles} mi</td>
       </tr>`;
