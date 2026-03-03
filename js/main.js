@@ -194,7 +194,10 @@ function hydrateHero() {
   const specs = [];
   if (filled(P.bedrooms)) specs.push(`${P.bedrooms} ${P.bedrooms === '1' ? 'Bedroom' : 'Bedrooms'}`);
   if (filled(P.bathrooms)) specs.push(`${P.bathrooms} ${P.bathrooms === '1' ? 'Bathroom' : 'Bathrooms'}`);
-  if (filled(P.floorAreaSqFt)) specs.push(`${P.floorAreaSqFt} sq ft`);
+  if (filled(P.floorAreaSqFt)) {
+    const sqm = Math.round(Number(P.floorAreaSqFt) * 0.0929);
+    specs.push(`${P.floorAreaSqFt} sq ft (${sqm} sq m)`);
+  }
 
   if (specs.length > 0) {
     heroSpecs.innerHTML = specs.map((s, i) =>
@@ -218,7 +221,10 @@ function hydrateHighlights() {
 
   if (filled(P.bedrooms)) items.push({ icon: 'bed', value: P.bedrooms, label: P.bedrooms === '1' ? 'Bedroom' : 'Bedrooms' });
   if (filled(P.bathrooms)) items.push({ icon: 'bath', value: P.bathrooms, label: P.bathrooms === '1' ? 'Bathroom' : 'Bathrooms' });
-  if (filled(P.floorAreaSqFt)) items.push({ icon: 'sqft', value: P.floorAreaSqFt, label: 'Sq Ft' });
+  if (filled(P.floorAreaSqFt)) {
+    const sqm = Math.round(Number(P.floorAreaSqFt) * 0.0929);
+    items.push({ icon: 'sqft', value: P.floorAreaSqFt, label: `Sq Ft / ${sqm} Sq M` });
+  }
   if (filled(P.walkToStation)) items.push({ icon: 'train', value: P.walkToStation, label: 'To Reading Station' });
   items.push({ icon: 'train', value: '25 min', label: 'Reading → Paddington' });
   if (filled(P.gardenFacing)) items.push({ icon: 'garden', value: P.gardenFacing, label: 'Garden' });
