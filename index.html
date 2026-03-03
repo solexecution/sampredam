@@ -48,6 +48,8 @@
   <!-- Umami Analytics (data-website-id set by JS from config) -->
   <script defer src="https://cloud.umami.is/script.js" data-website-id="placeholder" id="umamiScript"></script>
 
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="css/leaflet.css">
   <link rel="stylesheet" href="css/styles.css">
   <script src="config.js"></script>
 </head>
@@ -65,6 +67,7 @@
         <li><a href="#gallery" data-umami-event="nav-click" data-umami-event-section="gallery">Gallery</a></li>
         <li><a href="#details" data-umami-event="nav-click" data-umami-event-section="details">Details</a></li>
         <li><a href="#location" data-umami-event="nav-click" data-umami-event-section="location">Location</a></li>
+        <li><a href="#schools" data-umami-event="nav-click" data-umami-event-section="schools">Schools</a></li>
         <li><a href="#calculator" data-umami-event="nav-click" data-umami-event-section="calculator">Calculator</a></li>
         <li><a href="#faq" data-umami-event="nav-click" data-umami-event-section="faq">FAQ</a></li>
         <li><a href="#contact" class="nav-cta" data-umami-event="nav-click" data-umami-event-section="contact">Book
@@ -321,6 +324,56 @@
           This one comes with a garden office, patio, and <strong>&pound;35k to make it truly yours</strong>.
         </p>
       </div>
+    </div>
+  </section>
+
+  <!-- ========== SCHOOLS ========== -->
+  <section class="section schools-section" id="schools">
+    <div class="container">
+      <h2 class="section-title">Nearby Schools</h2>
+      <p class="section-subtitle">Ofsted-rated schools within ~2 miles of the property</p>
+
+      <!-- Tab buttons -->
+      <div class="schools-tabs" role="tablist">
+        <button class="schools-tab active" id="tabPrimary" role="tab" aria-selected="true" aria-controls="schools-table"
+          data-phase="Primary">Primary</button>
+        <button class="schools-tab" id="tabSecondary" role="tab" aria-selected="false" aria-controls="schools-table"
+          data-phase="Secondary">Secondary &amp; HE</button>
+      </div>
+
+      <!-- Map -->
+      <div id="schools-map" aria-label="Map showing nearby schools"></div>
+
+      <!-- Selected school info bar -->
+      <div class="schools-info-bar" id="schoolsInfoBar" hidden>
+        <div class="schools-info-number" id="schoolsInfoNum">1</div>
+        <div class="schools-info-text">
+          <strong id="schoolsInfoName"></strong>
+          <span id="schoolsInfoDetail"></span>
+        </div>
+        <div class="schools-info-badge" id="schoolsInfoBadge"></div>
+      </div>
+
+      <!-- Table -->
+      <div class="schools-table-wrap">
+        <table class="schools-table" id="schools-table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Name</th>
+              <th>Gender</th>
+              <th>Ages</th>
+              <th>Ofsted</th>
+              <th>Distance</th>
+            </tr>
+          </thead>
+          <tbody id="schoolsTableBody">
+          </tbody>
+        </table>
+      </div>
+
+      <p class="schools-disclaimer">Data sourced from the DfE Get Information About Schools register and Ofsted public
+        records. Distances are approximate. Always verify directly with the school.</p>
     </div>
   </section>
 
@@ -621,6 +674,10 @@
     <a href="#contact" class="btn btn-primary btn-sm" data-umami-event="sticky-cta-book">Book Viewing</a>
   </div>
 
+  <!-- Leaflet JS (local copy — also available via CDN for production) -->
+  <script src="js/leaflet.js"></script>
+  <!-- Schools data -->
+  <script src="js/schools-data.js"></script>
   <script src="js/main.js"></script>
 </body>
 

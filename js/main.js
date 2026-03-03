@@ -37,6 +37,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initSectionTracking();
   initScrollDepthTracking();
   initFloatWhatsapp();
+  initSchoolsSection();
   initParkCarousel();
   initHeroCarousel();
   initFloorPlanGallery();
@@ -1555,4 +1556,167 @@ function initShareToast() {
 
   // Show after 2 seconds
   setTimeout(showToast, 2000);
+}
+
+/* ==============================
+   SCHOOLS SECTION
+   Leaflet map + tabbed table of nearby schools.
+   Data from window.SCHOOLS_DATA (js/schools-data.js)
+   ============================== */
+function initSchoolsSection() {
+  const schools = window.SCHOOLS_DATA;
+  if (!schools || !schools.length) return;
+  if (typeof L === 'undefined') return; // Leaflet not loaded
+
+  const mapEl = document.getElementById('schools-map');
+  if (!mapEl) return;
+
+  // Property location
+  const PROP_LAT = 51.4777;
+  const PROP_LNG = -0.9793;
+
+  // Initialise map
+  const map = L.map('schools-map', { scrollWheelZoom: false }).setView([PROP_LAT, PROP_LNG], 14);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '© <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> contributors',
+    maxZoom: 18,
+  }).addTo(map);
+
+  // Property home marker
+  const homeIcon = L.divIcon({
+    className: '',
+    html: '<div class="school-marker school-marker--home" title="40 Sheridan Avenue">🏠</div>',
+    iconSize: [32, 32],
+    iconAnchor: [16, 16],
+  });
+  L.marker([PROP_LAT, PROP_LNG], { icon: homeIcon, zIndexOffset: 1000 })
+    .addTo(map)
+    .bindTooltip('40 Sheridan Avenue', { permanent: false, direction: 'top' });
+
+  // Helper: Ofsted → CSS class
+  function ofstedClass(rating) {
+    if (!rating) return 'ofsted-na';
+    const r = rating.toLowerCase();
+    if (r.includes('outstanding')) return 'ofsted-outstanding';
+    if (r.includes('good')) return 'ofsted-good';
+    if (r.includes('requires')) return 'ofsted-requires';
+    if (r.includes('inadequate')) return 'ofsted-inadequate';
+    return 'ofsted-na';
+  }
+
+  // Build markers and table rows
+  const markers = [];
+  let activePhase = 'Primary';
+  let activeRow = null;
+  let activeMarkerIndex = null;
+
+  // Info bar elements
+  const infoBar = document.getElementById('schoolsInfoBar');
+  const infoNum = document.getElementById('schoolsInfoNum');
+  const infoName = document.getElementById('schoolsInfoName');
+  const infoDetail = document.getElementById('schoolsInfoDetail');
+  const infoBadge = document.getElementById('schoolsInfoBadge');
+
+  function showInfoBar(school, num) {
+    if (!infoBar) return;
+    infoNum.textContent = num;
+    infoName.textContent = school.name;
+    infoDetail.textContent = `Ages ${school.ageMin}–${school.ageMax} · ${school.gender} · ${school.distanceMiles} miles`;
+    infoBadge.textContent = school.ofsted;
+    infoBadge.className = 'schools-info-badge ' + ofstedClass(school.ofsted);
+    infoBar.hidden = false;
+  }
+
+  function selectSchool(index) {
+    // Update marker styles
+    markers.forEach((m, i) => {
+      const el = m.marker.getElement();
+      if (el) {
+        const inner = el.querySelector('.school-marker');
+        if (inner) inner.classList.toggle('school-marker--active', i === index);
+      }
+    });
+    // Highlight table row
+    if (activeRow) activeRow.classList.remove('schools-row--active');
+    const tbody = document.getElementById('schoolsTableBody');
+    if (tbody) {
+      const rows = tbody.querySelectorAll('tr');
+      rows.forEach(row => {
+        if (parseInt(row.dataset.schoolIndex) === index) {
+          row.classList.add('schools-row--active');
+          row.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+          activeRow = row;
+        }
+      });
+    }
+    showInfoBar(markers[index].school, markers[index].num);
+    activeMarkerIndex = index;
+  }
+
+  // Create a marker for each school
+  schools.forEach((school, i) => {
+    const cls = ofstedClass(school.ofsted);
+    const icon = L.divIcon({
+      className: '',
+      html: `<div class="school-marker school-marker--num ${cls}" title="${school.name}">${i + 1}</div>`,
+      iconSize: [28, 28],
+      iconAnchor: [14, 14],
+    });
+    const marker = L.marker([school.lat, school.lng], { icon })
+      .addTo(map)
+      .on('click', () => {
+        selectSchool(i);
+        map.panTo([school.lat, school.lng], { animate: true });
+      });
+    markers.push({ marker, school, num: i + 1 });
+  });
+
+  // Render table rows for given phase
+  function renderTable(phase) {
+    const tbody = document.getElementById('schoolsTableBody');
+    if (!tbody) return;
+    const filtered = schools
+      .map((s, i) => ({ ...s, originalIndex: i }))
+      .filter(s => s.phase === phase);
+
+    tbody.innerHTML = filtered.map((school) => {
+      const cls = ofstedClass(school.ofsted);
+      return `<tr data-school-index="${school.originalIndex}" class="schools-row" tabindex="0">
+        <td>${school.originalIndex + 1}</td>
+        <td><strong>${school.name}</strong></td>
+        <td>${school.gender}</td>
+        <td>${school.ageMin}–${school.ageMax}</td>
+        <td><span class="ofsted-badge ${cls}">${school.ofsted}</span></td>
+        <td>${school.distanceMiles} mi</td>
+      </tr>`;
+    }).join('');
+
+    // Row click → select on map
+    tbody.querySelectorAll('tr.schools-row').forEach(row => {
+      const handler = () => {
+        const idx = parseInt(row.dataset.schoolIndex);
+        selectSchool(idx);
+        map.flyTo([schools[idx].lat, schools[idx].lng], 15, { animate: true, duration: 0.8 });
+      };
+      row.addEventListener('click', handler);
+      row.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') handler(); });
+    });
+  }
+
+  // Tab switching
+  const tabs = document.querySelectorAll('.schools-tab');
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      tabs.forEach(t => { t.classList.remove('active'); t.setAttribute('aria-selected', 'false'); });
+      tab.classList.add('active');
+      tab.setAttribute('aria-selected', 'true');
+      activePhase = tab.dataset.phase;
+      activeRow = null;
+      if (infoBar) infoBar.hidden = true;
+      renderTable(activePhase);
+    });
+  });
+
+  // Initial render
+  renderTable(activePhase);
 }
