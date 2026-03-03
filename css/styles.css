@@ -1604,6 +1604,15 @@ a:hover {
     font-size: 1.25rem;
     padding: 1rem 2rem;
   }
+
+  .nav-links .nav-cta {
+    display: inline-block;
+    width: auto;
+    padding: 0.6rem 1.5rem;
+    font-size: 1rem;
+    border-radius: var(--radius);
+    margin-top: 0.5rem;
+  }
 }
 
 /* --- Copy link tooltip --- */
