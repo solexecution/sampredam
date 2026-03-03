@@ -734,6 +734,7 @@ function initNavigation() {
   navToggle.addEventListener('click', () => {
     const isOpen = navLinks.classList.toggle('active');
     navToggle.classList.toggle('active');
+    navbar.classList.toggle('menu-open', isOpen);
     navToggle.setAttribute('aria-expanded', isOpen);
     document.body.style.overflow = isOpen ? 'hidden' : '';
   });
@@ -742,6 +743,7 @@ function initNavigation() {
     link.addEventListener('click', () => {
       navLinks.classList.remove('active');
       navToggle.classList.remove('active');
+      navbar.classList.remove('menu-open');
       navToggle.setAttribute('aria-expanded', 'false');
       document.body.style.overflow = '';
     });

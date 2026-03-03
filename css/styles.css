@@ -184,6 +184,12 @@ a:hover {
   box-shadow: var(--shadow);
 }
 
+.navbar.menu-open {
+  bottom: 0;
+  background: rgba(26, 54, 93, 0.98);
+  backdrop-filter: none;
+}
+
 .nav-container {
   max-width: var(--max-width);
   margin: 0 auto;
