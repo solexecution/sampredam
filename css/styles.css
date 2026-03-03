@@ -743,6 +743,10 @@ a:hover {
 .specs-list li span {
   color: var(--color-text-light);
   text-align: right;
+  word-break: break-word;
+  /* Ensure long single strings map safely down */
+  max-width: 60%;
+  /* Stop it from pushing the label off screen */
 }
 
 .features-grid {
