@@ -721,17 +721,22 @@ a:hover {
 .specs-list li {
   display: flex;
   justify-content: space-between;
+  align-items: baseline;
+  gap: 0.75rem;
   padding: 0.75rem 0;
   border-bottom: 1px solid var(--color-border);
   font-size: 0.95rem;
+  flex-wrap: wrap;
 }
 
 .specs-list li strong {
   color: var(--color-text);
+  flex-shrink: 0;
 }
 
 .specs-list li span {
   color: var(--color-text-light);
+  text-align: right;
 }
 
 .features-grid {
@@ -1300,7 +1305,8 @@ a:hover {
 }
 
 .picker-field select {
-  padding: 0.75rem 1rem;
+  width: 100%;
+  padding: 0.75rem 2.5rem 0.75rem 1rem;
   border: 2px solid var(--color-border);
   border-radius: var(--radius-sm);
   font-size: 1rem;
@@ -1312,7 +1318,9 @@ a:hover {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23666' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: right 0.75rem center;
+  min-width: 0;
 }
+
 
 .picker-field select:focus {
   outline: none;
@@ -1754,7 +1762,7 @@ a:hover {
   letter-spacing: 1px;
 }
 
-/* --- Floating WhatsApp Button --- */
+/* --- Floating WhatsApp Button --- icon-only circle --- */
 .float-whatsapp {
   position: fixed;
   bottom: 2rem;
@@ -1762,19 +1770,30 @@ a:hover {
   z-index: 950;
   display: flex;
   align-items: center;
-  gap: 0.625rem;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
   background: var(--color-success);
   color: var(--color-text-inverse);
-  padding: 0.875rem 1.5rem;
-  border-radius: 50px;
-  font-weight: 600;
-  font-size: 0.95rem;
+  border-radius: 50%;
   text-decoration: none;
   box-shadow: 0 4px 16px rgba(37, 211, 102, 0.4);
   opacity: 0;
   transform: translateY(12px);
   pointer-events: none;
   transition: opacity 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease, background 0.2s ease;
+}
+
+.float-whatsapp svg,
+.float-whatsapp img {
+  width: 26px;
+  height: 26px;
+  flex-shrink: 0;
+}
+
+/* hide the text span if present */
+.float-whatsapp .wa-label {
+  display: none;
 }
 
 .float-whatsapp.visible {
@@ -1786,24 +1805,16 @@ a:hover {
 .float-whatsapp:hover {
   color: var(--color-text-inverse);
   background: var(--color-success-hover);
-  transform: translateY(-2px);
-  box-shadow: 0 6px 24px rgba(37, 211, 102, 0.5);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px rgba(37, 211, 102, 0.5);
 }
 
 @media (max-width: 767px) {
   .float-whatsapp {
     bottom: 80px;
     right: 1rem;
-    padding: 0.75rem 1.25rem;
-    font-size: 0.875rem;
-  }
-
-  .float-whatsapp.visible {
-    transform: translateY(0);
-  }
-
-  .float-whatsapp:hover {
-    transform: translateY(-2px);
+    width: 46px;
+    height: 46px;
   }
 }
 
