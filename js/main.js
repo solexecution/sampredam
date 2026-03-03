@@ -25,7 +25,6 @@ document.addEventListener('DOMContentLoaded', () => {
   hydrateMeta();
 
   hydrateFloorPlans();
-  hydrateFloatWhatsapp();
   hydrateSocialProof();
 
   initNavigation();
@@ -36,7 +35,6 @@ document.addEventListener('DOMContentLoaded', () => {
   initScrollAnimations();
   initSectionTracking();
   initScrollDepthTracking();
-  initFloatWhatsapp();
   initSchoolsSection();
   initParkCarousel();
   initHeroCarousel();
@@ -1080,655 +1078,622 @@ function hydrateFloatWhatsapp() {
   btn.innerHTML = '';
   if (svgEl) {
     btn.appendChild(svgEl);
-  } else {
-    // Fallback inline SVG WhatsApp icon
-    btn.innerHTML = `<svg viewBox="0 0 24 24" fill="currentColor" aria-label="WhatsApp" role="img"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M11.999 2C6.477 2 2 6.477 2 12c0 1.99.583 3.841 1.585 5.4L2 22l4.728-1.559A9.944 9.944 0 0012 22c5.523 0 10-4.477 10-10S17.523 2 12 2zm0 18c-1.71 0-3.305-.469-4.67-1.285l-.334-.2-3.463 1.14 1.162-3.37-.217-.347A7.963 7.963 0 014 12c0-4.418 3.582-8 8-8s8 3.582 8 8-3.582 8-8 8z"/></svg>`;
-  }
-  btn.setAttribute('aria-label', 'Chat on WhatsApp');
-  btn.removeAttribute('hidden');
-}
+    /* Removed Floating WhatsApp */
 
-function initFloatWhatsapp() {
-  const btn = document.getElementById('floatWhatsapp');
-  if (!btn || btn.hidden) return;
+    /* --- Umami: Section Reach Tracking (funnel) --- */
+    function initSectionTracking() {
+      const sections = [
+        { id: 'gallery', label: 'gallery' },
+        { id: 'details', label: 'details' },
+        { id: 'location', label: 'location' },
+        { id: 'calculator', label: 'calculator' },
+        { id: 'faq', label: 'faq' },
+        { id: 'contact', label: 'contact' },
+      ];
 
-  let contactVisible = false;
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const label = entry.target.dataset.trackSection;
+            if (typeof umami !== 'undefined') {
+              umami.track('section-reached', { section: label });
+            }
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.2 });
 
-  const contactSection = document.getElementById('contact');
-  if (contactSection) {
-    new IntersectionObserver((entries) => {
-      contactVisible = entries[0].isIntersecting;
-      update();
-    }, { threshold: 0.3 }).observe(contactSection);
-  }
-
-  function update() {
-    btn.classList.toggle('visible', window.scrollY > 300 && !contactVisible);
-  }
-
-  window.addEventListener('scroll', update, { passive: true });
-}
-
-/* --- Umami: Section Reach Tracking (funnel) --- */
-function initSectionTracking() {
-  const sections = [
-    { id: 'gallery', label: 'gallery' },
-    { id: 'details', label: 'details' },
-    { id: 'location', label: 'location' },
-    { id: 'calculator', label: 'calculator' },
-    { id: 'faq', label: 'faq' },
-    { id: 'contact', label: 'contact' },
-  ];
-
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        const label = entry.target.dataset.trackSection;
-        if (typeof umami !== 'undefined') {
-          umami.track('section-reached', { section: label });
+      sections.forEach(({ id, label }) => {
+        const el = document.getElementById(id);
+        if (el) {
+          el.dataset.trackSection = label;
+          observer.observe(el);
         }
-        observer.unobserve(entry.target);
+      });
+    }
+
+    /* --- Umami: Scroll Depth Tracking --- */
+    function initScrollDepthTracking() {
+      const milestones = [25, 50, 75, 100];
+      const reached = new Set();
+
+      window.addEventListener('scroll', () => {
+        const pct = Math.round(
+          ((window.scrollY + window.innerHeight) / document.documentElement.scrollHeight) * 100
+        );
+        milestones.forEach(m => {
+          if (pct >= m && !reached.has(m)) {
+            reached.add(m);
+            if (typeof umami !== 'undefined') {
+              umami.track('scroll-depth', { depth: m + '%' });
+            }
+          }
+        });
+      }, { passive: true });
+    }
+
+    /* --- Scroll Animations --- */
+    function initScrollAnimations() {
+      const els = document.querySelectorAll('.feature-card, .location-card, .faq-item, .highlight-item, .contact-btn');
+      els.forEach(el => el.classList.add('fade-in'));
+
+      if (!('IntersectionObserver' in window)) {
+        els.forEach(el => el.classList.add('visible'));
+        return;
       }
-    });
-  }, { threshold: 0.2 });
 
-  sections.forEach(({ id, label }) => {
-    const el = document.getElementById(id);
-    if (el) {
-      el.dataset.trackSection = label;
-      observer.observe(el);
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+      els.forEach(el => observer.observe(el));
     }
-  });
-}
 
-/* --- Umami: Scroll Depth Tracking --- */
-function initScrollDepthTracking() {
-  const milestones = [25, 50, 75, 100];
-  const reached = new Set();
+    /* --- Hero Background Carousel --- */
+    function initHeroCarousel() {
+      const bg1 = document.getElementById('heroBg1');
+      const bg2 = document.getElementById('heroBg2');
+      if (!bg1 || !bg2) return;
 
-  window.addEventListener('scroll', () => {
-    const pct = Math.round(
-      ((window.scrollY + window.innerHeight) / document.documentElement.scrollHeight) * 100
-    );
-    milestones.forEach(m => {
-      if (pct >= m && !reached.has(m)) {
-        reached.add(m);
-        if (typeof umami !== 'undefined') {
-          umami.track('scroll-depth', { depth: m + '%' });
-        }
+      const images = window.CONFIG?.heroImages || [];
+      if (images.length === 0) return;
+
+      let currentIdx = 0;
+      const intervalTime = 10000; // 10 seconds
+      let activeBg = bg1;
+      let inactiveBg = bg2;
+
+      // Set initial image
+      bg1.style.backgroundImage = `url('${images[0]}')`;
+      bg1.style.opacity = '1';
+      bg2.style.opacity = '0';
+
+      if (images.length < 2) return;
+
+      // Preload remaining images
+      images.slice(1).forEach(src => {
+        const img = new Image();
+        img.src = src;
+      });
+
+      setInterval(() => {
+        currentIdx = (currentIdx + 1) % images.length;
+        const nextImage = images[currentIdx];
+
+        // Cross-fade logic
+        inactiveBg.style.backgroundImage = `url('${nextImage}')`;
+        inactiveBg.style.opacity = '1';
+        activeBg.style.opacity = '0';
+
+        // Swap roles
+        let temp = activeBg;
+        activeBg = inactiveBg;
+        inactiveBg = temp;
+
+        console.log(`[Hero] Cross-fading to: ${nextImage}`);
+      }, intervalTime);
+    }
+
+    /* --- Floor Plan Lightbox --- */
+    function initFloorPlanGallery() {
+      const plans = document.querySelectorAll('.floorplan-item img');
+      if (plans.length === 0) return;
+
+      const items = Array.from(plans).map(img => ({
+        src: img.src,
+        alt: img.alt,
+        isVideo: false
+      }));
+
+      plans.forEach((img, i) => {
+        img.addEventListener('click', () => Lightbox.open(items, i));
+      });
+    }
+
+    /* ==============================
+       AUCTION BANNER & COUNTDOWN
+       ============================== */
+    function renderAuctionBanner() {
+      const auc = C.auction || {};
+      if (!auc.enabled) return;
+
+      const banner = document.getElementById('auctionBanner');
+      if (!banner) return;
+      banner.removeAttribute('hidden');
+
+      // Hero badge override
+      const heroBadge = document.getElementById('heroBadge');
+      if (heroBadge && filled(auc.heroBadge)) {
+        heroBadge.textContent = auc.heroBadge;
       }
-    });
-  }, { passive: true });
-}
 
-/* --- Scroll Animations --- */
-function initScrollAnimations() {
-  const els = document.querySelectorAll('.feature-card, .location-card, .faq-item, .highlight-item, .contact-btn');
-  els.forEach(el => el.classList.add('fade-in'));
+      // Label + deadline human-readable text
+      const labelEl = document.getElementById('auctionLabel');
+      if (labelEl && filled(auc.label)) labelEl.textContent = auc.label;
 
-  if (!('IntersectionObserver' in window)) {
-    els.forEach(el => el.classList.add('visible'));
-    return;
-  }
-
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('visible');
-        observer.unobserve(entry.target);
+      const deadlineEl = document.getElementById('auctionDeadlineText');
+      const deadline = auc.deadline ? new Date(auc.deadline) : null;
+      if (deadlineEl && deadline) {
+        deadlineEl.textContent = deadline.toLocaleDateString('en-GB', {
+          weekday: 'long', day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit'
+        });
       }
-    });
-  }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
 
-  els.forEach(el => observer.observe(el));
-}
+      // Guide price
+      const gpEl = document.getElementById('auctionGuidePrice');
+      if (gpEl && filled(auc.guidePrice)) {
+        gpEl.innerHTML = `${auc.guidePriceLabel || 'Offers in excess of'} <strong>&pound;${auc.guidePrice}</strong>`;
+      }
 
-/* --- Hero Background Carousel --- */
-function initHeroCarousel() {
-  const bg1 = document.getElementById('heroBg1');
-  const bg2 = document.getElementById('heroBg2');
-  if (!bg1 || !bg2) return;
+      // Small print
+      const spEl = document.getElementById('auctionSmallPrint');
+      if (spEl && filled(auc.smallPrint)) spEl.textContent = auc.smallPrint;
 
-  const images = window.CONFIG?.heroImages || [];
-  if (images.length === 0) return;
-
-  let currentIdx = 0;
-  const intervalTime = 10000; // 10 seconds
-  let activeBg = bg1;
-  let inactiveBg = bg2;
-
-  // Set initial image
-  bg1.style.backgroundImage = `url('${images[0]}')`;
-  bg1.style.opacity = '1';
-  bg2.style.opacity = '0';
-
-  if (images.length < 2) return;
-
-  // Preload remaining images
-  images.slice(1).forEach(src => {
-    const img = new Image();
-    img.src = src;
-  });
-
-  setInterval(() => {
-    currentIdx = (currentIdx + 1) % images.length;
-    const nextImage = images[currentIdx];
-
-    // Cross-fade logic
-    inactiveBg.style.backgroundImage = `url('${nextImage}')`;
-    inactiveBg.style.opacity = '1';
-    activeBg.style.opacity = '0';
-
-    // Swap roles
-    let temp = activeBg;
-    activeBg = inactiveBg;
-    inactiveBg = temp;
-
-    console.log(`[Hero] Cross-fading to: ${nextImage}`);
-  }, intervalTime);
-}
-
-/* --- Floor Plan Lightbox --- */
-function initFloorPlanGallery() {
-  const plans = document.querySelectorAll('.floorplan-item img');
-  if (plans.length === 0) return;
-
-  const items = Array.from(plans).map(img => ({
-    src: img.src,
-    alt: img.alt,
-    isVideo: false
-  }));
-
-  plans.forEach((img, i) => {
-    img.addEventListener('click', () => Lightbox.open(items, i));
-  });
-}
-
-/* ==============================
-   AUCTION BANNER & COUNTDOWN
-   ============================== */
-function renderAuctionBanner() {
-  const auc = C.auction || {};
-  if (!auc.enabled) return;
-
-  const banner = document.getElementById('auctionBanner');
-  if (!banner) return;
-  banner.removeAttribute('hidden');
-
-  // Hero badge override
-  const heroBadge = document.getElementById('heroBadge');
-  if (heroBadge && filled(auc.heroBadge)) {
-    heroBadge.textContent = auc.heroBadge;
-  }
-
-  // Label + deadline human-readable text
-  const labelEl = document.getElementById('auctionLabel');
-  if (labelEl && filled(auc.label)) labelEl.textContent = auc.label;
-
-  const deadlineEl = document.getElementById('auctionDeadlineText');
-  const deadline = auc.deadline ? new Date(auc.deadline) : null;
-  if (deadlineEl && deadline) {
-    deadlineEl.textContent = deadline.toLocaleDateString('en-GB', {
-      weekday: 'long', day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit'
-    });
-  }
-
-  // Guide price
-  const gpEl = document.getElementById('auctionGuidePrice');
-  if (gpEl && filled(auc.guidePrice)) {
-    gpEl.innerHTML = `${auc.guidePriceLabel || 'Offers in excess of'} <strong>&pound;${auc.guidePrice}</strong>`;
-  }
-
-  // Small print
-  const spEl = document.getElementById('auctionSmallPrint');
-  if (spEl && filled(auc.smallPrint)) spEl.textContent = auc.smallPrint;
-
-  // CTA button → WhatsApp with pre-filled offer message
-  const cta = document.getElementById('auctionCta');
-  if (cta) {
-    if (filled(auc.ctaText)) cta.textContent = auc.ctaText;
-    const address = `${P.streetAddress || '40 Sheridan Avenue'} ${P.postcode || 'RG4 7QD'}`.trim();
-    const deadlineStr = deadline
-      ? deadline.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' })
-      : 'the deadline';
-    const refId = localStorage.getItem('referredBy') || '';
-    const refNote = refId ? ` (Referred by ${refId})` : '';
-    const waMsg = encodeURIComponent(
-      `Hi! I'd like to submit an offer on ${address} before the ${deadlineStr} deadline. Please get in touch to discuss.${refNote}`
-    );
-    const waNum = CONTACT.whatsapp || (C.referral || {}).whatsapp || '';
-    if (filled(waNum)) {
-      cta.href = `https://wa.me/${waNum}?text=${waMsg}`;
-      cta.target = '_blank';
-      cta.rel = 'noopener';
-    } else if (filled(CONTACT.phone)) {
-      cta.href = `tel:${CONTACT.phone}`;
-    }
-  }
-
-  // Countdown ticker
-  if (!deadline) return;
-  const cdDays = document.getElementById('cdDays');
-  const cdHours = document.getElementById('cdHours');
-  const cdMins = document.getElementById('cdMins');
-  const cdSecs = document.getElementById('cdSecs');
-
-  function pad(n) { return String(n).padStart(2, '0'); }
-
-  function tick() {
-    const now = new Date();
-    const diff = deadline - now;
-    if (diff <= 0) {
-      if (cdDays) cdDays.textContent = '00';
-      if (cdHours) cdHours.textContent = '00';
-      if (cdMins) cdMins.textContent = '00';
-      if (cdSecs) cdSecs.textContent = '00';
-      const labelEl2 = document.getElementById('auctionLabel');
-      if (labelEl2) labelEl2.textContent = 'Deadline Reached';
-      return;
-    }
-    const totalSecs = Math.floor(diff / 1000);
-    const s = totalSecs % 60;
-    const m = Math.floor(totalSecs / 60) % 60;
-    const h = Math.floor(totalSecs / 3600) % 24;
-    const d = Math.floor(totalSecs / 86400);
-    if (cdDays) cdDays.textContent = d;
-    if (cdHours) cdHours.textContent = pad(h);
-    if (cdMins) cdMins.textContent = pad(m);
-    if (cdSecs) cdSecs.textContent = pad(s);
-  }
-  tick();
-  setInterval(tick, 1000);
-}
-
-/* ==============================
-   BUYER REFERRAL DETECTION
-   Reads ?ref= from URL, stores it, shows notice bar,
-   and appends ref to WhatsApp contact links.
-   ============================== */
-function handleBuyerReferral() {
-  const params = new URLSearchParams(window.location.search);
-  const incomingRef = params.get('ref');
-  if (!incomingRef) return;
-
-  // Store the ref so contact buttons can use it
-  localStorage.setItem('referredBy', incomingRef);
-
-  // Show the referral notice bar
-  const bar = document.getElementById('referralNoticeBar');
-  if (bar) {
-    bar.removeAttribute('hidden');
-    // Push the navbar down so it doesn't overlap
-    const navbar = document.getElementById('navbar');
-    if (navbar) {
-      const barHeight = bar.offsetHeight || 36;
-      navbar.style.top = barHeight + 'px';
-    }
-  }
-
-  // Clean the URL without triggering a page reload
-  const cleanUrl = window.location.pathname + (window.location.hash || '');
-  history.replaceState(null, '', cleanUrl);
-}
-
-/* ==============================
-   SHARE & EARN SECTION
-   ============================== */
-function getOrCreateRefId() {
-  let id = localStorage.getItem('myRefId');
-  if (!id) {
-    const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
-    id = 'REF-' + Array.from({ length: 4 }, () => chars[Math.floor(Math.random() * chars.length)]).join('');
-    localStorage.setItem('myRefId', id);
-  }
-  return id;
-}
-
-function renderShareAndEarnSection() {
-  const ref = (C.referral || {});
-  if (!ref.enabled) return;
-
-  const section = document.getElementById('shareEarnSection');
-  if (!section) return;
-  section.removeAttribute('hidden');
-
-  // Reward amount labels
-  const reward = ref.reward || '100';
-  ['referralRewardAmount', 'referralRewardSub', 'claimAmount'].forEach(id => {
-    const el = document.getElementById(id);
-    if (el) el.textContent = reward;
-  });
-
-  // Populate T&C list
-  const tncList = document.getElementById('tncList');
-  if (tncList && Array.isArray(ref.terms)) {
-    tncList.innerHTML = ref.terms.map(t => `<li>${t}</li>`).join('');
-  }
-
-  // T&C modal open/close
-  const modal = document.getElementById('tncModal');
-  document.getElementById('openTncBtn')?.addEventListener('click', () => {
-    if (modal) { modal.removeAttribute('hidden'); document.body.style.overflow = 'hidden'; }
-  });
-  document.getElementById('closeTncBtn')?.addEventListener('click', () => {
-    if (modal) { modal.hidden = true; document.body.style.overflow = ''; }
-  });
-  modal?.addEventListener('click', (e) => {
-    if (e.target === modal) { modal.hidden = true; document.body.style.overflow = ''; }
-  });
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && modal && !modal.hidden) { modal.hidden = true; document.body.style.overflow = ''; }
-  });
-
-  // Generate ref link button
-  const generateBtn = document.getElementById('generateRefBtn');
-  const linkBox = document.getElementById('shareLinkBox');
-  const linkInput = document.getElementById('referralLinkInput');
-  const earnButtons = document.getElementById('shareEarnButtons');
-  const claimBtn = document.getElementById('claimReferralBtn');
-
-  generateBtn?.addEventListener('click', () => {
-    const refId = getOrCreateRefId();
-    const baseUrl = SITE.url || window.location.origin;
-    const refUrl = `${baseUrl}/?ref=${refId}`;
-
-    // Show the personalised link
-    if (linkInput) linkInput.value = refUrl;
-    if (linkBox) linkBox.removeAttribute('hidden');
-    if (earnButtons) earnButtons.removeAttribute('hidden');
-    if (claimBtn) claimBtn.removeAttribute('hidden');
-    generateBtn.textContent = 'Your link is ready — share below';
-    generateBtn.disabled = true;
-
-    // Wire share buttons with the referral URL embedded
-    const siteTitle = encodeURIComponent(`This Caversham home is exactly what you're looking for 🏡`);
-    const refEnc = encodeURIComponent(refUrl);
-    const waShareText = encodeURIComponent(
-      `🏡 Check out this stunning 3-bed family home in Caversham, Reading — private sale, no agent fees, no chain!\n\n${refUrl}\n\n⏳ Best offers deadline: 31 March 2026`
-    );
-
-    const waBtn = document.getElementById('earnShareWhatsApp');
-    const fbBtn = document.getElementById('earnShareFacebook');
-    const twBtn = document.getElementById('earnShareTwitter');
-    const liBtn = document.getElementById('earnShareLinkedIn');
-
-    if (waBtn) waBtn.href = `https://api.whatsapp.com/send?text=${waShareText}`;
-    if (fbBtn) fbBtn.href = `https://www.facebook.com/sharer/sharer.php?u=${refEnc}`;
-    if (twBtn) twBtn.href = `https://twitter.com/intent/tweet?url=${refEnc}&text=${siteTitle}%20%23CavershamProperty%20%23HouseForSale`;
-    if (liBtn) liBtn.href = `https://www.linkedin.com/sharing/share-offsite/?url=${refEnc}`;
-
-    // Claim button → WhatsApp with pre-filled claim message
-    if (claimBtn) {
-      const waNum = ref.whatsapp || CONTACT.whatsapp || '';
-      const claimMsg = encodeURIComponent(
-        `Hi! I'd like to claim the £${reward} referral reward for 40 Sheridan Avenue. My referral code is ${refId}. I have a screenshot of my share post to prove I shared it before the buyer made contact. Please let me know the next steps.`
-      );
-      claimBtn.addEventListener('click', () => {
+      // CTA button → WhatsApp with pre-filled offer message
+      const cta = document.getElementById('auctionCta');
+      if (cta) {
+        if (filled(auc.ctaText)) cta.textContent = auc.ctaText;
+        const address = `${P.streetAddress || '40 Sheridan Avenue'} ${P.postcode || 'RG4 7QD'}`.trim();
+        const deadlineStr = deadline
+          ? deadline.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' })
+          : 'the deadline';
+        const refId = localStorage.getItem('referredBy') || '';
+        const refNote = refId ? ` (Referred by ${refId})` : '';
+        const waMsg = encodeURIComponent(
+          `Hi! I'd like to submit an offer on ${address} before the ${deadlineStr} deadline. Please get in touch to discuss.${refNote}`
+        );
+        const waNum = CONTACT.whatsapp || (C.referral || {}).whatsapp || '';
         if (filled(waNum)) {
-          window.open(`https://wa.me/${waNum}?text=${claimMsg}`, '_blank', 'noopener');
+          cta.href = `https://wa.me/${waNum}?text=${waMsg}`;
+          cta.target = '_blank';
+          cta.rel = 'noopener';
+        } else if (filled(CONTACT.phone)) {
+          cta.href = `tel:${CONTACT.phone}`;
         }
-      });
-    }
-  });
-
-  // Copy referral link button and input
-  const refInput = document.getElementById('referralLinkInput');
-  const refBtn = document.getElementById('copyRefLink');
-
-  const copyRefHandler = async () => {
-    const val = refInput?.value;
-    if (!val) return;
-    try {
-      await navigator.clipboard.writeText(val);
-      if (refBtn) {
-        showCopyTooltip(refBtn, 'Copied!');
-        refBtn.style.color = 'var(--color-success)';
-        setTimeout(() => { refBtn.style.color = ''; }, 1500);
       }
-    } catch {
-      // Fallback
-      const ta = document.createElement('textarea');
-      ta.value = val;
-      ta.style.cssText = 'position:fixed;left:-9999px';
-      document.body.appendChild(ta);
-      ta.select();
-      document.execCommand('copy');
-      document.body.removeChild(ta);
-      if (refBtn) {
-        showCopyTooltip(refBtn, 'Copied!');
-        refBtn.style.color = 'var(--color-success)';
-        setTimeout(() => { refBtn.style.color = ''; }, 1500);
-      }
-    }
-  };
 
-  refBtn?.addEventListener('click', copyRefHandler);
-  refInput?.addEventListener('click', copyRefHandler);
+      // Countdown ticker
+      if (!deadline) return;
+      const cdDays = document.getElementById('cdDays');
+      const cdHours = document.getElementById('cdHours');
+      const cdMins = document.getElementById('cdMins');
+      const cdSecs = document.getElementById('cdSecs');
 
-  // Floating share toast
-  initShareToast();
-}
+      function pad(n) { return String(n).padStart(2, '0'); }
 
-/* ==============================
-   FLOATING SHARE TOAST
-   One unified entry point — replaces the circular share button.
-   Shows after 2s, stays until user dismisses. After close, a
-   compact pill remains so the offer is never totally hidden.
-   Auto-hides when the Share & Earn section is in view.
-   ============================== */
-function initShareToast() {
-  const toast = document.getElementById('shareToast');
-  if (!toast) return;
-
-  // Hide the generic floating share bar — the toast replaces it
-  const shareBar = document.getElementById('shareBar');
-  if (shareBar) shareBar.style.display = 'none';
-
-  let suppressedBySection = false;
-  let shown = false;
-
-  function showToast() {
-    if (suppressedBySection) return;
-    shown = true;
-    toast.removeAttribute('hidden');
-    toast.getBoundingClientRect(); // force reflow for transition
-    toast.classList.add('share-toast--visible');
-  }
-
-  function hideToastTemporarily() {
-    if (!shown) return;
-    toast.classList.remove('share-toast--visible');
-  }
-
-  function restoreToast() {
-    if (!shown || toast.hidden) return; // already dismissed by user
-    toast.removeAttribute('hidden');
-    toast.getBoundingClientRect();
-    toast.classList.add('share-toast--visible');
-  }
-
-  function dismissToast() {
-    shown = false;
-    toast.classList.remove('share-toast--visible');
-    toast.addEventListener('transitionend', () => {
-      toast.hidden = true;
-      showMiniPill(); // leave a subtle persistent entry point
-    }, { once: true });
-  }
-
-  function showMiniPill() {
-    const pill = document.getElementById('shareToastPill');
-    if (!pill) return;
-    pill.removeAttribute('hidden');
-    pill.getBoundingClientRect();
-    pill.classList.add('share-toast-pill--visible');
-    pill.addEventListener('click', () => {
-      pill.hidden = true;
-      pill.classList.remove('share-toast-pill--visible');
-      shown = true;
-      toast.removeAttribute('hidden');
-      toast.getBoundingClientRect();
-      toast.classList.add('share-toast--visible');
-    });
-  }
-
-  // Hide toast while the Share & Earn section is visible
-  const section = document.getElementById('shareEarnSection');
-  if (section && 'IntersectionObserver' in window) {
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          suppressedBySection = true;
-          hideToastTemporarily();
-        } else {
-          suppressedBySection = false;
-          restoreToast();
+      function tick() {
+        const now = new Date();
+        const diff = deadline - now;
+        if (diff <= 0) {
+          if (cdDays) cdDays.textContent = '00';
+          if (cdHours) cdHours.textContent = '00';
+          if (cdMins) cdMins.textContent = '00';
+          if (cdSecs) cdSecs.textContent = '00';
+          const labelEl2 = document.getElementById('auctionLabel');
+          if (labelEl2) labelEl2.textContent = 'Deadline Reached';
+          return;
         }
-      });
-    }, { threshold: 0.1 });
-    observer.observe(section);
-  }
-
-  // Close button
-  document.getElementById('shareToastClose')?.addEventListener('click', dismissToast);
-
-  // CTA — dismiss toast (scroll handled by anchor href)
-  document.getElementById('shareToastCta')?.addEventListener('click', dismissToast);
-
-  // Show after 8s — only once per session (not on every page load)
-  const SESSION_KEY = 'shareToastSeen';
-  if (!sessionStorage.getItem(SESSION_KEY)) {
-    setTimeout(() => {
-      sessionStorage.setItem(SESSION_KEY, '1');
-      showToast();
-    }, 8000);
-  }
-}
-
-/* ==============================
-   SCHOOLS SECTION
-   Leaflet map + tabbed table of nearby schools.
-   Data from window.SCHOOLS_DATA (js/schools-data.js)
-   ============================== */
-function initSchoolsSection() {
-  const schools = window.SCHOOLS_DATA;
-  if (!schools || !schools.length) return;
-  if (typeof L === 'undefined') return; // Leaflet not loaded
-
-  const mapEl = document.getElementById('schools-map');
-  if (!mapEl) return;
-
-  // Property location
-  const PROP_LAT = 51.4777;
-  const PROP_LNG = -0.9793;
-
-  // Initialise map
-  const map = L.map('schools-map', { scrollWheelZoom: false }).setView([PROP_LAT, PROP_LNG], 14);
-  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: '© <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> contributors',
-    maxZoom: 18,
-  }).addTo(map);
-
-  // Property home marker
-  const homeIcon = L.divIcon({
-    className: '',
-    html: '<div class="school-marker school-marker--home" title="40 Sheridan Avenue">🏠</div>',
-    iconSize: [32, 32],
-    iconAnchor: [16, 16],
-  });
-  L.marker([PROP_LAT, PROP_LNG], { icon: homeIcon, zIndexOffset: 1000 })
-    .addTo(map)
-    .bindTooltip('40 Sheridan Avenue', { permanent: false, direction: 'top' });
-
-  // Helper: Ofsted → CSS class
-  function ofstedClass(rating) {
-    if (!rating) return 'ofsted-na';
-    const r = rating.toLowerCase();
-    if (r.includes('outstanding')) return 'ofsted-outstanding';
-    if (r.includes('good')) return 'ofsted-good';
-    if (r.includes('requires')) return 'ofsted-requires';
-    if (r.includes('inadequate')) return 'ofsted-inadequate';
-    return 'ofsted-na';
-  }
-
-  // Build markers and table rows
-  const markers = [];
-  let activePhase = 'Primary';
-  let activeRow = null;
-  let activeMarkerIndex = null;
-
-  // Info bar elements
-  const infoBar = document.getElementById('schoolsInfoBar');
-  const infoNum = document.getElementById('schoolsInfoNum');
-  const infoName = document.getElementById('schoolsInfoName');
-  const infoDetail = document.getElementById('schoolsInfoDetail');
-  const infoBadge = document.getElementById('schoolsInfoBadge');
-
-  function showInfoBar(school, num) {
-    if (!infoBar) return;
-    infoNum.textContent = num;
-    infoName.textContent = school.name;
-    infoDetail.textContent = `Ages ${school.ageMin}–${school.ageMax} · ${school.gender} · ${school.distanceMiles} miles`;
-    infoBadge.textContent = school.ofsted;
-    infoBadge.className = 'schools-info-badge ' + ofstedClass(school.ofsted);
-    infoBar.hidden = false;
-  }
-
-  function selectSchool(index) {
-    // Update marker styles
-    markers.forEach((m, i) => {
-      const el = m.marker.getElement();
-      if (el) {
-        const inner = el.querySelector('.school-marker');
-        if (inner) inner.classList.toggle('school-marker--active', i === index);
+        const totalSecs = Math.floor(diff / 1000);
+        const s = totalSecs % 60;
+        const m = Math.floor(totalSecs / 60) % 60;
+        const h = Math.floor(totalSecs / 3600) % 24;
+        const d = Math.floor(totalSecs / 86400);
+        if (cdDays) cdDays.textContent = d;
+        if (cdHours) cdHours.textContent = pad(h);
+        if (cdMins) cdMins.textContent = pad(m);
+        if (cdSecs) cdSecs.textContent = pad(s);
       }
-    });
-    // Highlight table row
-    if (activeRow) activeRow.classList.remove('schools-row--active');
-    const tbody = document.getElementById('schoolsTableBody');
-    if (tbody) {
-      const rows = tbody.querySelectorAll('tr');
-      rows.forEach(row => {
-        if (parseInt(row.dataset.schoolIndex) === index) {
-          row.classList.add('schools-row--active');
-          row.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-          activeRow = row;
-        }
-      });
+      tick();
+      setInterval(tick, 1000);
     }
-    showInfoBar(markers[index].school, markers[index].num);
-    activeMarkerIndex = index;
-  }
 
-  // Create a marker for each school
-  schools.forEach((school, i) => {
-    const cls = ofstedClass(school.ofsted);
-    const icon = L.divIcon({
-      className: '',
-      html: `<div class="school-marker school-marker--num ${cls}" title="${school.name}">${i + 1}</div>`,
-      iconSize: [28, 28],
-      iconAnchor: [14, 14],
-    });
-    const marker = L.marker([school.lat, school.lng], { icon })
-      .addTo(map)
-      .on('click', () => {
-        selectSchool(i);
-        map.panTo([school.lat, school.lng], { animate: true });
+    /* ==============================
+       BUYER REFERRAL DETECTION
+       Reads ?ref= from URL, stores it, shows notice bar,
+       and appends ref to WhatsApp contact links.
+       ============================== */
+    function handleBuyerReferral() {
+      const params = new URLSearchParams(window.location.search);
+      const incomingRef = params.get('ref');
+      if (!incomingRef) return;
+
+      // Store the ref so contact buttons can use it
+      localStorage.setItem('referredBy', incomingRef);
+
+      // Show the referral notice bar
+      const bar = document.getElementById('referralNoticeBar');
+      if (bar) {
+        bar.removeAttribute('hidden');
+        // Push the navbar down so it doesn't overlap
+        const navbar = document.getElementById('navbar');
+        if (navbar) {
+          const barHeight = bar.offsetHeight || 36;
+          navbar.style.top = barHeight + 'px';
+        }
+      }
+
+      // Clean the URL without triggering a page reload
+      const cleanUrl = window.location.pathname + (window.location.hash || '');
+      history.replaceState(null, '', cleanUrl);
+    }
+
+    /* ==============================
+       SHARE & EARN SECTION
+       ============================== */
+    function getOrCreateRefId() {
+      let id = localStorage.getItem('myRefId');
+      if (!id) {
+        const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+        id = 'REF-' + Array.from({ length: 4 }, () => chars[Math.floor(Math.random() * chars.length)]).join('');
+        localStorage.setItem('myRefId', id);
+      }
+      return id;
+    }
+
+    function renderShareAndEarnSection() {
+      const ref = (C.referral || {});
+      if (!ref.enabled) return;
+
+      const section = document.getElementById('shareEarnSection');
+      if (!section) return;
+      section.removeAttribute('hidden');
+
+      // Reward amount labels
+      const reward = ref.reward || '100';
+      ['referralRewardAmount', 'referralRewardSub', 'claimAmount'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.textContent = reward;
       });
-    markers.push({ marker, school, num: i + 1 });
-  });
 
-  // Render table rows for given phase
-  function renderTable(phase) {
-    const tbody = document.getElementById('schoolsTableBody');
-    if (!tbody) return;
-    const filtered = schools
-      .map((s, i) => ({ ...s, originalIndex: i }))
-      .filter(s => s.phase === phase);
+      // Populate T&C list
+      const tncList = document.getElementById('tncList');
+      if (tncList && Array.isArray(ref.terms)) {
+        tncList.innerHTML = ref.terms.map(t => `<li>${t}</li>`).join('');
+      }
 
-    tbody.innerHTML = filtered.map((school) => {
-      const cls = ofstedClass(school.ofsted);
-      return `<tr data-school-index="${school.originalIndex}" class="schools-row" tabindex="0">
+      // T&C modal open/close
+      const modal = document.getElementById('tncModal');
+      document.getElementById('openTncBtn')?.addEventListener('click', () => {
+        if (modal) { modal.removeAttribute('hidden'); document.body.style.overflow = 'hidden'; }
+      });
+      document.getElementById('closeTncBtn')?.addEventListener('click', () => {
+        if (modal) { modal.hidden = true; document.body.style.overflow = ''; }
+      });
+      modal?.addEventListener('click', (e) => {
+        if (e.target === modal) { modal.hidden = true; document.body.style.overflow = ''; }
+      });
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && modal && !modal.hidden) { modal.hidden = true; document.body.style.overflow = ''; }
+      });
+
+      // Generate ref link on load
+      const refId = getOrCreateRefId();
+      const baseUrl = SITE.url || window.location.origin;
+      const refUrl = `${baseUrl}/?ref=${refId}`;
+
+      const linkBox = document.getElementById('shareLinkBox');
+      const linkInput = document.getElementById('referralLinkInput');
+      const earnButtons = document.getElementById('shareEarnButtons');
+      const claimBtn = document.getElementById('claimReferralBtn');
+
+      if (linkInput) linkInput.value = refUrl;
+      if (linkBox) linkBox.removeAttribute('hidden');
+      if (earnButtons) earnButtons.removeAttribute('hidden');
+      if (claimBtn) claimBtn.removeAttribute('hidden');
+
+      // Wire share buttons with the referral URL embedded
+      const siteTitle = encodeURIComponent(`This Caversham home is exactly what you're looking for 🏡`);
+      const refEnc = encodeURIComponent(refUrl);
+      const waShareText = encodeURIComponent(
+        `🏡 Check out this stunning 3-bed family home in Caversham, Reading — private sale, no agent fees, no chain!\n\n${refUrl}\n\n⏳ Best offers deadline: 31 March 2026`
+      );
+
+      const waBtn = document.getElementById('earnShareWhatsApp');
+      const fbBtn = document.getElementById('earnShareFacebook');
+      const twBtn = document.getElementById('earnShareTwitter');
+      const liBtn = document.getElementById('earnShareLinkedIn');
+
+      if (waBtn) waBtn.href = `https://api.whatsapp.com/send?text=${waShareText}`;
+      if (fbBtn) fbBtn.href = `https://www.facebook.com/sharer/sharer.php?u=${refEnc}`;
+      if (twBtn) twBtn.href = `https://twitter.com/intent/tweet?url=${refEnc}&text=${siteTitle}%20%23CavershamProperty%20%23HouseForSale`;
+      if (liBtn) liBtn.href = `https://www.linkedin.com/sharing/share-offsite/?url=${refEnc}`;
+
+      // Claim button → WhatsApp with pre-filled claim message
+      if (claimBtn) {
+        const waNum = ref.whatsapp || CONTACT.whatsapp || '';
+        const claimMsg = encodeURIComponent(
+          `Hi! I'd like to claim the £${reward} referral reward for 40 Sheridan Avenue. My referral code is ${refId}. I have a screenshot of my share post to prove I shared it before the buyer made contact. Please let me know the next steps.`
+        );
+        claimBtn.addEventListener('click', () => {
+          if (filled(waNum)) {
+            window.open(`https://wa.me/${waNum}?text=${claimMsg}`, '_blank', 'noopener');
+          }
+        });
+      }
+
+      // Copy referral link button and input
+      const refInput = document.getElementById('referralLinkInput');
+      const refBtn = document.getElementById('copyRefLink');
+
+      const copyRefHandler = async () => {
+        const val = refInput?.value;
+        if (!val) return;
+        try {
+          await navigator.clipboard.writeText(val);
+          if (refBtn) {
+            showCopyTooltip(refBtn, 'Copied!');
+            refBtn.style.color = 'var(--color-success)';
+            setTimeout(() => { refBtn.style.color = ''; }, 1500);
+          }
+        } catch {
+          // Fallback
+          const ta = document.createElement('textarea');
+          ta.value = val;
+          ta.style.cssText = 'position:fixed;left:-9999px';
+          document.body.appendChild(ta);
+          ta.select();
+          document.execCommand('copy');
+          document.body.removeChild(ta);
+          if (refBtn) {
+            showCopyTooltip(refBtn, 'Copied!');
+            refBtn.style.color = 'var(--color-success)';
+            setTimeout(() => { refBtn.style.color = ''; }, 1500);
+          }
+        }
+      };
+
+      refBtn?.addEventListener('click', copyRefHandler);
+      refInput?.addEventListener('click', copyRefHandler);
+
+      // Floating share toast
+      initShareToast();
+    }
+
+    /* ==============================
+       FLOATING SHARE TOAST
+       One unified entry point — replaces the circular share button.
+       Shows after 2s, stays until user dismisses. After close, a
+       compact pill remains so the offer is never totally hidden.
+       Auto-hides when the Share & Earn section is in view.
+       ============================== */
+    function initShareToast() {
+      const toast = document.getElementById('shareToast');
+      if (!toast) return;
+
+      // Hide the generic floating share bar — the toast replaces it
+      const shareBar = document.getElementById('shareBar');
+      if (shareBar) shareBar.style.display = 'none';
+
+      let suppressedBySection = false;
+      let shown = false;
+
+      function showToast() {
+        if (suppressedBySection) return;
+        shown = true;
+        toast.removeAttribute('hidden');
+        toast.getBoundingClientRect(); // force reflow for transition
+        toast.classList.add('share-toast--visible');
+      }
+
+      function hideToastTemporarily() {
+        if (!shown) return;
+        toast.classList.remove('share-toast--visible');
+      }
+
+      function restoreToast() {
+        if (!shown || toast.hidden) return; // already dismissed by user
+        toast.removeAttribute('hidden');
+        toast.getBoundingClientRect();
+        toast.classList.add('share-toast--visible');
+      }
+
+      function dismissToast() {
+        shown = false;
+        toast.classList.remove('share-toast--visible');
+        toast.addEventListener('transitionend', () => {
+          toast.hidden = true;
+          showMiniPill(); // leave a subtle persistent entry point
+        }, { once: true });
+      }
+
+      function showMiniPill() {
+        const pill = document.getElementById('shareToastPill');
+        if (!pill) return;
+        pill.removeAttribute('hidden');
+        pill.getBoundingClientRect();
+        pill.classList.add('share-toast-pill--visible');
+        pill.addEventListener('click', () => {
+          pill.hidden = true;
+          pill.classList.remove('share-toast-pill--visible');
+          shown = true;
+          toast.removeAttribute('hidden');
+          toast.getBoundingClientRect();
+          toast.classList.add('share-toast--visible');
+        });
+      }
+
+      // Hide toast while the Share & Earn section is visible
+      const section = document.getElementById('shareEarnSection');
+      if (section && 'IntersectionObserver' in window) {
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              suppressedBySection = true;
+              hideToastTemporarily();
+            } else {
+              suppressedBySection = false;
+              restoreToast();
+            }
+          });
+        }, { threshold: 0.1 });
+        observer.observe(section);
+      }
+
+      // Close button
+      document.getElementById('shareToastClose')?.addEventListener('click', dismissToast);
+
+      // CTA — dismiss toast (scroll handled by anchor href)
+      document.getElementById('shareToastCta')?.addEventListener('click', dismissToast);
+
+      // Show after 8s — only once per session (not on every page load)
+      const SESSION_KEY = 'shareToastSeen';
+      if (!sessionStorage.getItem(SESSION_KEY)) {
+        setTimeout(() => {
+          sessionStorage.setItem(SESSION_KEY, '1');
+          showToast();
+        }, 8000);
+      }
+    }
+
+    /* ==============================
+       SCHOOLS SECTION
+       Leaflet map + tabbed table of nearby schools.
+       Data from window.SCHOOLS_DATA (js/schools-data.js)
+       ============================== */
+    function initSchoolsSection() {
+      const schools = window.SCHOOLS_DATA;
+      if (!schools || !schools.length) return;
+      if (typeof L === 'undefined') return; // Leaflet not loaded
+
+      const mapEl = document.getElementById('schools-map');
+      if (!mapEl) return;
+
+      // Property location
+      const PROP_LAT = 51.4777;
+      const PROP_LNG = -0.9793;
+
+      // Initialise map
+      const map = L.map('schools-map', { scrollWheelZoom: false }).setView([PROP_LAT, PROP_LNG], 14);
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> contributors',
+        maxZoom: 18,
+      }).addTo(map);
+
+      // Property home marker
+      const homeIcon = L.divIcon({
+        className: '',
+        html: '<div class="school-marker school-marker--home" title="40 Sheridan Avenue">🏠</div>',
+        iconSize: [32, 32],
+        iconAnchor: [16, 16],
+      });
+      L.marker([PROP_LAT, PROP_LNG], { icon: homeIcon, zIndexOffset: 1000 })
+        .addTo(map)
+        .bindTooltip('40 Sheridan Avenue', { permanent: false, direction: 'top' });
+
+      // Helper: Ofsted → CSS class
+      function ofstedClass(rating) {
+        if (!rating) return 'ofsted-na';
+        const r = rating.toLowerCase();
+        if (r.includes('outstanding')) return 'ofsted-outstanding';
+        if (r.includes('good')) return 'ofsted-good';
+        if (r.includes('requires')) return 'ofsted-requires';
+        if (r.includes('inadequate')) return 'ofsted-inadequate';
+        return 'ofsted-na';
+      }
+
+      // Build markers and table rows
+      const markers = [];
+      let activePhase = 'Primary';
+      let activeRow = null;
+      let activeMarkerIndex = null;
+
+      // Info bar elements
+      const infoBar = document.getElementById('schoolsInfoBar');
+      const infoNum = document.getElementById('schoolsInfoNum');
+      const infoName = document.getElementById('schoolsInfoName');
+      const infoDetail = document.getElementById('schoolsInfoDetail');
+      const infoBadge = document.getElementById('schoolsInfoBadge');
+
+      function showInfoBar(school, num) {
+        if (!infoBar) return;
+        infoNum.textContent = num;
+        infoName.textContent = school.name;
+        infoDetail.textContent = `Ages ${school.ageMin}–${school.ageMax} · ${school.gender} · ${school.distanceMiles} miles`;
+        infoBadge.textContent = school.ofsted;
+        infoBadge.className = 'schools-info-badge ' + ofstedClass(school.ofsted);
+        infoBar.hidden = false;
+      }
+
+      function selectSchool(index) {
+        // Update marker styles
+        markers.forEach((m, i) => {
+          const el = m.marker.getElement();
+          if (el) {
+            const inner = el.querySelector('.school-marker');
+            if (inner) inner.classList.toggle('school-marker--active', i === index);
+          }
+        });
+        // Highlight table row
+        if (activeRow) activeRow.classList.remove('schools-row--active');
+        const tbody = document.getElementById('schoolsTableBody');
+        if (tbody) {
+          const rows = tbody.querySelectorAll('tr');
+          rows.forEach(row => {
+            if (parseInt(row.dataset.schoolIndex) === index) {
+              row.classList.add('schools-row--active');
+              row.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+              activeRow = row;
+            }
+          });
+        }
+        showInfoBar(markers[index].school, markers[index].num);
+        activeMarkerIndex = index;
+      }
+
+      // Create a marker for each school
+      schools.forEach((school, i) => {
+        const cls = ofstedClass(school.ofsted);
+        const icon = L.divIcon({
+          className: '',
+          html: `<div class="school-marker school-marker--num ${cls}" title="${school.name}">${i + 1}</div>`,
+          iconSize: [28, 28],
+          iconAnchor: [14, 14],
+        });
+        const marker = L.marker([school.lat, school.lng], { icon })
+          .addTo(map)
+          .on('click', () => {
+            selectSchool(i);
+            map.panTo([school.lat, school.lng], { animate: true });
+          });
+        markers.push({ marker, school, num: i + 1 });
+      });
+
+      // Render table rows for given phase
+      function renderTable(phase) {
+        const tbody = document.getElementById('schoolsTableBody');
+        if (!tbody) return;
+        const filtered = schools
+          .map((s, i) => ({ ...s, originalIndex: i }))
+          .filter(s => s.phase === phase);
+
+        tbody.innerHTML = filtered.map((school) => {
+          const cls = ofstedClass(school.ofsted);
+          return `<tr data-school-index="${school.originalIndex}" class="schools-row" tabindex="0">
         <td>${school.originalIndex + 1}</td>
         <td><strong>${school.name}</strong></td>
         <td class="hide-mobile">${school.gender}</td>
@@ -1736,34 +1701,34 @@ function initSchoolsSection() {
         <td><span class="ofsted-badge ${cls}">${school.ofsted}</span></td>
         <td>${school.distanceMiles} mi</td>
       </tr>`;
-    }).join('');
+        }).join('');
 
-    // Row click → select on map
-    tbody.querySelectorAll('tr.schools-row').forEach(row => {
-      const handler = () => {
-        const idx = parseInt(row.dataset.schoolIndex);
-        selectSchool(idx);
-        map.flyTo([schools[idx].lat, schools[idx].lng], 15, { animate: true, duration: 0.8 });
-      };
-      row.addEventListener('click', handler);
-      row.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') handler(); });
-    });
-  }
+        // Row click → select on map
+        tbody.querySelectorAll('tr.schools-row').forEach(row => {
+          const handler = () => {
+            const idx = parseInt(row.dataset.schoolIndex);
+            selectSchool(idx);
+            map.flyTo([schools[idx].lat, schools[idx].lng], 15, { animate: true, duration: 0.8 });
+          };
+          row.addEventListener('click', handler);
+          row.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') handler(); });
+        });
+      }
 
-  // Tab switching
-  const tabs = document.querySelectorAll('.schools-tab');
-  tabs.forEach(tab => {
-    tab.addEventListener('click', () => {
-      tabs.forEach(t => { t.classList.remove('active'); t.setAttribute('aria-selected', 'false'); });
-      tab.classList.add('active');
-      tab.setAttribute('aria-selected', 'true');
-      activePhase = tab.dataset.phase;
-      activeRow = null;
-      if (infoBar) infoBar.hidden = true;
+      // Tab switching
+      const tabs = document.querySelectorAll('.schools-tab');
+      tabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+          tabs.forEach(t => { t.classList.remove('active'); t.setAttribute('aria-selected', 'false'); });
+          tab.classList.add('active');
+          tab.setAttribute('aria-selected', 'true');
+          activePhase = tab.dataset.phase;
+          activeRow = null;
+          if (infoBar) infoBar.hidden = true;
+          renderTable(activePhase);
+        });
+      });
+
+      // Initial render
       renderTable(activePhase);
-    });
-  });
-
-  // Initial render
-  renderTable(activePhase);
-}
+    }
