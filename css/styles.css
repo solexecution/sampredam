@@ -2727,9 +2727,19 @@ a:hover {
 /* Table */
 .schools-table-wrap {
   overflow-x: auto;
+  overflow-y: auto;
+  max-height: 480px;
+  /* ~6-7 rows on desktop */
   border-radius: var(--radius-sm);
   border: 1px solid var(--color-border);
   margin-bottom: 1rem;
+}
+
+@media (max-width: 600px) {
+  .schools-table-wrap {
+    max-height: 360px;
+    /* ~5 rows on mobile */
+  }
 }
 
 .schools-table {
@@ -2751,6 +2761,11 @@ a:hover {
   text-transform: uppercase;
   letter-spacing: 0.05em;
   white-space: nowrap;
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  background: var(--color-primary);
+  /* Ensures background covers rows scrolling under it */
 }
 
 .schools-table td {
