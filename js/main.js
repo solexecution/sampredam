@@ -1471,17 +1471,39 @@ function renderShareAndEarnSection() {
     }
   });
 
-  // Copy referral link button
-  document.getElementById('copyRefLink')?.addEventListener('click', () => {
-    const val = document.getElementById('referralLinkInput')?.value;
+  // Copy referral link button and input
+  const refInput = document.getElementById('referralLinkInput');
+  const refBtn = document.getElementById('copyRefLink');
+
+  const copyRefHandler = async () => {
+    const val = refInput?.value;
     if (!val) return;
-    navigator.clipboard.writeText(val).then(() => {
-      const btn = document.getElementById('copyRefLink');
-      if (btn) { btn.style.color = 'var(--color-success)'; setTimeout(() => { btn.style.color = ''; }, 1500); }
-    }).catch(() => {
-      document.getElementById('referralLinkInput')?.select();
-    });
-  });
+    try {
+      await navigator.clipboard.writeText(val);
+      if (refBtn) {
+        showCopyTooltip(refBtn, 'Copied!');
+        refBtn.style.color = 'var(--color-success)';
+        setTimeout(() => { refBtn.style.color = ''; }, 1500);
+      }
+    } catch {
+      // Fallback
+      const ta = document.createElement('textarea');
+      ta.value = val;
+      ta.style.cssText = 'position:fixed;left:-9999px';
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand('copy');
+      document.body.removeChild(ta);
+      if (refBtn) {
+        showCopyTooltip(refBtn, 'Copied!');
+        refBtn.style.color = 'var(--color-success)';
+        setTimeout(() => { refBtn.style.color = ''; }, 1500);
+      }
+    }
+  };
+
+  refBtn?.addEventListener('click', copyRefHandler);
+  refInput?.addEventListener('click', copyRefHandler);
 
   // Floating share toast
   initShareToast();
