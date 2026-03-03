@@ -1956,19 +1956,19 @@ a:hover {
   transform: translateY(0);
 }
 
-.sticky-cta-text {
+.sticky-cta-buttons {
   display: flex;
-  flex-direction: column;
-  gap: 0.1rem;
+  gap: 0.5rem;
+  width: 100%;
 }
 
-.sticky-cta-text strong {
-  font-size: 0.95rem;
-}
-
-.sticky-cta-text span {
-  font-size: 0.78rem;
-  opacity: 0.8;
+.sticky-cta-buttons .btn {
+  flex: 1;
+  text-align: center;
+  justify-content: center;
+  padding: 0.6rem 0.5rem;
+  font-size: 0.85rem;
+  white-space: nowrap;
 }
 
 .btn-sm {
