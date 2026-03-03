@@ -1374,14 +1374,9 @@ function handleBuyerReferral() {
 /* ==============================
    SHARE & EARN SECTION
    ============================== */
-function getOrCreateRefId() {
-  let id = localStorage.getItem('myRefId');
-  if (!id) {
-    const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
-    id = 'REF-' + Array.from({ length: 4 }, () => chars[Math.floor(Math.random() * chars.length)]).join('');
-    localStorage.setItem('myRefId', id);
-  }
-  return id;
+function generateUniqueRefId() {
+  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+  return 'REF-' + Array.from({ length: 4 }, () => chars[Math.floor(Math.random() * chars.length)]).join('');
 }
 
 function renderShareAndEarnSection() {
@@ -1394,7 +1389,7 @@ function renderShareAndEarnSection() {
 
   // Reward amount labels
   const reward = ref.reward || '100';
-  ['referralRewardAmount', 'referralRewardSub', 'claimAmount'].forEach(id => {
+  ['referralRewardSub', 'claimAmount'].forEach(id => {
     const el = document.getElementById(id);
     if (el) el.textContent = reward;
   });
@@ -1422,23 +1417,36 @@ function renderShareAndEarnSection() {
 
   // Generate ref link button
   const generateBtn = document.getElementById('generateRefBtn');
-  const linkBox = document.getElementById('shareLinkBox');
-  const linkInput = document.getElementById('referralLinkInput');
   const earnButtons = document.getElementById('shareEarnButtons');
   const claimBtn = document.getElementById('claimReferralBtn');
 
-  generateBtn?.addEventListener('click', () => {
-    const refId = getOrCreateRefId();
+  generateBtn?.addEventListener('click', async () => {
+    const refId = generateUniqueRefId();
     const baseUrl = SITE.url || window.location.origin;
     const refUrl = `${baseUrl}/?ref=${refId}`;
 
-    // Show the personalised link
-    if (linkInput) linkInput.value = refUrl;
-    if (linkBox) linkBox.removeAttribute('hidden');
+    // Auto-copy the link to clipboard
+    try {
+      await navigator.clipboard.writeText(refUrl);
+      showCopyTooltip(generateBtn, 'Link copied!');
+      generateBtn.style.color = 'var(--color-success)';
+      setTimeout(() => { generateBtn.style.color = ''; }, 1500);
+    } catch {
+      const ta = document.createElement('textarea');
+      ta.value = refUrl;
+      ta.style.cssText = 'position:fixed;left:-9999px';
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand('copy');
+      document.body.removeChild(ta);
+      showCopyTooltip(generateBtn, 'Link copied!');
+      generateBtn.style.color = 'var(--color-success)';
+      setTimeout(() => { generateBtn.style.color = ''; }, 1500);
+    }
+
     if (earnButtons) earnButtons.removeAttribute('hidden');
     if (claimBtn) claimBtn.removeAttribute('hidden');
-    generateBtn.textContent = 'Your link is ready — share below';
-    generateBtn.disabled = true;
+    generateBtn.textContent = 'Link copied — share below';
 
     // Wire share buttons with the referral URL embedded
     const siteTitle = encodeURIComponent(`This Caversham home is exactly what you're looking for 🏡`);
@@ -1463,47 +1471,17 @@ function renderShareAndEarnSection() {
       const claimMsg = encodeURIComponent(
         `Hi! I'd like to claim the £${reward} referral reward for 40 Sheridan Avenue. My referral code is ${refId}. I have a screenshot of my share post to prove I shared it before the buyer made contact. Please let me know the next steps.`
       );
-      claimBtn.addEventListener('click', () => {
+      // Remove any previously attached listeners if button is repeatedly clicked using cloning
+      const newClaimBtn = claimBtn.cloneNode(true);
+      claimBtn.parentNode.replaceChild(newClaimBtn, claimBtn);
+
+      newClaimBtn.addEventListener('click', () => {
         if (filled(waNum)) {
           window.open(`https://wa.me/${waNum}?text=${claimMsg}`, '_blank', 'noopener');
         }
       });
     }
   });
-
-  // Copy referral link button and input
-  const refInput = document.getElementById('referralLinkInput');
-  const refBtn = document.getElementById('copyRefLink');
-
-  const copyRefHandler = async () => {
-    const val = refInput?.value;
-    if (!val) return;
-    try {
-      await navigator.clipboard.writeText(val);
-      if (refBtn) {
-        showCopyTooltip(refBtn, 'Copied!');
-        refBtn.style.color = 'var(--color-success)';
-        setTimeout(() => { refBtn.style.color = ''; }, 1500);
-      }
-    } catch {
-      // Fallback
-      const ta = document.createElement('textarea');
-      ta.value = val;
-      ta.style.cssText = 'position:fixed;left:-9999px';
-      document.body.appendChild(ta);
-      ta.select();
-      document.execCommand('copy');
-      document.body.removeChild(ta);
-      if (refBtn) {
-        showCopyTooltip(refBtn, 'Copied!');
-        refBtn.style.color = 'var(--color-success)';
-        setTimeout(() => { refBtn.style.color = ''; }, 1500);
-      }
-    }
-  };
-
-  refBtn?.addEventListener('click', copyRefHandler);
-  refInput?.addEventListener('click', copyRefHandler);
 
   // Floating share toast
   initShareToast();
