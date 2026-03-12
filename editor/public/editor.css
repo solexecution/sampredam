@@ -121,29 +121,34 @@ body.resizing iframe {
 /* Floating expand button when sidebar is collapsed */
 .sidebar-expand {
   position: fixed;
-  top: 12px;
-  left: 12px;
+  top: 8px;
+  left: 8px;
   z-index: 100;
   background: #1a1a2e;
-  border: 1px solid #3a3a5c;
-  color: #e0e0e0;
-  width: 36px;
-  height: 36px;
-  border-radius: 8px;
+  border: 2px solid #4a4a7c;
+  color: #fff;
+  width: 42px;
+  height: 42px;
+  border-radius: 10px;
   cursor: pointer;
   display: none;
   align-items: center;
   justify-content: center;
-  font-size: 1rem;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-  transition: background 0.15s;
+  font-size: 1.2rem;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.35);
+  transition: background 0.15s, transform 0.15s;
 }
 .sidebar-expand:hover {
   background: #2d2d4a;
+  transform: scale(1.08);
 }
-.editor-layout.sidebar-collapsed ~ .sidebar-expand,
 .sidebar-expand.visible {
   display: flex;
+}
+
+/* Give editor panel room for the expand button when sidebar is collapsed */
+.editor-layout.sidebar-collapsed .editor-panel {
+  padding-left: 60px;
 }
 
 .editor-nav {
