@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Listing Editor</title>
+  <link rel="stylesheet" href="editor.css">
+</head>
+<body>
+  <div class="editor-layout">
+
+    <!-- Sidebar -->
+    <aside class="editor-sidebar">
+      <h1 class="editor-logo">Listing Editor</h1>
+      <nav class="editor-nav">
+        <button class="nav-item active" data-section="property">Property Details</button>
+        <button class="nav-item" data-section="description">Description</button>
+        <button class="nav-item" data-section="features">Key Features</button>
+        <button class="nav-item" data-section="rooms">Rooms</button>
+        <button class="nav-item" data-section="gallery">Gallery &amp; Images</button>
+        <button class="nav-item" data-section="floorplans">Floor Plans</button>
+        <button class="nav-item" data-section="contact">Contact &amp; Viewings</button>
+        <button class="nav-item" data-section="auction">Auction / Deadline</button>
+        <button class="nav-item" data-section="referral">Share &amp; Earn</button>
+        <button class="nav-item" data-section="faq">FAQ</button>
+        <button class="nav-item" data-section="site">Site Settings</button>
+      </nav>
+      <div class="editor-actions">
+        <button id="saveBtn" class="btn-save">Save Changes</button>
+        <button id="deployBtn" class="btn-deploy">Deploy to Live Site</button>
+      </div>
+      <div id="statusBar" class="status-bar"></div>
+    </aside>
+
+    <!-- Form panel -->
+    <main class="editor-panel" id="editorPanel">
+      <div class="loading">Loading config...</div>
+    </main>
+
+    <!-- Live preview -->
+    <section class="editor-preview">
+      <div class="preview-toolbar">
+        <button id="refreshPreview" title="Refresh preview">Refresh Preview</button>
+        <span class="preview-url" id="previewUrl"></span>
+      </div>
+      <iframe id="previewFrame" src="/preview/index.html"></iframe>
+    </section>
+
+  </div>
+
+  <!-- Toast container -->
+  <div id="toastContainer" class="toast-container"></div>
+
+  <!-- Deploy modal -->
+  <div id="deployModal" class="modal-overlay" hidden>
+    <div class="modal">
+      <h3>Deploy to Live Site</h3>
+      <p id="deployChanges"></p>
+      <div class="form-group">
+        <label for="commitMsg">Commit message</label>
+        <input type="text" id="commitMsg" value="Update listing via editor" placeholder="Describe your changes">
+      </div>
+      <div class="modal-actions">
+        <button id="deployConfirm" class="btn-save">Deploy Now</button>
+        <button id="deployCancel" class="btn-secondary">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="editor.js"></script>
+</body>
+</html>

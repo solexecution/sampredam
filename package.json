@@ -1,0 +1,16 @@
+{
+  "name": "property-listing-editor",
+  "version": "1.0.0",
+  "description": "Local editor for property listing template",
+  "scripts": {
+    "start": "node editor/server.js",
+    "dev": "node --watch editor/server.js"
+  },
+  "dependencies": {
+    "express": "^4.21.0",
+    "multer": "^1.4.5-lts.1"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

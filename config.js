@@ -13,50 +13,30 @@
    ===================================================================== */
 
 window.CONFIG = {
-
-  // ==================================================================
-  // SITE & SERVICES
-  // ==================================================================
-  site: {
-    url: "https://40sheridan.xyz",  // Your live site URL
-    umamiWebsiteId: "",   // Get from https://cloud.umami.is → Add website → Copy ID
-  },
-
-  // ==================================================================
-  // PROPERTY DETAILS
-  // ==================================================================
+  site: { url: "https://40sheridan.xyz", umamiWebsiteId: "" },
   property: {
-    streetAddress: "40 Sheridan Avenue",           // e.g. "42 Sheridan Avenue"
+    streetAddress: "40 Sheridan Avenue",
     locality: "Caversham, Reading",
     postcode: "RG4 7QD",
-    propertyType: "Detached",           // e.g. "Semi-Detached", "Detached", "Terraced", "Flat"
-    price: "525,000",           // e.g. "550,000" (just the number, £ is added automatically)
-    bedrooms: "3",           // e.g. "3"
-    bathrooms: "1",           // e.g. "2"
-    receptionRooms: "1",           // e.g. "2"
-    floorAreaSqFt: "860",           // e.g. "1,200"
-    floorAreaSqM: "80",           // e.g. "111"
-    garden: "Sunny rear garden",             // e.g. "South-facing, rear"
-    gardenFacing: "Sunny",           // shown in highlights strip — e.g. "South", "Sunny", "West"
-    parking: "2 cars",               // keep short — shown in highlights strip
-    walkToStation: "",               // e.g. "12 min" walk/drive to Reading station (leave "" to hide)
-    epcRating: "D",           // e.g. "C"
-    councilTaxBand: "D",           // e.g. "D"
-    broadband: "Full fibre (FTTP) — up to 1 Gbps available",  // leave "" to hide
-    tenure: "Freehold",           // e.g. "Freehold" or "Leasehold"
-    yearBuilt: "1960s",           // e.g. "1930s" (optional)
-    chainStatus: "No chain",           // e.g. "No chain" or "Chain of 2"
-
-    // Optional: override the price-context blurb in the Location section.
-    // HTML allowed. Leave "" to use the default text.
-    priceContext: "Homes on Sheridan Avenue regularly sell above asking \u2014 <strong>24 Sheridan Ave</strong> sold for <strong>&pound;592,500</strong> in 2023 and <strong>76 Sheridan Ave</strong> sold for <strong>&pound;650,000</strong> in March 2025. At &pound;525,000 this home \u2014 with a garden office, no chain, and no agent fees \u2014 represents exceptional value.",
+    propertyType: "Detached",
+    price: "525,000",
+    bedrooms: "3",
+    bathrooms: "1",
+    receptionRooms: "1",
+    floorAreaSqFt: "860",
+    floorAreaSqM: "80",
+    garden: "Sunny rear garden",
+    gardenFacing: "Sunny",
+    parking: "2 cars",
+    walkToStation: "",
+    epcRating: "D",
+    councilTaxBand: "D",
+    broadband: "Full fibre (FTTP) — up to 1 Gbps available",
+    tenure: "Freehold",
+    yearBuilt: "1960s",
+    chainStatus: "No chain",
+    priceContext: "Homes on Sheridan Avenue regularly sell above asking — <strong>24 Sheridan Ave</strong> sold for <strong>£592,500</strong> in 2023 and <strong>76 Sheridan Ave</strong> sold for <strong>£650,000</strong> in March 2025. At £525,000 this home — with a garden office, no chain, and no agent fees — represents exceptional value.",
   },
-
-  // ==================================================================
-  // PROPERTY DESCRIPTION
-  // ==================================================================
-  // Each string is a separate paragraph. Remove or add as needed.
-  // Leave the array empty [] to hide the description section.
   description: [
     "Step through the front door into a welcoming, light-filled hallway — the kind that immediately makes you feel at home. This beautifully presented family house offers generous, well-proportioned rooms across every floor.",
     "The heart of the home is a stunning open-plan kitchen-diner fitted with contemporary units and quality built-in appliances. French doors open directly onto a sun terrace, seamlessly bringing the garden inside — perfect for weekend BBQs and lazy summer evenings.",
@@ -64,46 +44,58 @@ window.CONFIG = {
     "Outside, the large private rear garden has a sunny aspect with mature planting, a lawned area ideal for children, and a generous paved patio made for al fresco dining.",
     "The standout feature is a <strong>fully insulated garden office with floor-to-ceiling double glazing</strong> across two rooms — a rare and versatile space equally suited to remote working, a gym, studio, or creative retreat. The private driveway accommodates two cars with ease.",
   ],
-
-  // ==================================================================
-  // KEY FEATURES (shown as cards below property details)
-  // ==================================================================
-  // Each feature: { title, description, icon }
-  // icon options: "kitchen", "garden", "glazing", "heating", "parking", "rooms"
-  // Set to [] to hide the features section.
   features: [
-    { title: "Garden Office (2 rooms)", description: "Fully insulated, floor-to-ceiling double-glazed garden office — two rooms ideal for remote working, a studio or a gym. A rare find in this area.", icon: "glazing" },
-    { title: "Sunny Garden & Patio", description: "Large private garden with a sunny aspect, mature planting and fruit trees, plus a generous paved patio — ideal for al fresco dining and summer entertaining.", icon: "garden" },
-    { title: "No Chain · Motivated Sellers", description: "Private, chain-free sale — no agent fees built into the price. Deal directly with the owners for a faster, simpler transaction.", icon: "parking" },
+    {
+      title: "Garden Office (2 rooms)",
+      description: "Fully insulated, floor-to-ceiling double-glazed garden office — two rooms ideal for remote working, a studio or a gym. A rare find in this area.",
+      icon: "glazing",
+    },
+    {
+      title: "Sunny Garden & Patio",
+      description: "Large private garden with a sunny aspect, mature planting and fruit trees, plus a generous paved patio — ideal for al fresco dining and summer entertaining.",
+      icon: "garden",
+    },
+    {
+      title: "No Chain · Motivated Sellers",
+      description: "Private, chain-free sale — no agent fees built into the price. Deal directly with the owners for a faster, simpler transaction.",
+      icon: "parking",
+    },
   ],
-
-  // ==================================================================
-  // ROOM-BY-ROOM BREAKDOWN
-  // ==================================================================
-  // Each room: { name, dimensions, description }
-  // Leave dimensions "" to hide them. Leave the array [] to hide this section.
   rooms: [
     { name: "Hallway", dimensions: "", description: "Welcoming entrance flooded with natural light" },
     { name: "Living Room", dimensions: "", description: "Spacious reception room with a characterful multi-fuel stove" },
-    { name: "Kitchen/Diner", dimensions: "", description: "Open-plan with L-shaped countertop, built-in hob, oven and fridge. French doors to the garden" },
+    {
+      name: "Kitchen/Diner",
+      dimensions: "",
+      description: "Open-plan with L-shaped countertop, built-in hob, oven and fridge. French doors to the garden",
+    },
     { name: "Primary Bedroom", dimensions: "", description: "South-facing master bedroom with serene garden views" },
     { name: "Bedroom 2", dimensions: "", description: "Well-proportioned double bedroom overlooking the garden" },
     { name: "Bedroom 3", dimensions: "", description: "South-facing third bedroom, ideal as a child's room or home office" },
     { name: "Bathroom", dimensions: "", description: "Modern family bathroom serving all three bedrooms" },
     { name: "Patio", dimensions: "", description: "Generous paved sun terrace — ideal for BBQs and summer evenings" },
-    { name: "Garden", dimensions: "", description: "Large private rear garden with sunny aspect, mature planting, lawn and fruit trees" },
+    {
+      name: "Garden",
+      dimensions: "",
+      description: "Large private rear garden with sunny aspect, mature planting, lawn and fruit trees",
+    },
     { name: "Front Garden", dimensions: "", description: "Landscaped front garden with south-facing seating area" },
-    { name: "Driveway", dimensions: "", description: "Private driveway fitting two cars comfortably, with a roofed storage area for bikes and sports equipment" },
-    { name: "Garden Office — Room 1", dimensions: "2.5m × 3m", description: "Focus room for desk work. Fully insulated, floor-to-ceiling double glazing, peaceful garden setting" },
-    { name: "Garden Office — Room 2", dimensions: "3.4m × 3m", description: "Meeting or creative room. Fully insulated, floor-to-ceiling double glazing, with entrance doors" },
+    {
+      name: "Driveway",
+      dimensions: "",
+      description: "Private driveway fitting two cars comfortably, with a roofed storage area for bikes and sports equipment",
+    },
+    {
+      name: "Garden Office — Room 1",
+      dimensions: "2.5m × 3m",
+      description: "Focus room for desk work. Fully insulated, floor-to-ceiling double glazing, peaceful garden setting",
+    },
+    {
+      name: "Garden Office — Room 2",
+      dimensions: "3.4m × 3m",
+      description: "Meeting or creative room. Fully insulated, floor-to-ceiling double glazing, with entrance doors",
+    },
   ],
-
-  // ==================================================================
-  // GALLERY IMAGES
-  // ==================================================================
-  // Add your photos to the images/gallery/ folder, then list them here.
-  // Each entry: { src: "images/gallery/filename.jpg", alt: "Description" }
-  // Leave empty [] and placeholder boxes will show instead.
   gallery: [
     { src: "images/gallery/balmore_walk_1.jpg", alt: "Front Exterior — View 1" },
     { src: "images/gallery/balmore_walk_2.jpg", alt: "Front Exterior — View 2" },
@@ -118,10 +110,6 @@ window.CONFIG = {
     { src: "images/gallery/office_room_1.jpg", alt: "Garden Office — Room 1" },
     { src: "images/gallery/office_room_1a.jpg", alt: "Garden Office — Room 2" },
   ],
-
-  // ==================================================================
-  // HERO IMAGES (cycled every 10 seconds)
-  // ==================================================================
   heroImages: [
     "images/gallery/balmore_walk_2.jpg",
     "images/gallery/back_garden.png",
@@ -130,129 +118,60 @@ window.CONFIG = {
     "images/gallery/garden_office_front.png",
     "images/gallery/hall_staircase.jpg",
   ],
-
-  // ==================================================================
-  // FLOOR PLANS
-  // ==================================================================
-  // Each entry: { label, src }
-  // src: path to image e.g. "images/floorplan-ground.jpg", or "" for placeholder.
   floorPlans: [
     { label: "Ground Floor", src: "images/gallery/Caversham_plans.jpg" },
     { label: "First Floor", src: "images/gallery/Caversham_plans_f2.jpg" },
     { label: "Garden Office", src: "images/gallery/garden_office_plan.svg" },
   ],
-
-  // ==================================================================
-  // OPEN HOUSE SLOTS
-  // ==================================================================
-  // Pre-set viewing slots shown as one-click WhatsApp buttons.
-  // Each entry: { date: "Saturday 1 March 2026", time: "11:00 – 13:00" }
-  // Leave empty [] to hide the section entirely.
   openHouse: [
     { date: "Saturday 1 March 2026", time: "11:00 – 14:00" },
     { date: "Sunday 2 March 2026", time: "11:00 – 13:00" },
   ],
-
-  // ==================================================================
-  // SOCIAL PROOF / URGENCY WIDGET
-  // ==================================================================
-  // Shown as a small trust band near the booking CTA.
-  // viewingsBooked: number of physical viewings booked so far (update regularly)
-  // The site page view count comes from Umami automatically.
-  socialProof: {
-    viewingsBooked: 3,   // Update this as new viewings are confirmed
-    showWidget: true,    // Set to false to hide the widget entirely
-  },
-
-  // Placeholder labels shown when no images are provided yet
+  socialProof: { viewingsBooked: 3, showWidget: true },
   galleryPlaceholders: [
-    "Front Exterior", "Living Room", "Kitchen", "Primary Bedroom",
-    "Second Bedroom", "Bathroom", "Garden", "Street View",
+    "Front Exterior",
+    "Living Room",
+    "Kitchen",
+    "Primary Bedroom",
+    "Second Bedroom",
+    "Bathroom",
+    "Garden",
+    "Street View",
   ],
-
-  // ==================================================================
-  // CONTACT DETAILS
-  // ==================================================================
   contact: {
-    phone: "+447879773260",   // e.g. "+447123456789" (used in tel: link)
-    phoneDisplay: "07879773260",   // e.g. "07123 456 789" (shown on page)
-    whatsapp: "447879773260",   // e.g. "447123456789" (no + or spaces, used in wa.me link)
-    email: "vupointt@gmail.com",   // e.g. "john@example.com"
+    phone: "+447879773260",
+    phoneDisplay: "07879773260",
+    whatsapp: "447879773260",
+    email: "vupointt@gmail.com",
   },
-
-  // ==================================================================
-  // RUNNING COSTS (shown in FAQ)
-  // ==================================================================
-  runningCosts: {
-    councilTaxYearly: "2,100",   // e.g. "2,100"
-    energyBillsMonthly: "150",   // e.g. "150"
-    waterBillsYearly: "400",   // e.g. "400"
-  },
-
-  // ==================================================================
-  // FAQ OVERRIDES
-  // ==================================================================
-  // Leave empty "" to use default answer text.
-  // Set to a string to override. Set to false to hide that question entirely.
+  runningCosts: { councilTaxYearly: "2,100", energyBillsMonthly: "150", waterBillsYearly: "400" },
   faq: {
-    askingPrice: "",   // Override the asking price FAQ answer
-    tenure: "",   // Override the tenure FAQ answer
-    epc: "The property has an energy rating of D. You can <a href='https://find-energy-certificate.service.gov.uk/energy-certificate/8583-6625-4040-1504-7922' target='_blank' rel='noopener'>view the official government EPC certificate here</a>.",   // Override the EPC FAQ answer
-    viewings: "",   // Override the viewings FAQ answer
-    privateSale: "",   // Override the private sale FAQ answer
-    included: "",   // Override the included items FAQ answer
-    chain: "",   // Override the chain status FAQ answer
-    runningCosts: "",   // Override the running costs FAQ answer (auto-generated if empty but runningCosts above are filled)
-    survey: "",   // Override the survey FAQ answer
-    makingOffer: "",   // Override the making an offer FAQ answer
+    askingPrice: "",
+    tenure: "",
+    epc: "The property has an energy rating of D. You can <a href='https://find-energy-certificate.service.gov.uk/energy-certificate/8583-6625-4040-1504-7922' target='_blank' rel='noopener'>view the official government EPC certificate here</a>.",
+    viewings: "",
+    privateSale: "",
+    included: "",
+    chain: "",
+    runningCosts: "",
+    survey: "",
+    makingOffer: "",
   },
-
-  // ==================================================================
-  // EPC CERTIFICATE
-  // ==================================================================
-  epcCertificateUrl: "https://find-energy-certificate.service.gov.uk/energy-certificate/8583-6625-4040-1504-7922",   // e.g. "https://find-energy-certificate.service.gov.uk/energy-certificate/XXXX-XXXX-XXXX"
-
-  // ==================================================================
-  // AUCTION / DEADLINE SALE
-  // ==================================================================
-  // Set enabled: false to completely hide the auction banner.
+  epcCertificateUrl: "https://find-energy-certificate.service.gov.uk/energy-certificate/8583-6625-4040-1504-7922",
   auction: {
     enabled: true,
-
-    // ISO 8601 date-time — UK local time. Format: "YYYY-MM-DDTHH:MM:SS"
     deadline: "2026-03-31T18:00:00",
-
-    // Label shown above the countdown timer
     label: "Best Offers By",
-
-    // Guide price framing (£ is added automatically)
     guidePrice: "525,000",
     guidePriceLabel: "Offers in excess of",
-
-    // Hero badge text (replaces the tenure/chain badge while auction is active)
-    heroBadge: "No Chain \u00b7 Best Offers By 31 March",
-
-    // CTA button label inside the auction banner
+    heroBadge: "No Chain · Best Offers By 31 March",
     ctaText: "Submit Your Best Offer",
-
-    // Small print shown below the CTA
     smallPrint: "All offers considered. Sellers reserve the right to accept any offer at any time before the deadline.",
   },
-
-  // ==================================================================
-  // REFERRAL REWARD
-  // ==================================================================
-  // Set enabled: false to hide the Share & Earn section entirely.
   referral: {
     enabled: true,
-
-    // Reward amount in £ shown in the UI
     reward: "100",
-
-    // WhatsApp number for claim messages (no + or spaces)
     whatsapp: "447879773260",
-
-    // Terms & Conditions bullets — shown in the T&C modal
     terms: [
       "Share must be made before the sale completes.",
       "You must provide a screenshot of your share post with a visible date/timestamp proving you shared before the buyer made contact.",
@@ -263,7 +182,6 @@ window.CONFIG = {
       "No cash alternative is offered in advance of completion.",
     ],
   },
-
 };
 
 
