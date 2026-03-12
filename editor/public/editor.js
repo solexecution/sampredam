@@ -51,18 +51,18 @@ async function init() {
   }
 }
 
-// ===== Section ↔ Preview mapping =====
+// ===== Section ↔ Preview mapping (granular targets inside the page) =====
 const sectionToPreviewId = {
   property:    'hero',
-  description: 'details',
-  features:    'details',
-  rooms:       'details',
-  gallery:     'gallery',
-  floorplans:  'details',
+  description: 'detailsDescription',
+  features:    'featuresGrid',
+  rooms:       'roomBreakdown',
+  gallery:     'galleryGrid',
+  floorplans:  'floorPlans',
   contact:     'contact',
   auction:     'auctionBanner',
   referral:    'shareEarnSection',
-  faq:         'faq',
+  faq:         'faqList',
   site:        null,
 };
 
