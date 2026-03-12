@@ -2,11 +2,75 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #f0f2f5; color: #1a1a2e; height: 100vh; overflow: hidden; }
 
-/* ===== Three-Panel Layout ===== */
+/* ===== Flexible Three-Panel Layout ===== */
 .editor-layout {
   display: grid;
-  grid-template-columns: 220px 1fr 1fr;
+  grid-template-columns:
+    var(--sidebar-w, 220px)
+    var(--handle-size, 6px)
+    var(--editor-w, 1fr)
+    var(--handle-size, 6px)
+    var(--preview-w, 1fr);
   height: 100vh;
+}
+
+/* Pin each item to its grid column so display:none doesn't shift them */
+.editor-sidebar   { grid-column: 1; }
+#handleSidebar    { grid-column: 2; }
+.editor-panel     { grid-column: 3; }
+#handlePreview    { grid-column: 4; }
+.editor-preview   { grid-column: 5; }
+
+/* Collapsed sidebar */
+.editor-layout.sidebar-collapsed {
+  grid-template-columns:
+    0px 0px 1fr 6px 1fr;
+}
+.editor-layout.sidebar-collapsed .editor-sidebar {
+  display: none;
+}
+.editor-layout.sidebar-collapsed #handleSidebar {
+  display: none;
+}
+
+/* ===== Resize Handles ===== */
+.resize-handle {
+  width: 6px;
+  background: #e2e4e8;
+  cursor: col-resize;
+  position: relative;
+  z-index: 20;
+  flex-shrink: 0;
+  transition: background 0.15s;
+}
+.resize-handle:hover,
+.resize-handle.dragging {
+  background: #2563eb;
+}
+.resize-handle::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 2px;
+  height: 32px;
+  background: #b0b4bc;
+  border-radius: 2px;
+  transition: background 0.15s;
+}
+.resize-handle:hover::after,
+.resize-handle.dragging::after {
+  background: #fff;
+}
+
+/* Prevent text selection while dragging */
+body.resizing {
+  cursor: col-resize !important;
+  user-select: none !important;
+}
+body.resizing iframe {
+  pointer-events: none !important;
 }
 
 /* ===== Sidebar ===== */
@@ -15,18 +79,77 @@ body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-
   color: #e0e0e0;
   display: flex;
   flex-direction: column;
-  overflow-y: auto;
+  overflow: hidden;
+  min-width: 0;
+}
+.sidebar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 12px 10px 16px;
+  border-bottom: 1px solid #2d2d4a;
+  flex-shrink: 0;
 }
 .editor-logo {
   font-size: 1.1rem;
   font-weight: 700;
-  padding: 16px 16px 12px;
   color: #fff;
-  border-bottom: 1px solid #2d2d4a;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
+.sidebar-toggle {
+  background: none;
+  border: 1px solid #3a3a5c;
+  color: #b0b0cc;
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+  flex-shrink: 0;
+  transition: background 0.15s, color 0.15s;
+}
+.sidebar-toggle:hover {
+  background: #3a3a5c;
+  color: #fff;
+}
+
+/* Floating expand button when sidebar is collapsed */
+.sidebar-expand {
+  position: fixed;
+  top: 12px;
+  left: 12px;
+  z-index: 100;
+  background: #1a1a2e;
+  border: 1px solid #3a3a5c;
+  color: #e0e0e0;
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  cursor: pointer;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  transition: background 0.15s;
+}
+.sidebar-expand:hover {
+  background: #2d2d4a;
+}
+.editor-layout.sidebar-collapsed ~ .sidebar-expand,
+.sidebar-expand.visible {
+  display: flex;
+}
+
 .editor-nav {
   flex: 1;
   padding: 8px 0;
+  overflow-y: auto;
 }
 .nav-item {
   display: block;
@@ -39,6 +162,9 @@ body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-
   font-size: 0.875rem;
   cursor: pointer;
   transition: background 0.15s, color 0.15s;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .nav-item:hover { background: #2d2d4a; color: #fff; }
 .nav-item.active { background: #3a3a5c; color: #fff; font-weight: 600; }
@@ -48,6 +174,7 @@ body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-
   display: flex;
   flex-direction: column;
   gap: 8px;
+  flex-shrink: 0;
 }
 .status-bar {
   padding: 8px 12px;
@@ -61,6 +188,7 @@ body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-
   overflow-y: auto;
   padding: 24px 28px;
   background: #fff;
+  min-width: 0;
 }
 .editor-panel .loading {
   color: #888;
@@ -74,6 +202,7 @@ body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-
   flex-direction: column;
   border-left: 1px solid #ddd;
   background: #e8e8e8;
+  min-width: 0;
 }
 .preview-toolbar {
   display: flex;
@@ -114,7 +243,7 @@ body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-
   font-size: 0.8rem;
 }
 .preview-toolbar button:not(.preview-tab):hover { background: #eee; }
-.preview-url { font-size: 0.75rem; color: #888; flex: 1; text-align: right; }
+.preview-url { font-size: 0.75rem; color: #888; flex: 1; text-align: right; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
 /* Preview frames container */
 .preview-frames {
@@ -176,6 +305,7 @@ body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-
   font-weight: 600;
   cursor: pointer;
   transition: background 0.15s;
+  white-space: nowrap;
 }
 .btn-save:hover { background: #1d4ed8; }
 .btn-save.unsaved { background: #dc2626; }
@@ -189,6 +319,7 @@ body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-
   font-size: 0.875rem;
   font-weight: 600;
   cursor: pointer;
+  white-space: nowrap;
 }
 .btn-deploy:hover { background: #047857; }
 .btn-secondary {

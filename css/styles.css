@@ -56,6 +56,11 @@ html {
     animation-duration: 0.01ms !important;
     transition-duration: 0.01ms !important;
   }
+
+  /* Hero crossfade must stay smooth even with reduced-motion */
+  .hero-bg {
+    transition-duration: 1.8s !important;
+  }
 }
 
 body {

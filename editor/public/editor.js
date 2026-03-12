@@ -43,6 +43,8 @@ async function init() {
     bindPreviewHighlight();
     bindUnsavedWarning();
     updatePreviewUrl();
+    initResizablePanels();
+    initSidebarToggle();
   } catch (err) {
     document.getElementById('editorPanel').innerHTML =
       `<div class="loading" style="color:red">Failed to load config: ${err.message}</div>`;
@@ -343,5 +345,151 @@ function toast(message, type = 'info') {
 
 // Expose toast globally for section components
 window.__toast = toast;
+
+// ===== Resizable Panels =====
+const STORAGE_KEY = 'editor-panel-sizes';
+const MIN_SIDEBAR = 140;
+const MAX_SIDEBAR = 360;
+const MIN_PANEL = 280;
+
+function initResizablePanels() {
+  const layout = document.getElementById('editorLayout');
+  const sidebar = document.getElementById('editorSidebar');
+  const editor = document.getElementById('editorPanel');
+  const preview = document.getElementById('editorPreview');
+  const handleSidebar = document.getElementById('handleSidebar');
+  const handlePreview = document.getElementById('handlePreview');
+
+  // Restore saved sizes
+  const saved = loadPanelSizes();
+  if (saved) applyPanelSizes(saved);
+
+  // Sidebar ↔ Editor handle
+  makeDraggable(handleSidebar, (deltaX, startState) => {
+    const newSidebarW = Math.max(MIN_SIDEBAR, Math.min(MAX_SIDEBAR, startState.sidebarW + deltaX));
+    const totalFlex = startState.editorW + startState.previewW;
+    const editorDelta = startState.sidebarW - newSidebarW;
+    const newEditorW = Math.max(MIN_PANEL, startState.editorW + editorDelta);
+
+    applyPanelSizes({
+      sidebarW: newSidebarW,
+      editorW: newEditorW,
+      previewW: startState.previewW,
+    });
+  });
+
+  // Editor ↔ Preview handle
+  makeDraggable(handlePreview, (deltaX, startState) => {
+    const total = startState.editorW + startState.previewW;
+    const newEditorW = Math.max(MIN_PANEL, Math.min(total - MIN_PANEL, startState.editorW + deltaX));
+    const newPreviewW = total - newEditorW;
+
+    applyPanelSizes({
+      sidebarW: startState.sidebarW,
+      editorW: newEditorW,
+      previewW: newPreviewW,
+    });
+  });
+
+  function makeDraggable(handle, onDrag) {
+    let startX, startState;
+
+    handle.addEventListener('mousedown', (e) => {
+      e.preventDefault();
+      startX = e.clientX;
+      startState = getCurrentSizes();
+      handle.classList.add('dragging');
+      document.body.classList.add('resizing');
+
+      const onMouseMove = (e) => {
+        const deltaX = e.clientX - startX;
+        onDrag(deltaX, startState);
+      };
+
+      const onMouseUp = () => {
+        handle.classList.remove('dragging');
+        document.body.classList.remove('resizing');
+        document.removeEventListener('mousemove', onMouseMove);
+        document.removeEventListener('mouseup', onMouseUp);
+        savePanelSizes(getCurrentSizes());
+      };
+
+      document.addEventListener('mousemove', onMouseMove);
+      document.addEventListener('mouseup', onMouseUp);
+    });
+  }
+
+  function getCurrentSizes() {
+    return {
+      sidebarW: sidebar.getBoundingClientRect().width,
+      editorW: editor.getBoundingClientRect().width,
+      previewW: preview.getBoundingClientRect().width,
+    };
+  }
+}
+
+function applyPanelSizes(sizes) {
+  const layout = document.getElementById('editorLayout');
+  if (layout.classList.contains('sidebar-collapsed')) {
+    // When collapsed, use fr units so editor+preview split the full width
+    layout.style.gridTemplateColumns = `0px 0px 1fr 6px 1fr`;
+  } else {
+    layout.style.gridTemplateColumns =
+      `${sizes.sidebarW}px 6px ${sizes.editorW}px 6px ${sizes.previewW}px`;
+  }
+}
+
+function savePanelSizes(sizes) {
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(sizes)); } catch (_) {}
+}
+
+function loadPanelSizes() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    return raw ? JSON.parse(raw) : null;
+  } catch (_) { return null; }
+}
+
+// ===== Sidebar Toggle =====
+function initSidebarToggle() {
+  const layout = document.getElementById('editorLayout');
+  const toggleBtn = document.getElementById('sidebarToggle');
+
+  // Create the floating expand button (shown when collapsed)
+  const expandBtn = document.createElement('button');
+  expandBtn.className = 'sidebar-expand';
+  expandBtn.title = 'Expand sidebar';
+  expandBtn.innerHTML = '&#x2630;'; // hamburger icon ☰
+  document.body.appendChild(expandBtn);
+
+  // Restore collapsed state
+  const wasCollapsed = localStorage.getItem('editor-sidebar-collapsed') === 'true';
+  if (wasCollapsed) collapseSidebar(true);
+
+  toggleBtn.addEventListener('click', () => collapseSidebar());
+  expandBtn.addEventListener('click', () => expandSidebar());
+
+  function collapseSidebar() {
+    layout.classList.add('sidebar-collapsed');
+    expandBtn.classList.add('visible');
+    localStorage.setItem('editor-sidebar-collapsed', 'true');
+    // Collapsed grid: sidebar+handle gone, editor+preview split evenly
+    layout.style.gridTemplateColumns = '0px 0px 1fr 6px 1fr';
+  }
+
+  function expandSidebar() {
+    layout.classList.remove('sidebar-collapsed');
+    expandBtn.classList.remove('visible');
+    localStorage.setItem('editor-sidebar-collapsed', 'false');
+    // Restore saved sizes or use defaults
+    const sizes = loadPanelSizes();
+    if (sizes) {
+      layout.style.gridTemplateColumns =
+        `${sizes.sidebarW}px 6px ${sizes.editorW}px 6px ${sizes.previewW}px`;
+    } else {
+      layout.style.gridTemplateColumns = '';
+    }
+  }
+}
 
 init();
