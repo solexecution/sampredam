@@ -1148,38 +1148,67 @@ function initHeroCarousel() {
   const intervalTime = 10000; // 10 seconds
   let activeBg = bg1;
   let inactiveBg = bg2;
+  let transitioning = false;
 
   // Set initial image
   bg1.style.backgroundImage = `url('${images[0]}')`;
   bg1.style.opacity = '1';
+  bg1.style.zIndex = '1';
   bg2.style.opacity = '0';
+  bg2.style.zIndex = '0';
 
   if (images.length < 2) return;
 
-  // Preload remaining images
-  images.slice(1).forEach(src => {
+  // Preload and decode all images upfront
+  const preloaded = images.map(src => {
     const img = new Image();
     img.src = src;
+    return img;
   });
 
-  setInterval(() => {
+  function crossfade() {
+    if (transitioning) return;
+    transitioning = true;
+
     currentIdx = (currentIdx + 1) % images.length;
     const nextImage = images[currentIdx];
+    const preloadImg = preloaded[currentIdx];
 
-    // Set image on the hidden layer first, then crossfade after paint
-    inactiveBg.style.backgroundImage = `url('${nextImage}')`;
-    requestAnimationFrame(() => {
+    // Ensure the image is fully decoded before we show it
+    const doTransition = () => {
+      // Put the next image on the hidden layer
+      inactiveBg.style.backgroundImage = `url('${nextImage}')`;
+      // Bring the hidden layer to front (above current)
+      inactiveBg.style.zIndex = '1';
+      activeBg.style.zIndex = '0';
+
+      // Wait one frame for the background to be painted, then fade in
       requestAnimationFrame(() => {
         inactiveBg.style.opacity = '1';
         activeBg.style.opacity = '0';
 
-        // Swap roles
-        let temp = activeBg;
-        activeBg = inactiveBg;
-        inactiveBg = temp;
+        // Swap roles after the transition completes
+        setTimeout(() => {
+          let temp = activeBg;
+          activeBg = inactiveBg;
+          inactiveBg = temp;
+          transitioning = false;
+        }, 2000); // match CSS transition duration
       });
-    });
-  }, intervalTime);
+    };
+
+    // Use decode() API if available — guarantees image is ready to render
+    if (preloadImg.decode) {
+      preloadImg.decode().then(doTransition).catch(doTransition);
+    } else if (preloadImg.complete) {
+      doTransition();
+    } else {
+      preloadImg.onload = doTransition;
+      preloadImg.onerror = doTransition;
+    }
+  }
+
+  setInterval(crossfade, intervalTime);
 }
 
 /* --- Floor Plan Lightbox --- */

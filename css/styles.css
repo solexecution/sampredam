@@ -290,7 +290,8 @@ a:hover {
   inset: 0;
   background-size: cover;
   background-position: center top;
-  transition: opacity 2s ease-in-out;
+  transition: opacity 1.8s ease-in-out;
+  will-change: opacity;
   z-index: 0;
 }
 
