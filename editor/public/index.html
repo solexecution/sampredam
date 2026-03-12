@@ -37,13 +37,27 @@
       <div class="loading">Loading config...</div>
     </main>
 
-    <!-- Live preview -->
+    <!-- Preview panel -->
     <section class="editor-preview">
       <div class="preview-toolbar">
-        <button id="refreshPreview" title="Refresh preview">Refresh Preview</button>
+        <div class="preview-tabs">
+          <button class="preview-tab active" id="tabEditing" title="Your local edits">Editing</button>
+          <button class="preview-tab" id="tabLive" title="Currently published version">Live</button>
+          <button class="preview-tab" id="tabSplit" title="Side by side comparison">Split</button>
+        </div>
+        <button id="refreshPreview" title="Refresh preview">Refresh</button>
         <span class="preview-url" id="previewUrl"></span>
       </div>
-      <iframe id="previewFrame" src="/preview/index.html"></iframe>
+      <div class="preview-frames">
+        <div class="preview-frame-wrap" id="editingWrap">
+          <div class="frame-label">Editing</div>
+          <iframe id="previewFrame" src="/preview/index.html"></iframe>
+        </div>
+        <div class="preview-frame-wrap" id="liveWrap" hidden>
+          <div class="frame-label frame-label-live">Live</div>
+          <iframe id="liveFrame"></iframe>
+        </div>
+      </div>
     </section>
 
   </div>

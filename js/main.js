@@ -1166,17 +1166,19 @@ function initHeroCarousel() {
     currentIdx = (currentIdx + 1) % images.length;
     const nextImage = images[currentIdx];
 
-    // Cross-fade logic
+    // Set image on the hidden layer first, then crossfade after paint
     inactiveBg.style.backgroundImage = `url('${nextImage}')`;
-    inactiveBg.style.opacity = '1';
-    activeBg.style.opacity = '0';
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        inactiveBg.style.opacity = '1';
+        activeBg.style.opacity = '0';
 
-    // Swap roles
-    let temp = activeBg;
-    activeBg = inactiveBg;
-    inactiveBg = temp;
-
-    console.log(`[Hero] Cross-fading to: ${nextImage}`);
+        // Swap roles
+        let temp = activeBg;
+        activeBg = inactiveBg;
+        inactiveBg = temp;
+      });
+    });
   }, intervalTime);
 }
 

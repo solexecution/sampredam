@@ -39,6 +39,8 @@ async function init() {
     bindSave();
     bindDeploy();
     bindPreviewRefresh();
+    bindPreviewTabs();
+    bindPreviewHighlight();
     bindUnsavedWarning();
     updatePreviewUrl();
   } catch (err) {
@@ -46,6 +48,21 @@ async function init() {
       `<div class="loading" style="color:red">Failed to load config: ${err.message}</div>`;
   }
 }
+
+// ===== Section ↔ Preview mapping =====
+const sectionToPreviewId = {
+  property:    'hero',
+  description: 'details',
+  features:    'details',
+  rooms:       'details',
+  gallery:     'gallery',
+  floorplans:  'details',
+  contact:     'contact',
+  auction:     'auctionBanner',
+  referral:    'shareEarnSection',
+  faq:         'faq',
+  site:        null,
+};
 
 // ===== Section Rendering =====
 function renderSection(name) {
@@ -62,6 +79,9 @@ function renderSection(name) {
   document.querySelectorAll('.nav-item').forEach(btn => {
     btn.classList.toggle('active', btn.dataset.section === name);
   });
+
+  // Highlight matching section in preview
+  highlightPreviewSection(name);
 }
 
 function onChange(updatedConfig) {
@@ -89,7 +109,7 @@ async function autoSave() {
     if (!res.ok) { const d = await res.json(); throw new Error(d.error); }
     dirty = false;
     updateSaveStatus('saved');
-    refreshPreview();
+    if (previewMode === 'editing') refreshPreview();
   } catch (err) {
     updateSaveStatus('error');
     toast(`Auto-save failed: ${err.message}`, 'error');
@@ -134,18 +154,122 @@ async function save() {
 }
 
 // ===== Preview =====
+let previewMode = 'editing'; // 'editing', 'live', or 'split'
+
 function bindPreviewRefresh() {
   document.getElementById('refreshPreview').addEventListener('click', refreshPreview);
 }
 
+function bindPreviewTabs() {
+  document.getElementById('tabEditing').addEventListener('click', () => switchPreview('editing'));
+  document.getElementById('tabLive').addEventListener('click', () => switchPreview('live'));
+  document.getElementById('tabSplit').addEventListener('click', () => switchPreview('split'));
+}
+
+function switchPreview(mode) {
+  previewMode = mode;
+  const editingWrap = document.getElementById('editingWrap');
+  const liveWrap = document.getElementById('liveWrap');
+  const editFrame = document.getElementById('previewFrame');
+  const liveFrame = document.getElementById('liveFrame');
+  const urlLabel = document.getElementById('previewUrl');
+  const liveUrl = config.site?.url || '';
+
+  // Update tab highlights
+  document.getElementById('tabEditing').classList.toggle('active', mode === 'editing');
+  document.getElementById('tabLive').classList.toggle('active', mode === 'live');
+  document.getElementById('tabSplit').classList.toggle('active', mode === 'split');
+
+  if (mode === 'editing') {
+    editingWrap.hidden = false;
+    liveWrap.hidden = true;
+    editFrame.src = '/preview/index.html?' + Date.now();
+    urlLabel.textContent = liveUrl ? `Live: ${liveUrl}` : '';
+  } else if (mode === 'live') {
+    if (!liveUrl) {
+      toast('No live site URL configured — set it in Site Settings', 'error');
+      switchPreview('editing');
+      return;
+    }
+    editingWrap.hidden = true;
+    liveWrap.hidden = false;
+    liveFrame.src = liveUrl + '?' + Date.now();
+    urlLabel.textContent = liveUrl;
+  } else if (mode === 'split') {
+    if (!liveUrl) {
+      toast('No live site URL configured — set it in Site Settings', 'error');
+      switchPreview('editing');
+      return;
+    }
+    editingWrap.hidden = false;
+    liveWrap.hidden = false;
+    editFrame.src = '/preview/index.html?' + Date.now();
+    liveFrame.src = liveUrl + '?' + Date.now();
+    urlLabel.textContent = '';
+  }
+
+  // Re-apply highlight after frame loads
+  setTimeout(() => highlightPreviewSection(currentSection), 800);
+}
+
 function refreshPreview() {
-  const frame = document.getElementById('previewFrame');
-  frame.src = '/preview/index.html?' + Date.now();
+  switchPreview(previewMode);
 }
 
 function updatePreviewUrl() {
   const url = config.site?.url || '';
   document.getElementById('previewUrl').textContent = url ? `Live: ${url}` : '';
+}
+
+// ===== Section Highlighting =====
+function highlightPreviewSection(sectionName) {
+  const targetId = sectionToPreviewId[sectionName];
+  const frame = document.getElementById('previewFrame');
+
+  try {
+    const doc = frame.contentDocument || frame.contentWindow?.document;
+    if (!doc) return;
+
+    // Remove previous highlights
+    doc.querySelectorAll('.editor-highlight-overlay').forEach(el => {
+      el.classList.remove('editor-highlight-overlay');
+    });
+
+    if (!targetId) return;
+
+    const target = doc.getElementById(targetId);
+    if (!target) return;
+
+    target.classList.add('editor-highlight-overlay');
+    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  } catch (e) {
+    // Cross-origin frame — can't highlight (live tab), that's fine
+  }
+}
+
+// Re-apply highlight when preview iframe finishes loading
+function bindPreviewHighlight() {
+  const frame = document.getElementById('previewFrame');
+  frame.addEventListener('load', () => {
+    // Inject the highlight CSS into the preview
+    try {
+      const doc = frame.contentDocument || frame.contentWindow?.document;
+      if (!doc) return;
+      const style = doc.createElement('style');
+      style.textContent = `
+        .editor-highlight-overlay {
+          outline: 3px solid #2563eb;
+          outline-offset: -3px;
+          background: rgba(37,99,235,0.06);
+          transition: outline-color 0.3s, background 0.3s;
+          border-radius: 4px;
+          scroll-margin-top: 20px;
+        }
+      `;
+      doc.head.appendChild(style);
+      highlightPreviewSection(currentSection);
+    } catch (e) { /* cross-origin */ }
+  });
 }
 
 // ===== Deploy =====
