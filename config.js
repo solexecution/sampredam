@@ -38,11 +38,10 @@ window.CONFIG = {
     priceContext: "Homes on Sheridan Avenue regularly sell above asking — <strong>24 Sheridan Ave</strong> sold for <strong>£592,500</strong> in 2023 and <strong>76 Sheridan Ave</strong> sold for <strong>£650,000</strong> in March 2025. At £525,000 this home — with a garden office, no chain, and no agent fees — represents exceptional value.",
   },
   description: [
-    "Step through the front door into a welcoming, light-filled hallway — the kind that immediately makes you feel at home. This beautifully presented family house offers generous, well-proportioned rooms across every floor.",
-    "The heart of the home is a stunning open-plan kitchen-diner fitted with contemporary units and quality built-in appliances. French doors open directly onto a sun terrace, seamlessly bringing the garden inside — perfect for weekend BBQs and lazy summer evenings.",
-    "Upstairs, three spacious bedrooms offer peaceful retreats. The south-facing primary bedroom floods with morning light and overlooks the garden. The family bathroom is neat and modern.",
-    "Outside, the large private rear garden has a sunny aspect with mature planting, a lawned area ideal for children, and a generous paved patio made for al fresco dining.",
-    "The standout feature is a <strong>fully insulated garden office with floor-to-ceiling double glazing</strong> across two rooms — a rare and versatile space equally suited to remote working, a gym, studio, or creative retreat. The private driveway accommodates two cars with ease.",
+    "Step through the front door into a welcoming, light-filled hallway. This beautifully presented chain-free family house offers well-proportioned rooms across every floor, modern garden office for professionals, double parking and generous green space for you to enjoy.",
+    "The heart of the home is a living room with a multi-fuel stove, opening into the family dining room. Advancing through the fully equipped kitchen, you step into a spacious conservatory. From there the french doors open directly into a sunny paved terrace, seamlessly bringing the garden inside — perfect for weekend BBQs, lazy summer evenings or early yoga mornings filled with natural sunlight. ",
+    "Upstairs, you’ll find three spacious bedrooms. The south-facing primary master bedroom offers plenty of space and warm afternoon sun. Morning sun welcomes you in the second bedroom overlooking the garden with fruit trees. The family bathroom is neat and modern.\nOutside, a generous paved patio with a large private garden includes mature planting with fruit trees and a green area ideal for children or garden enthusiasts.",
+    "The standout feature is a fully insulated garden office with floor-to-ceiling double glazing across two rooms — a rare and versatile space equally suited to remote working, a gym, studio, or creative retreat. The private driveway accommodates two cars with ease.\n",
   ],
   features: [
     {
@@ -144,7 +143,7 @@ window.CONFIG = {
     whatsapp: "447879773260",
     email: "vupointt@gmail.com",
   },
-  runningCosts: { councilTaxYearly: "2,100", energyBillsMonthly: "150", waterBillsYearly: "400" },
+  runningCosts: { councilTaxYearly: "2,600", energyBillsMonthly: "150", waterBillsYearly: "400" },
   faq: {
     askingPrice: "",
     tenure: "",

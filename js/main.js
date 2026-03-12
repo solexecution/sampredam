@@ -535,7 +535,6 @@ function hydrateContact() {
       </a>`;
     }).join('');
     openHouseContainer.innerHTML = `
-      <h4 class="open-house-heading">Open House</h4>
       <div class="open-house-list">${slotsHtml}</div>
       <p class="open-house-or">or pick your own time below</p>`;
   } else if (openHouseContainer) {
