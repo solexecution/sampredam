@@ -13,6 +13,12 @@ export class PropertySection {
       <p class="section-help">Core property information shown in highlights, hero, and specs.</p>
 
       <div class="form-group">
+        <label>Hero Headline</label>
+        <input type="text" data-field="heroHeadline" data-top-level value="${this.esc(this.config.heroHeadline)}" placeholder="e.g. Your family home in Caversham, Reading">
+        <small>The main H1 headline in the hero section. Leave empty to hide.</small>
+      </div>
+
+      <div class="form-group">
         <label>Street Address</label>
         <input type="text" data-field="streetAddress" value="${this.esc(p.streetAddress)}" placeholder="e.g. 42 Sheridan Avenue">
       </div>
@@ -166,7 +172,11 @@ export class PropertySection {
   collect(container) {
     const fields = container.querySelectorAll('[data-field]');
     fields.forEach(el => {
-      this.config.property[el.dataset.field] = el.value;
+      if (el.hasAttribute('data-top-level')) {
+        this.config[el.dataset.field] = el.value;
+      } else {
+        this.config.property[el.dataset.field] = el.value;
+      }
     });
     this.onChange(this.config);
   }

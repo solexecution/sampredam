@@ -364,6 +364,13 @@ function initResizablePanels() {
   const saved = loadPanelSizes();
   if (saved) applyPanelSizes(saved);
 
+  // Re-apply proportional sizes on window resize
+  window.addEventListener('resize', () => {
+    if (layout.classList.contains('sidebar-collapsed')) return;
+    const restored = loadPanelSizes();
+    if (restored) applyPanelSizes(restored);
+  });
+
   // Sidebar ↔ Editor handle
   makeDraggable(handleSidebar, (deltaX, startState) => {
     const newSidebarW = Math.max(MIN_SIDEBAR, Math.min(MAX_SIDEBAR, startState.sidebarW + deltaX));
@@ -431,7 +438,6 @@ function initResizablePanels() {
 function applyPanelSizes(sizes) {
   const layout = document.getElementById('editorLayout');
   if (layout.classList.contains('sidebar-collapsed')) {
-    // When collapsed, use fr units so editor+preview split the full width
     layout.style.gridTemplateColumns = `0px 0px 1fr 6px 1fr`;
   } else {
     layout.style.gridTemplateColumns =
@@ -440,13 +446,36 @@ function applyPanelSizes(sizes) {
 }
 
 function savePanelSizes(sizes) {
-  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(sizes)); } catch (_) {}
+  // Save as ratios so sizes adapt to different window widths
+  const total = sizes.sidebarW + sizes.editorW + sizes.previewW;
+  const ratios = {
+    sidebarR: sizes.sidebarW / total,
+    editorR: sizes.editorW / total,
+    previewR: sizes.previewW / total,
+  };
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(ratios)); } catch (_) {}
 }
 
 function loadPanelSizes() {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
-    return raw ? JSON.parse(raw) : null;
+    if (!raw) return null;
+    const data = JSON.parse(raw);
+    // Support ratio-based format
+    if (data.sidebarR != null) {
+      const available = window.innerWidth - 12; // subtract 2 handles
+      return {
+        sidebarW: Math.round(data.sidebarR * available),
+        editorW: Math.round(data.editorR * available),
+        previewW: Math.round(data.previewR * available),
+      };
+    }
+    // Legacy pixel format — convert to ratios and re-save
+    if (data.sidebarW != null) {
+      savePanelSizes(data);
+      return loadPanelSizes();
+    }
+    return null;
   } catch (_) { return null; }
 }
 
@@ -484,8 +513,7 @@ function initSidebarToggle() {
     // Restore saved sizes or use defaults
     const sizes = loadPanelSizes();
     if (sizes) {
-      layout.style.gridTemplateColumns =
-        `${sizes.sidebarW}px 6px ${sizes.editorW}px 6px ${sizes.previewW}px`;
+      applyPanelSizes(sizes);
     } else {
       layout.style.gridTemplateColumns = '';
     }

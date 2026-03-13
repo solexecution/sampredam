@@ -172,6 +172,16 @@ function hydrateServices() {
 }
 
 function hydrateHero() {
+  // Headline
+  const heroHeadline = document.getElementById('heroHeadline');
+  if (heroHeadline) {
+    if (filled(C.heroHeadline)) {
+      heroHeadline.textContent = C.heroHeadline;
+    } else {
+      hide(heroHeadline);
+    }
+  }
+
   // Badge — "Freehold · No Chain"
   const heroBadge = document.getElementById('heroBadge');
   if (heroBadge) {

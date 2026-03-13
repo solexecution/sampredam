@@ -14,6 +14,7 @@
 
 window.CONFIG = {
   site: { url: "https://40sheridan.xyz", umamiWebsiteId: "" },
+  heroHeadline: "Your family home in Caversham, Reading",
   property: {
     streetAddress: "40 Sheridan Avenue",
     locality: "Caversham, Reading",
