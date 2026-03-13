@@ -41,6 +41,7 @@ async function init() {
     bindPreviewRefresh();
     bindPreviewTabs();
     bindPreviewHighlight();
+    bindScrollSync();
     bindUnsavedWarning();
     updatePreviewUrl();
     initResizablePanels();
@@ -55,7 +56,7 @@ async function init() {
 const sectionToPreviewId = {
   property:    'hero',
   description: 'detailsDescription',
-  features:    'featuresGrid',
+  features:    'featuresSection',
   rooms:       'roomBreakdown',
   gallery:     'galleryGrid',
   floorplans:  'floorPlans',
@@ -272,6 +273,44 @@ function bindPreviewHighlight() {
       highlightPreviewSection(currentSection);
     } catch (e) { /* cross-origin */ }
   });
+}
+
+// ===== Scroll Sync =====
+let scrollSyncActive = false;
+
+function bindScrollSync() {
+  const editFrame = document.getElementById('previewFrame');
+  const liveFrame = document.getElementById('liveFrame');
+
+  // Attach sync when editing frame loads (same-origin, always works)
+  editFrame.addEventListener('load', () => attachSyncToFrame(editFrame, liveFrame));
+  liveFrame.addEventListener('load', () => attachSyncToFrame(liveFrame, editFrame));
+}
+
+function attachSyncToFrame(sourceFrame, targetFrame) {
+  try {
+    const sourceDoc = sourceFrame.contentDocument || sourceFrame.contentWindow?.document;
+    if (!sourceDoc) return;
+
+    let syncing = false;
+    sourceDoc.addEventListener('scroll', () => {
+      if (syncing || previewMode !== 'split') return;
+      syncing = true;
+      requestAnimationFrame(() => {
+        try {
+          const sWin = sourceFrame.contentWindow;
+          const tWin = targetFrame.contentWindow;
+          if (!sWin || !tWin) { syncing = false; return; }
+          const sMax = sWin.document.documentElement.scrollHeight - sWin.innerHeight;
+          if (sMax <= 0) { syncing = false; return; }
+          const ratio = sWin.scrollY / sMax;
+          const tMax = tWin.document.documentElement.scrollHeight - tWin.innerHeight;
+          tWin.scrollTo({ top: ratio * tMax });
+        } catch (_) { /* cross-origin target */ }
+        syncing = false;
+      });
+    }, { passive: true });
+  } catch (_) { /* cross-origin source */ }
 }
 
 // ===== Deploy =====

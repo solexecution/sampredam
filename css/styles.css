@@ -43,6 +43,7 @@
 html {
   scroll-behavior: smooth;
   scroll-padding-top: 70px;
+  scroll-snap-type: y proximity;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -96,6 +97,7 @@ a:hover {
 
 .section {
   padding: var(--section-padding);
+  scroll-snap-align: start;
 }
 
 .section-alt {
@@ -281,6 +283,7 @@ a:hover {
 .hero {
   position: relative;
   min-height: 120vh;
+  scroll-snap-align: start;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -413,6 +416,7 @@ a:hover {
   background: var(--color-primary);
   color: var(--color-text-inverse);
   padding: 3rem 1.5rem;
+  scroll-snap-align: start;
 }
 
 .highlights-grid {
@@ -677,6 +681,13 @@ a:hover {
   font-weight: 600;
   white-space: nowrap;
   min-width: 100px;
+  flex-shrink: 0;
+}
+
+.room-area {
+  color: var(--color-text-light);
+  font-size: 0.82rem;
+  white-space: nowrap;
   flex-shrink: 0;
 }
 
@@ -1919,6 +1930,7 @@ a:hover {
   background: linear-gradient(135deg, var(--color-primary), var(--color-primary-light));
   color: var(--color-text-inverse);
   padding: 2rem 1.5rem;
+  scroll-snap-align: start;
 }
 
 .cta-banner-inner {

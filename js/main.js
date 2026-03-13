@@ -295,15 +295,22 @@ function hydrateRooms() {
   }
 
   const rows = rooms.map(room => {
-    const dims = filled(room.dimensions) ? `<span class="room-dimensions">${room.dimensions}</span>` : '';
+    const l = parseFloat(room.lengthM);
+    const w = parseFloat(room.widthM);
+    const hasDims = !isNaN(l) && !isNaN(w) && l > 0 && w > 0;
+
+    const dims = hasDims ? `<span class="room-dimensions">${l} × ${w} m</span>` : '';
+    const area = hasDims
+      ? `<span class="room-area">(${(l * w).toFixed(1)} m² / ${(l * w * 10.7639).toFixed(0)} sq ft)</span>` : '';
     const desc = filled(room.description) ? `<span class="room-description">${room.description}</span>` : '';
+
     return `
       <div class="room-row">
         <span class="room-name">${room.name}</span>
         ${dims}
+        ${area}
         ${desc}
-      </div>
-    `;
+      </div>`;
   }).join('');
 
   container.innerHTML = `<h3>Room Breakdown</h3>${rows}`;

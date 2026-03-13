@@ -18,12 +18,28 @@ export class RoomsSection {
     this.renderList(div, rooms);
 
     div.querySelector('#addRoom').addEventListener('click', () => {
-      this.config.rooms.push({ name: '', dimensions: '', description: '' });
+      this.config.rooms.push({ name: '', lengthM: '', widthM: '', description: '' });
       this.renderList(div, this.config.rooms);
       this.onChange(this.config);
     });
 
     return div;
+  }
+
+  computeArea(i, container) {
+    const el = container.querySelector(`[data-area-index="${i}"]`);
+    if (!el) return;
+    const room = this.config.rooms[i];
+    const l = parseFloat(room.lengthM);
+    const w = parseFloat(room.widthM);
+    if (!isNaN(l) && !isNaN(w) && l > 0 && w > 0) {
+      const sqm = (l * w).toFixed(1);
+      const sqft = (l * w * 10.7639).toFixed(0);
+      el.textContent = `= ${sqm} m\u00B2 / ${sqft} sq ft`;
+      el.style.display = '';
+    } else {
+      el.style.display = 'none';
+    }
   }
 
   renderList(container, rooms) {
@@ -36,15 +52,20 @@ export class RoomsSection {
           <button class="btn-remove" data-index="${i}">Remove</button>
         </div>
         <div class="form-row">
-          <div class="form-group">
+          <div class="form-group" style="flex:2">
             <label>Name</label>
             <input type="text" data-index="${i}" data-key="name" value="${this.esc(r.name)}" placeholder="e.g. Living Room">
           </div>
-          <div class="form-group">
-            <label>Dimensions</label>
-            <input type="text" data-index="${i}" data-key="dimensions" value="${this.esc(r.dimensions)}" placeholder="e.g. 4.2m x 3.5m (optional)">
+          <div class="form-group" style="flex:1">
+            <label>Length (m)</label>
+            <input type="number" step="0.1" min="0" data-index="${i}" data-key="lengthM" value="${this.esc(r.lengthM)}" placeholder="e.g. 4.2">
+          </div>
+          <div class="form-group" style="flex:1">
+            <label>Width (m)</label>
+            <input type="number" step="0.1" min="0" data-index="${i}" data-key="widthM" value="${this.esc(r.widthM)}" placeholder="e.g. 3.5">
           </div>
         </div>
+        <small data-area-index="${i}" style="display:none;color:#b08d57;font-weight:600;margin:-0.25rem 0 0.5rem;display:block"></small>
         <div class="form-group" style="margin-bottom:0">
           <label>Description</label>
           <input type="text" data-index="${i}" data-key="description" value="${this.esc(r.description)}">
@@ -52,9 +73,13 @@ export class RoomsSection {
       </div>
     `).join('');
 
+    // Compute initial areas
+    rooms.forEach((_, i) => this.computeArea(i, container));
+
     list.querySelectorAll('input').forEach(el => {
       el.addEventListener('input', () => {
         this.config.rooms[+el.dataset.index][el.dataset.key] = el.value;
+        this.computeArea(+el.dataset.index, container);
         this.onChange(this.config);
       });
     });
