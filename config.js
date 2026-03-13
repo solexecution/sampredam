@@ -14,7 +14,6 @@
 
 window.CONFIG = {
   site: { url: "https://40sheridan.xyz", umamiWebsiteId: "" },
-  heroHeadline: "Your family home in Caversham, Reading",
   property: {
     streetAddress: "40 Sheridan Avenue",
     locality: "Caversham, Reading",
@@ -62,39 +61,48 @@ window.CONFIG = {
     },
   ],
   rooms: [
-    { name: "Hallway", dimensions: "", description: "Welcoming entrance flooded with natural light" },
-    { name: "Living Room", dimensions: "", description: "Spacious reception room with a characterful multi-fuel stove" },
+    { name: "Hallway", dimensions: "", description: "Home entrance full of natural light." },
+    { name: "Living Room", dimensions: "", description: "Spacious reception room with a characterful multi-fuel stove." },
     {
       name: "Kitchen/Diner",
       dimensions: "",
-      description: "Open-plan with L-shaped countertop, built-in hob, oven and fridge. French doors to the garden",
+      description: "Fully equipped kitchen with U-shaped countertop provides easy access to both dining room and conservatory with plenty of space.",
     },
-    { name: "Primary Bedroom", dimensions: "", description: "South-facing master bedroom with serene garden views" },
-    { name: "Bedroom 2", dimensions: "", description: "Well-proportioned double bedroom overlooking the garden" },
-    { name: "Bedroom 3", dimensions: "", description: "South-facing third bedroom, ideal as a child's room or home office" },
-    { name: "Bathroom", dimensions: "", description: "Modern family bathroom serving all three bedrooms" },
-    { name: "Patio", dimensions: "", description: "Generous paved sun terrace — ideal for BBQs and summer evenings" },
+    { name: "Primary Bedroom", dimensions: "", description: "South-facing master bedroom with view on the street. " },
     {
-      name: "Garden",
+      name: "Bedroom 2",
       dimensions: "",
-      description: "Large private rear garden with sunny aspect, mature planting, lawn and fruit trees",
+      description: "Well-proportioned double bedroom overlooking the garden and morning sunrise. ",
     },
-    { name: "Front Garden", dimensions: "", description: "Landscaped front garden with south-facing seating area" },
-    {
-      name: "Driveway",
-      dimensions: "",
-      description: "Private driveway fitting two cars comfortably, with a roofed storage area for bikes and sports equipment",
-    },
+    { name: "Bedroom 3", dimensions: "", description: "South-facing third bedroom, ideal as a child's room or home office." },
+    { name: "Bathroom", dimensions: "", description: "Family bathroom with bathtub." },
+    { name: "Patio", dimensions: "", description: "Generous paved sun terrace — ideal for BBQs and summer evenings." },
     {
       name: "Garden Office — Room 1",
-      dimensions: "2.5m × 3m",
-      description: "Focus room for desk work. Fully insulated, floor-to-ceiling double glazing, peaceful garden setting",
+      dimensions: "3.4m × 3m",
+      description: "Meeting or creative room. Fully insulated, floor-to-ceiling double glazing, with entrance doors.",
     },
     {
       name: "Garden Office — Room 2",
-      dimensions: "3.4m × 3m",
-      description: "Meeting or creative room. Fully insulated, floor-to-ceiling double glazing, with entrance doors",
+      dimensions: "2.5m × 3m",
+      description: "Focus room for desk work. Fully insulated, floor-to-ceiling double glazing, peaceful garden setting.",
     },
+    {
+      name: "Conservatory",
+      dimensions: "4.5m x 3m",
+      description: "Spacious and filled with morning sun that heats the space ready for your favourite breakfast.",
+    },
+    {
+      name: "Garden",
+      dimensions: "",
+      description: "Large private garden with sunny aspect, mature planting, lawn and fruit trees.",
+    },
+    {
+      name: "Driveway",
+      dimensions: "",
+      description: "Private driveway fitting two cars comfortably, with a roofed storage area for bikes and sports equipment.",
+    },
+    { name: "Front Garden", dimensions: "", description: "Landscaped front garden with paved south-facing seating area." },
   ],
   gallery: [
     { src: "images/gallery/balmore_walk_1.jpg", alt: "Front Exterior — View 1" },
