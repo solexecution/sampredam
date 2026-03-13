@@ -299,17 +299,22 @@ function hydrateRooms() {
     const w = parseFloat(room.widthM);
     const hasDims = !isNaN(l) && !isNaN(w) && l > 0 && w > 0;
 
-    const dims = hasDims ? `<span class="room-dimensions">${l} × ${w} m</span>` : '';
-    const area = hasDims
-      ? `<span class="room-area">(${(l * w).toFixed(1)} m² / ${(l * w * 10.7639).toFixed(0)} sq ft)</span>` : '';
+    const lFt = hasDims ? (l * 3.28084).toFixed(1) : '';
+    const wFt = hasDims ? (w * 3.28084).toFixed(1) : '';
+    const sqM = hasDims ? (l * w).toFixed(1) : '';
+    const sqFt = hasDims ? (l * w * 10.7639).toFixed(0) : '';
+
     const desc = filled(room.description) ? `<span class="room-description">${room.description}</span>` : '';
+    const subline = hasDims
+      ? `<div class="room-subline">${l} × ${w} m (${lFt} × ${wFt} ft) — ${sqM} m² / ${sqFt} sq ft</div>` : '';
 
     return `
       <div class="room-row">
-        <span class="room-name">${room.name}</span>
-        ${dims}
-        ${area}
-        ${desc}
+        <div class="room-main">
+          <span class="room-name">${room.name}</span>
+          ${desc}
+        </div>
+        ${subline}
       </div>`;
   }).join('');
 
@@ -1332,22 +1337,53 @@ function renderShareAndEarnSection() {
     if (e.key === 'Escape' && modal && !modal.hidden) { modal.hidden = true; document.body.style.overflow = ''; }
   });
 
-  // Generate ref link button
+  // Share button helpers
   const generateBtn = document.getElementById('generateRefBtn');
-  const earnButtons = document.getElementById('shareEarnButtons');
   const claimBtn = document.getElementById('claimReferralBtn');
+  const baseUrl = SITE.url || window.location.origin;
 
+  function setShareUrls(url) {
+    const siteTitle = encodeURIComponent(`This Caversham home is exactly what you're looking for 🏡`);
+    const urlEnc = encodeURIComponent(url);
+    const waText = encodeURIComponent(
+      `🏡 Check out this stunning 3-bed family home in Caversham, Reading — private sale, no agent fees, no chain!\n\n${url}\n\n⏳ Best offers deadline: 31 March 2026`
+    );
+
+    const waBtn = document.getElementById('earnShareWhatsApp');
+    const fbBtn = document.getElementById('earnShareFacebook');
+    const twBtn = document.getElementById('earnShareTwitter');
+    const liBtn = document.getElementById('earnShareLinkedIn');
+
+    if (waBtn) waBtn.href = `https://api.whatsapp.com/send?text=${waText}`;
+    if (fbBtn) fbBtn.href = `https://www.facebook.com/sharer/sharer.php?u=${urlEnc}`;
+    if (twBtn) twBtn.href = `https://x.com/intent/tweet?url=${urlEnc}&text=${siteTitle}%20%23CavershamProperty%20%23HouseForSale`;
+    if (liBtn) liBtn.href = `https://www.linkedin.com/sharing/share-offsite/?url=${urlEnc}`;
+  }
+
+  // Set share URLs immediately with the base site URL
+  setShareUrls(baseUrl);
+
+  // Claim button — works immediately, no ref link needed
+  if (claimBtn) {
+    const waNum = ref.whatsapp || CONTACT.whatsapp || '';
+    const claimMsg = encodeURIComponent(
+      `Hi! I'd like to claim the £${reward} referral reward for 40 Sheridan Avenue. I have a screenshot of my share post to prove I shared it before the buyer made contact. Please let me know the next steps.`
+    );
+    claimBtn.addEventListener('click', () => {
+      if (filled(waNum)) {
+        window.open(`https://wa.me/${waNum}?text=${claimMsg}`, '_blank', 'noopener');
+      }
+    });
+  }
+
+  // Generate referral link upgrades share URLs with tracking code
   generateBtn?.addEventListener('click', async () => {
     const refId = generateUniqueRefId();
-    const baseUrl = SITE.url || window.location.origin;
     const refUrl = `${baseUrl}/?ref=${refId}`;
 
-    // Auto-copy the link to clipboard
     try {
       await navigator.clipboard.writeText(refUrl);
       showCopyTooltip(generateBtn, 'Link copied!');
-      generateBtn.style.color = 'var(--color-success)';
-      setTimeout(() => { generateBtn.style.color = ''; }, 1500);
     } catch {
       const ta = document.createElement('textarea');
       ta.value = refUrl;
@@ -1357,47 +1393,10 @@ function renderShareAndEarnSection() {
       document.execCommand('copy');
       document.body.removeChild(ta);
       showCopyTooltip(generateBtn, 'Link copied!');
-      generateBtn.style.color = 'var(--color-success)';
-      setTimeout(() => { generateBtn.style.color = ''; }, 1500);
     }
 
-    // Wire share buttons with the referral URL embedded (set before showing)
-    const siteTitle = encodeURIComponent(`This Caversham home is exactly what you're looking for 🏡`);
-    const refEnc = encodeURIComponent(refUrl);
-    const waShareText = encodeURIComponent(
-      `🏡 Check out this stunning 3-bed family home in Caversham, Reading — private sale, no agent fees, no chain!\n\n${refUrl}\n\n⏳ Best offers deadline: 31 March 2026`
-    );
-
-    const waBtn = document.getElementById('earnShareWhatsApp');
-    const fbBtn = document.getElementById('earnShareFacebook');
-    const twBtn = document.getElementById('earnShareTwitter');
-    const liBtn = document.getElementById('earnShareLinkedIn');
-
-    if (waBtn) waBtn.href = `https://api.whatsapp.com/send?text=${waShareText}`;
-    if (fbBtn) fbBtn.href = `https://www.facebook.com/sharer/sharer.php?u=${refEnc}`;
-    if (twBtn) twBtn.href = `https://x.com/intent/tweet?url=${refEnc}&text=${siteTitle}%20%23CavershamProperty%20%23HouseForSale`;
-    if (liBtn) liBtn.href = `https://www.linkedin.com/sharing/share-offsite/?url=${refEnc}`;
-
-    if (earnButtons) earnButtons.removeAttribute('hidden');
-    if (claimBtn) claimBtn.removeAttribute('hidden');
-    generateBtn.textContent = 'Link copied — share below';
-
-    // Claim button → WhatsApp with pre-filled claim message
-    if (claimBtn) {
-      const waNum = ref.whatsapp || CONTACT.whatsapp || '';
-      const claimMsg = encodeURIComponent(
-        `Hi! I'd like to claim the £${reward} referral reward for 40 Sheridan Avenue. My referral code is ${refId}. I have a screenshot of my share post to prove I shared it before the buyer made contact. Please let me know the next steps.`
-      );
-      // Remove any previously attached listeners if button is repeatedly clicked using cloning
-      const newClaimBtn = claimBtn.cloneNode(true);
-      claimBtn.parentNode.replaceChild(newClaimBtn, claimBtn);
-
-      newClaimBtn.addEventListener('click', () => {
-        if (filled(waNum)) {
-          window.open(`https://wa.me/${waNum}?text=${claimMsg}`, '_blank', 'noopener');
-        }
-      });
-    }
+    setShareUrls(refUrl);
+    generateBtn.textContent = 'Link copied — now share below';
   });
 
   // Floating share toast

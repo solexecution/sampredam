@@ -31,7 +31,7 @@ window.CONFIG = {
     walkToStation: "",
     epcRating: "D",
     councilTaxBand: "D",
-    broadband: "Full fibre (FTTP) — up to 1 Gbps available",
+    broadband: "Full fibre (FTTP) — up to 1 Gbps",
     tenure: "Freehold",
     yearBuilt: "1960s",
     chainStatus: "No chain",
