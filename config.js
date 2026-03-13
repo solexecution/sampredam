@@ -174,8 +174,8 @@ window.CONFIG = {
     { label: "Garden Office", src: "images/gallery/garden_office_plan.svg" },
   ],
   openHouse: [
-    { date: "Saturday 1 March 2026", time: "11:00 – 14:00" },
-    { date: "Sunday 2 March 2026", time: "11:00 – 13:00" },
+    { date: "Saturday 21 March 2026", time: "11:00 – 14:00" },
+    { date: "Sunday 22 March 2026", time: "11:00 – 13:00" },
   ],
   socialProof: { viewingsBooked: 3, showWidget: true },
   galleryPlaceholders: [
