@@ -175,7 +175,6 @@ function switchPreview(mode) {
   const liveWrap = document.getElementById('liveWrap');
   const editFrame = document.getElementById('previewFrame');
   const liveFrame = document.getElementById('liveFrame');
-  const urlLabel = document.getElementById('previewUrl');
   const liveUrl = config.site?.url || '';
 
   // Update tab highlights
@@ -187,7 +186,6 @@ function switchPreview(mode) {
     editingWrap.hidden = false;
     liveWrap.hidden = true;
     editFrame.src = '/preview/index.html?' + Date.now();
-    urlLabel.textContent = liveUrl ? `Live: ${liveUrl}` : '';
   } else if (mode === 'live') {
     if (!liveUrl) {
       toast('No live site URL configured — set it in Site Settings', 'error');
@@ -197,7 +195,6 @@ function switchPreview(mode) {
     editingWrap.hidden = true;
     liveWrap.hidden = false;
     liveFrame.src = liveUrl + '?' + Date.now();
-    urlLabel.textContent = liveUrl;
   } else if (mode === 'split') {
     if (!liveUrl) {
       toast('No live site URL configured — set it in Site Settings', 'error');
@@ -208,7 +205,6 @@ function switchPreview(mode) {
     liveWrap.hidden = false;
     editFrame.src = '/preview/index.html?' + Date.now();
     liveFrame.src = liveUrl + '?' + Date.now();
-    urlLabel.textContent = '';
   }
 
   // Re-apply highlight after frame loads
@@ -220,8 +216,7 @@ function refreshPreview() {
 }
 
 function updatePreviewUrl() {
-  const url = config.site?.url || '';
-  document.getElementById('previewUrl').textContent = url ? `Live: ${url}` : '';
+  // Live URL is now a static link in the preview toolbar
 }
 
 // ===== Section Highlighting =====

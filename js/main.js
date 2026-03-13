@@ -408,114 +408,31 @@ function hydrateFloorPlans() {
 
 function hydrateLocation() {
   const el = document.getElementById('priceContextPara');
-  if (!el) return;
-  if (filled(P.priceContext)) {
+  if (el && filled(P.priceContext)) {
     el.innerHTML = P.priceContext;
   }
+
+  // Activate map iframe on click so scroll-zoom doesn't hijack page scroll
+  document.querySelectorAll('.map-container').forEach(c => {
+    c.addEventListener('click', () => c.classList.add('map-active'));
+    c.addEventListener('mouseleave', () => c.classList.remove('map-active'));
+  });
 }
 
 function hydrateFaq() {
   const faqList = document.getElementById('faqList');
-  const faqConfig = C.faq || {};
-  const rc = C.runningCosts || {};
-  const price = P.price;
-
-  // Default FAQ items with config overrides
-  const faqs = [
-    {
-      key: 'askingPrice',
-      q: 'What is the asking price?',
-      defaultA: filled(price)
-        ? `The guide price is &pound;${price}. This has been competitively positioned considering average property values in the RG4 7 area, which currently stand at approximately &pound;590,000.`
-        : 'Please contact us for the current asking price.',
-    },
-    {
-      key: 'tenure',
-      q: 'Is the property freehold or leasehold?',
-      defaultA: filled(P.tenure)
-        ? P.tenure === 'Freehold'
-          ? 'The property is freehold, meaning you own the property and the land it stands on outright with no ground rent or service charges.'
-          : `The property is ${P.tenure}. Please contact us for full details of the lease terms.`
-        : 'Please contact us for tenure details.',
-    },
-    {
-      key: 'epc',
-      q: 'What is the EPC rating?',
-      defaultA: filled(P.epcRating)
-        ? `The property has an EPC rating of ${P.epcRating}. The full Energy Performance Certificate is available on request.`
-        : 'The EPC rating is available on request.',
-    },
-    {
-      key: 'viewings',
-      q: 'How do viewings work?',
-      defaultA: 'Viewings are arranged directly with us at times convenient for you. We offer flexible appointments including evenings and weekends. Simply contact us using any of the methods below to arrange a time that works for you.',
-    },
-    {
-      key: 'privateSale',
-      q: 'Why is this being sold privately?',
-      defaultA: 'We\'re selling directly to provide a more personal experience and to save both parties estate agent fees. This means we can offer a more competitive price while you deal directly with the people who know this home best \u2014 the owners.',
-    },
-    {
-      key: 'included',
-      q: 'What is included in the sale?',
-      defaultA: 'All fixtures and fittings are included as standard. Integrated kitchen appliances are included. Specific items such as curtains, blinds, and free-standing appliances are negotiable. A full fixtures and fittings list will be provided to serious buyers.',
-    },
-    {
-      key: 'chain',
-      q: 'Is there a chain?',
-      defaultA: filled(P.chainStatus)
-        ? `${P.chainStatus}. We are motivated sellers looking for a smooth, timely completion.`
-        : 'Please contact us for the latest information regarding the chain status. We are motivated sellers looking for a smooth, timely completion.',
-    },
-    {
-      key: 'runningCosts',
-      q: 'What are the running costs?',
-      defaultA: buildRunningCostsAnswer(rc),
-    },
-    {
-      key: 'survey',
-      q: 'Can I get a survey done?',
-      defaultA: 'Absolutely. We welcome and encourage buyers to commission their own independent survey. We\'re happy to provide access to the property for any surveyor at a mutually convenient time.',
-    },
-    {
-      key: 'makingOffer',
-      q: 'How do I make an offer?',
-      defaultA: 'Once you\'ve viewed the property and would like to make an offer, simply contact us directly. We\'ll discuss your offer, your position (chain status, mortgage approval), and agree on next steps. We recommend having a mortgage agreement in principle ready.',
-    },
-  ];
+  const faqs = Array.isArray(C.faq) ? C.faq : [];
 
   const html = faqs
-    .filter(faq => faqConfig[faq.key] !== false) // false = hidden
-    .map(faq => {
-      const answer = filled(faqConfig[faq.key]) ? faqConfig[faq.key] : faq.defaultA;
-      return `
-        <details class="faq-item">
-          <summary data-umami-event="faq-expand" data-umami-event-question="${faq.key}">${faq.q}</summary>
-          <div class="faq-answer"><p>${answer}</p></div>
-        </details>
-      `;
-    }).join('');
+    .filter(faq => faq.enabled !== false)
+    .map(faq => `
+      <details class="faq-item">
+        <summary data-umami-event="faq-expand" data-umami-event-question="${faq.key}">${faq.q}</summary>
+        <div class="faq-answer"><p>${faq.a}</p></div>
+      </details>
+    `).join('');
 
   faqList.innerHTML = html;
-}
-
-function buildRunningCostsAnswer(rc) {
-  const parts = [];
-  if (filled(P.councilTaxBand) || filled(rc.councilTaxYearly)) {
-    let ct = '<strong>Council Tax:</strong> ';
-    if (filled(P.councilTaxBand)) ct += `Band ${P.councilTaxBand}`;
-    if (filled(rc.councilTaxYearly)) ct += ` \u2014 approximately &pound;${rc.councilTaxYearly} per year`;
-    parts.push(ct);
-  }
-  if (filled(rc.energyBillsMonthly)) {
-    parts.push(`<strong>Energy Bills:</strong> Approximately &pound;${rc.energyBillsMonthly} per month (gas & electric)`);
-  }
-  if (filled(rc.waterBillsYearly)) {
-    parts.push(`<strong>Water:</strong> Approximately &pound;${rc.waterBillsYearly} per year`);
-  }
-  return parts.length > 0
-    ? parts.join('<br>')
-    : 'Please contact us for details about running costs.';
 }
 
 function hydrateContact() {
@@ -553,7 +470,8 @@ function hydrateContact() {
     }).join('');
     openHouseContainer.innerHTML = `
       <div class="open-house-list">${slotsHtml}</div>
-      <p class="open-house-or">or pick your own time below</p>`;
+      <p class="open-house-or">or request a custom viewing time below</p>
+      <p class="open-house-note">We'll do our best to accommodate your preferred time. Viewings are for serious buyers only — please have a solicitor instructed and a mortgage agreement in principle (or proof of funds) ready before booking.</p>`;
   } else if (openHouseContainer) {
     hide(openHouseContainer);
   }
@@ -1443,11 +1361,7 @@ function renderShareAndEarnSection() {
       setTimeout(() => { generateBtn.style.color = ''; }, 1500);
     }
 
-    if (earnButtons) earnButtons.removeAttribute('hidden');
-    if (claimBtn) claimBtn.removeAttribute('hidden');
-    generateBtn.textContent = 'Link copied — share below';
-
-    // Wire share buttons with the referral URL embedded
+    // Wire share buttons with the referral URL embedded (set before showing)
     const siteTitle = encodeURIComponent(`This Caversham home is exactly what you're looking for 🏡`);
     const refEnc = encodeURIComponent(refUrl);
     const waShareText = encodeURIComponent(
@@ -1461,8 +1375,12 @@ function renderShareAndEarnSection() {
 
     if (waBtn) waBtn.href = `https://api.whatsapp.com/send?text=${waShareText}`;
     if (fbBtn) fbBtn.href = `https://www.facebook.com/sharer/sharer.php?u=${refEnc}`;
-    if (twBtn) twBtn.href = `https://twitter.com/intent/tweet?url=${refEnc}&text=${siteTitle}%20%23CavershamProperty%20%23HouseForSale`;
+    if (twBtn) twBtn.href = `https://x.com/intent/tweet?url=${refEnc}&text=${siteTitle}%20%23CavershamProperty%20%23HouseForSale`;
     if (liBtn) liBtn.href = `https://www.linkedin.com/sharing/share-offsite/?url=${refEnc}`;
+
+    if (earnButtons) earnButtons.removeAttribute('hidden');
+    if (claimBtn) claimBtn.removeAttribute('hidden');
+    generateBtn.textContent = 'Link copied — share below';
 
     // Claim button → WhatsApp with pre-filled claim message
     if (claimBtn) {

@@ -181,13 +181,13 @@ a:hover {
   z-index: 1000;
   padding: 1rem 0;
   transition: all var(--transition);
-  background: transparent;
+  background: rgba(26, 54, 93, 0.97);
 }
 
 .navbar.scrolled {
   background: rgba(26, 54, 93, 0.97);
   backdrop-filter: blur(10px);
-  padding: 0.5rem 0;
+  padding: 1rem 0;
   box-shadow: var(--shadow);
 }
 
@@ -807,6 +807,22 @@ a:hover {
 .map-container {
   margin-bottom: 3rem;
   text-align: center;
+  position: relative;
+}
+
+/* Transparent overlay blocks scroll-zoom on the iframe until clicked */
+.map-container::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+}
+
+.map-container.map-active::after {
+  display: none;
 }
 
 .map-container iframe {
@@ -1037,6 +1053,24 @@ a:hover {
 
 .price-context strong {
   color: var(--color-accent-light);
+}
+
+.price-context-sources {
+  margin-top: 0.75rem;
+  font-size: 0.85rem;
+  opacity: 0.85;
+}
+
+.price-context-sources a {
+  color: var(--color-text-inverse);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  margin-left: 0.5rem;
+  transition: opacity 0.15s;
+}
+
+.price-context-sources a:hover {
+  opacity: 0.7;
 }
 
 /* --- Mortgage Calculator --- */
@@ -1796,6 +1830,15 @@ a:hover {
   margin-bottom: 0.75rem;
   text-transform: uppercase;
   letter-spacing: 1px;
+}
+
+.open-house-note {
+  font-size: 0.78rem;
+  color: var(--color-text-light);
+  text-align: center;
+  margin-bottom: 1rem;
+  font-style: italic;
+  opacity: 0.8;
 }
 
 /* --- Floating WhatsApp Button --- icon-only circle --- */
