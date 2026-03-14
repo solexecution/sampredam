@@ -160,14 +160,13 @@ const HIGHLIGHT_ICONS = {
    ============================== */
 
 function hydrateServices() {
-  // Umami
-  const umamiScript = document.getElementById('umamiScript');
-  if (umamiScript) {
-    if (filled(SITE.umamiWebsiteId)) {
-      umamiScript.setAttribute('data-website-id', SITE.umamiWebsiteId);
-    } else {
-      umamiScript.remove();
-    }
+  // Umami — dynamically inject script with correct website ID
+  if (filled(SITE.umamiWebsiteId)) {
+    const s = document.createElement('script');
+    s.defer = true;
+    s.src = 'https://cloud.umami.is/script.js';
+    s.setAttribute('data-website-id', SITE.umamiWebsiteId);
+    document.head.appendChild(s);
   }
 }
 
