@@ -160,6 +160,9 @@ window.CONFIG = {
     { src: "images/gallery/office_room_1.jpg", alt: "Garden Office — Room 1" },
     { src: "images/gallery/office_room_1a.jpg", alt: "Garden Office — Room 2" },
     { src: "images/gallery/frontseat.jpg", alt: "Front Garden Seating Area" },
+    { src: "images/gallery/kitchen1.jpeg", alt: "Kitchen" },
+    { src: "images/gallery/bathroom1.jpg", alt: "Bathroom" },
+    { src: "images/gallery/office_room_2a.jpg", alt: "Garden Office — Room 3" },
   ],
   heroImages: [
     "images/gallery/balmore_walk_2.jpg",
