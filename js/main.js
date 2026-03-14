@@ -1278,6 +1278,11 @@ function handleBuyerReferral() {
   // Store the ref so contact buttons can use it
   localStorage.setItem('referredBy', incomingRef);
 
+  // Track referral visit in Umami
+  if (typeof umami !== 'undefined') {
+    umami.track('referral-visit', { ref: incomingRef });
+  }
+
   // Show the referral notice bar
   const bar = document.getElementById('referralNoticeBar');
   if (bar) {
