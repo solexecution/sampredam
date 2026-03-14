@@ -13,6 +13,7 @@
    ===================================================================== */
 
 window.CONFIG = {
+  heroHeadline: "Your family home in Caversham, Reading",
   site: { url: "https://40sheridan.xyz", umamiWebsiteId: "839c0f2e-2109-4c7f-808c-a3a37de35ea9" },
   property: {
     streetAddress: "40 Sheridan Avenue",
