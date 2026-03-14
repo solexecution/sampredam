@@ -268,6 +268,7 @@ function hydrateGallery() {
              data-umami-event-image="${item.alt}"
              ${isVideo ? 'data-video="true"' : ''}>
           <img src="${item.poster || item.src}" alt="${item.alt}" loading="${i === 0 ? 'eager' : 'lazy'}">
+          <span class="gallery-caption">${item.alt}</span>
         </div>
       `;
     }).join('');
@@ -694,6 +695,7 @@ const Lightbox = (function () {
   if (!lb) { console.warn('[Lightbox] NO lightbox element found!'); return { open() { }, close() { } }; }
   const img = lb.querySelector('.lightbox-img');
   const video = lb.querySelector('.lightbox-video');
+  const caption = lb.querySelector('.lightbox-caption');
   const counter = lb.querySelector('.lightbox-counter');
   let images = [];
   let cur = 0;
@@ -728,6 +730,7 @@ const Lightbox = (function () {
       }
     }
 
+    if (caption) caption.textContent = item.alt || '';
     if (counter) counter.textContent = (cur + 1) + ' of ' + images.length;
   }
 
