@@ -1025,6 +1025,7 @@ a:hover {
   border-radius: var(--radius);
   text-align: center;
   font-size: 1.05rem;
+  margin-top: 1.5rem;
 }
 
 .price-context strong {
