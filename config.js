@@ -159,6 +159,7 @@ window.CONFIG = {
     { src: "images/gallery/garden_office_front.png", alt: "Garden Office — Exterior" },
     { src: "images/gallery/office_room_1.jpg", alt: "Garden Office — Room 1" },
     { src: "images/gallery/office_room_1a.jpg", alt: "Garden Office — Room 2" },
+    { src: "images/gallery/frontseat.jpg", alt: "Front Garden Seating Area" },
   ],
   heroImages: [
     "images/gallery/balmore_walk_2.jpg",
