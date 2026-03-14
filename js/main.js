@@ -35,12 +35,22 @@ document.addEventListener('DOMContentLoaded', () => {
   initScrollAnimations();
   initSectionTracking();
   initScrollDepthTracking();
+  initVisitorTracking();
   initSchoolsSection();
   initParkCarousel();
   initHeroCarousel();
   initFloorPlanGallery();
   initStickyCta();
   calculateMortgage();
+
+  // Track which hero image triggered CTA clicks
+  document.querySelectorAll('[data-umami-event="hero-book-viewing"], [data-umami-event="hero-view-gallery"]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      if (typeof umami !== 'undefined' && window._heroCurrentImage) {
+        umami.track('hero-cta-image', { image: window._heroCurrentImage, action: btn.dataset.umamiEvent });
+      }
+    });
+  });
 
   // Auction & Referral features
   handleBuyerReferral();  // must run before renderAuctionBanner so ref is in state
@@ -699,6 +709,8 @@ const Lightbox = (function () {
   let images = [];
   let cur = 0;
   let onCloseCallback = null;
+  let openedAt = 0;
+  let photosViewed = new Set();
 
   function update() {
     const item = images[cur];
@@ -738,6 +750,9 @@ const Lightbox = (function () {
     images = imgs;
     cur = index;
     onCloseCallback = onClose || null;
+    openedAt = Date.now();
+    photosViewed = new Set();
+    photosViewed.add(index);
     update();
     lb.hidden = false;
     requestAnimationFrame(() => lb.classList.add('active'));
@@ -746,6 +761,15 @@ const Lightbox = (function () {
   }
 
   function close() {
+    // Track how engaged the visitor was with the gallery
+    if (typeof umami !== 'undefined' && openedAt) {
+      const seconds = Math.round((Date.now() - openedAt) / 1000);
+      umami.track('gallery-session', {
+        photosViewed: photosViewed.size,
+        totalPhotos: images.length,
+        secondsSpent: seconds
+      });
+    }
     lb.classList.remove('active');
     setTimeout(() => {
       lb.hidden = true;
@@ -760,6 +784,7 @@ const Lightbox = (function () {
 
   function navigate(dir) {
     cur = (cur + dir + images.length) % images.length;
+    photosViewed.add(cur);
     update();
   }
 
@@ -950,9 +975,12 @@ function calculateMortgage() {
     bar.hidden = true;
   }
 
-  if (typeof umami !== 'undefined') {
-    umami.track('mortgage-calculate', { price, deposit: depositPercent, monthlyPayment: Math.round(monthly) });
-  }
+  clearTimeout(window._calcTrackTimer);
+  window._calcTrackTimer = setTimeout(() => {
+    if (typeof umami !== 'undefined') {
+      umami.track('mortgage-calculate', { price, deposit: depositPercent, monthlyPayment: Math.round(monthly) });
+    }
+  }, 1500);
 }
 
 function formatCurrency(amount) {
@@ -1013,14 +1041,26 @@ function initSectionTracking() {
     { id: 'contact', label: 'contact' },
   ];
 
+  const reachedOrder = [];
+  const sectionEnter = {};
+
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
+      const label = entry.target.dataset.trackSection;
       if (entry.isIntersecting) {
-        const label = entry.target.dataset.trackSection;
-        if (typeof umami !== 'undefined') {
-          umami.track('section-reached', { section: label });
+        sectionEnter[label] = Date.now();
+        if (!reachedOrder.includes(label)) {
+          reachedOrder.push(label);
+          if (typeof umami !== 'undefined') {
+            umami.track('section-reached', { section: label, step: reachedOrder.length });
+          }
         }
-        observer.unobserve(entry.target);
+      } else if (sectionEnter[label]) {
+        const seconds = Math.round((Date.now() - sectionEnter[label]) / 1000);
+        if (seconds >= 3 && typeof umami !== 'undefined') {
+          umami.track('section-time', { section: label, seconds });
+        }
+        delete sectionEnter[label];
       }
     });
   }, { threshold: 0.2 });
@@ -1031,6 +1071,16 @@ function initSectionTracking() {
       el.dataset.trackSection = label;
       observer.observe(el);
     }
+  });
+
+  // Track last section time on page leave
+  window.addEventListener('beforeunload', () => {
+    Object.keys(sectionEnter).forEach(label => {
+      const seconds = Math.round((Date.now() - sectionEnter[label]) / 1000);
+      if (seconds >= 3 && typeof umami !== 'undefined') {
+        umami.track('section-time', { section: label, seconds });
+      }
+    });
   });
 }
 
@@ -1052,6 +1102,27 @@ function initScrollDepthTracking() {
       }
     });
   }, { passive: true });
+}
+
+/* --- Umami: Visitor Intent Tracking --- */
+function initVisitorTracking() {
+  if (typeof umami === 'undefined') return;
+
+  // Return visitor detection
+  const visitCount = parseInt(localStorage.getItem('visitCount') || '0') + 1;
+  localStorage.setItem('visitCount', visitCount);
+  if (visitCount > 1) {
+    umami.track('return-visitor', { visits: visitCount });
+  }
+
+  // Track total time on page when leaving
+  const pageLoadTime = Date.now();
+  window.addEventListener('beforeunload', () => {
+    const totalSeconds = Math.round((Date.now() - pageLoadTime) / 1000);
+    if (typeof umami !== 'undefined') {
+      umami.track('session-end', { totalSeconds, visitNumber: visitCount });
+    }
+  });
 }
 
 /* --- Scroll Animations --- */
@@ -1086,6 +1157,7 @@ function initHeroCarousel() {
   if (images.length === 0) return;
 
   let currentIdx = 0;
+  window._heroCurrentImage = images[0]; // expose for CTA tracking
   const intervalTime = 10000; // 10 seconds
   let activeBg = bg1;
   let inactiveBg = bg2;
@@ -1112,6 +1184,7 @@ function initHeroCarousel() {
     transitioning = true;
 
     currentIdx = (currentIdx + 1) % images.length;
+    window._heroCurrentImage = images[currentIdx];
     const nextImage = images[currentIdx];
     const preloadImg = preloaded[currentIdx];
 
