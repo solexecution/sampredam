@@ -170,9 +170,10 @@ window.CONFIG = {
   ],
   heroImages: [
     "images/hero/balmore_walk_2.jpg",
-    "images/gallery/frontview.jpeg",
+    "images/gallery/frontGarden.jpeg",
+    "images/gallery/bugs_bottom_1.jpg",
+    "images/gallery/kitchen1.jpeg",
     "images/gallery/backgarden.jpg",
-    "images/gallery/hall_staircase1.jpg",
   ],
   floorPlans: [
     { label: "Ground Floor", src: "images/plans/Caversham_plans.jpg" },
