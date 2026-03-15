@@ -455,11 +455,11 @@ function hydrateContact() {
   const daySelect = document.getElementById('viewingDay');
   if (daySelect) {
     const now = new Date();
-    for (let i = 1; i <= 14; i++) {
+    for (let i = 1; i <= 28; i++) {
       const d = new Date(now);
       d.setDate(d.getDate() + i);
+      if (d.getDay() !== 5) continue; // Fridays only
       const dayName = d.toLocaleDateString('en-GB', { weekday: 'short' });
-      const label = d.toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'short' });
       const value = d.toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long' });
       const opt = document.createElement('option');
       opt.value = value;

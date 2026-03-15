@@ -2,50 +2,43 @@
 
 Listing website: **https://40sheridan.xyz**
 
----
-
-## Priority 1: Get on Rightmove (Free via Strike)
-
-### Strike (strike.co.uk)
-1. Go to https://strike.co.uk
-2. Click "Sell your home" and enter your postcode (RG4 7QD)
-3. Sign up for the **free package** — this gets your property on **Rightmove**
-4. Upload your best photos, write the description, set the price at £525,000
-5. Add your website link (https://40sheridan.xyz) in the description
-6. Strike handles the Rightmove listing; you handle viewings and offers directly
-
-> Rightmove is where 90%+ of UK buyers search. This is the single most important listing.
+Everything below is **100% free**. No agent fees, no portal fees.
 
 ---
 
-## Priority 2: Facebook (Marketplace + Local Groups)
+## Priority 1: Facebook (Marketplace + Groups) — Biggest Free Reach
 
 ### Facebook Marketplace
 1. Go to https://www.facebook.com/marketplace
-2. Click "Create new listing" → "Property for Sale"
+2. Click "Create new listing" > "Property for Sale"
 3. Fill in: price £525,000, 3 bed, 1 bath, Caversham Reading RG4 7QD
 4. Upload 10-15 of your best photos
 5. In the description, include the link: https://40sheridan.xyz
-6. Publish — it will be visible to anyone searching in the Reading area
+6. Publish — visible to anyone searching in the Reading area
 
-### Facebook Groups to Join and Post In
-Search for these groups on Facebook, request to join, then post your listing with photos and the website link. Always check group rules before posting.
+### Facebook Groups — Local (Reading / Caversham / Berkshire)
+Search for these on Facebook, request to join, then post your listing. Always check group rules before posting.
 
-1. **Caversham Community Group** — search "Caversham Community" on Facebook
-2. **Caversham Park Village / Emmer Green Community** — search "Caversham Emmer Green"
-3. **Reading Buy Sell Swap** — search "Reading buy sell swap"
-4. **Houses for Sale in Reading** — search "property for sale Reading"
-5. **Berkshire Property** — search "Berkshire property for sale"
+1. **Caversham Community** — https://www.facebook.com/groups/2574211172618822/
+2. **Caversham Park Village / Emmer Green Community** — https://www.facebook.com/groups/636270073112764/
+3. **Houses For Sale Or Rent In Reading** — https://www.facebook.com/groups/248980968766818/
+4. **Reading Buy Sell Swap** — search "Reading buy sell swap" on Facebook
+5. **Berkshire Property** — search "Berkshire property for sale" on Facebook
+
+### Facebook Groups — UK-Wide (Private Sellers)
+1. **UK Property For Sale** — https://www.facebook.com/groups/1609075239332642/
+2. **Property For Sale / Direct From Owners** — https://www.facebook.com/groups/1418328241801549/
+3. **UK Property For Sale (page)** — https://www.facebook.com/UKPropertyForSale/
 
 **Template post for groups:**
 ```
-🏡 3 Bed Detached House For Sale — Caversham, Reading
-📍 40 Sheridan Avenue, RG4 7QD
-💰 Guide Price: £525,000 | NO CHAIN
+3 Bed Detached House For Sale — Caversham, Reading
+40 Sheridan Avenue, RG4 7QD
+Guide Price: £525,000 | NO CHAIN
 
-✅ 3 bedrooms, 1 bathroom, 860 sq ft
-✅ Conservatory, south-facing garden, garden office
-✅ Walk to Caversham centre, schools, parks
+3 bedrooms, 1 bathroom, 860 sq ft
+Conservatory, south-facing garden, garden office
+Walk to Caversham centre, schools, parks
 
 Full details, gallery & floor plans: https://40sheridan.xyz
 
@@ -54,24 +47,24 @@ Best offers by 31 March. DM for viewings!
 
 ---
 
-## Priority 3: Free Listing Sites (Same Day)
-
-### Gumtree
-1. Go to https://www.gumtree.com
-2. Click "Post an Ad" → Property for Sale
-3. Set location to RG4 7QD, price £525,000
-4. Upload photos (up to 10)
-5. Add description with link to https://40sheridan.xyz
-6. Publish — free, no payment needed
+## Priority 2: Free Listing Sites
 
 ### TheHouseShop
-1. Go to https://www.thehouseshop.com
-2. Click "List your property" → "I'm a private seller"
+1. Go to https://www.thehouseshop.com/sell-for-free
+2. Click "Sell for Free" > "I'm a private seller"
 3. Create a free account
 4. Fill in property details: 3 bed detached, £525,000, RG4 7QD
 5. Upload up to 20 photos
 6. Add your website link in the description
-7. Publish — free basic listing, enquiries come to your email
+7. Publish — free, auto-distributes to multiple property sites
+
+### Gumtree
+1. Go to https://www.gumtree.com/flats-houses/property-for-sale
+2. Click "Post an Ad" > Property for Sale
+3. Set location to RG4 7QD, price £525,000
+4. Upload photos (up to 10)
+5. Add description with link to https://40sheridan.xyz
+6. Publish — free, no payment needed
 
 ### NoAgent.Properties
 1. Go to https://www.noagent.properties
@@ -81,29 +74,16 @@ Best offers by 31 March. DM for viewings!
 5. Add https://40sheridan.xyz in the description
 6. Publish — free basic listing
 
-### HouseWeb
-1. Go to https://houseweb.co.uk
-2. Click "Sell Your Home"
-3. Register as a private seller
-4. Add property details, photos, and your website link
-5. Free basic listing on their site
-
-### PropertyHeads
-1. Go to https://propertyheads.com
-2. Sign up for a free account
-3. List your property with photos and details
-4. This is a property social network — engage with potential buyers
-
 ---
 
-## Priority 4: Local & Neighbourhood
+## Priority 3: Local & Neighbourhood
 
 ### Nextdoor
 1. Go to https://nextdoor.co.uk
 2. Sign up with your address (40 Sheridan Avenue)
 3. Once verified, go to "For Sale & Free" section
 4. Create a listing with photos, price, and your website link
-5. This reaches neighbours within 10-15 miles of Caversham
+5. Reaches neighbours within 10-15 miles of Caversham
 6. Don't overpost — one listing is enough
 
 ### Choose Caversham
@@ -113,9 +93,7 @@ Best offers by 31 March. DM for viewings!
 
 ---
 
----
-
-## Priority 5: Social Media
+## Priority 4: Social Media
 
 ### Instagram
 1. Create a post or Reel showing the property
@@ -136,16 +114,25 @@ Best offers by 31 March. DM for viewings!
 
 ## Checklist
 
-- [ ] Strike → Rightmove listing
+**Facebook:**
 - [ ] Facebook Marketplace
-- [ ] Facebook groups (at least 3)
-- [ ] Gumtree
+- [ ] Caversham Community group
+- [ ] Caversham Park Village / Emmer Green group
+- [ ] Houses For Sale Or Rent In Reading group
+- [ ] Reading Buy Sell Swap group
+- [ ] UK Property For Sale group
+- [ ] Property For Sale / Direct From Owners group
+
+**Free listing sites:**
 - [ ] TheHouseShop
+- [ ] Gumtree
 - [ ] NoAgent.Properties
-- [ ] HouseWeb
-- [ ] PropertyHeads
+
+**Local:**
 - [ ] Nextdoor
 - [ ] Choose Caversham
+
+**Social media:**
 - [ ] Instagram post/reel
 - [ ] X (Twitter) post
 - [ ] TikTok video
