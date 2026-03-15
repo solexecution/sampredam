@@ -186,10 +186,7 @@ window.CONFIG = {
     { label: "First Floor", src: "images/plans/Caversham_plans_f2.jpg" },
     { label: "Garden Office", src: "images/plans/garden_office_plan.svg" },
   ],
-  openHouse: [
-    { date: "Saturday 21 March 2026", time: "11:00 – 14:00" },
-    { date: "Sunday 22 March 2026", time: "11:00 – 13:00" },
-  ],
+  openHouse: [],
   socialProof: { viewingsBooked: 3, showWidget: true },
   galleryPlaceholders: [
     "Front Exterior",
