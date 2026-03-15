@@ -177,8 +177,6 @@ window.CONFIG = {
     "images/gallery/frontseat.jpg",
     "images/gallery/living.jpg",
     "images/gallery/dining.jpg",
-    "images/gallery/bedroom1a.jpg",
-    "images/gallery/conservatory1a.jpeg",
     "images/gallery/office_room_1.jpg",
   ],
   floorPlans: [
