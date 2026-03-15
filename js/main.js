@@ -215,6 +215,7 @@ function hydrateHero() {
     const sqm = Math.round(Number(P.floorAreaSqFt) * 0.0929);
     specs.push(`${P.floorAreaSqFt} sq ft (${sqm} sq m)`);
   }
+  specs.push('Garden Office');
 
   if (specs.length > 0) {
     heroSpecs.innerHTML = specs.map((s, i) =>
