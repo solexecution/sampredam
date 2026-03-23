@@ -1570,13 +1570,23 @@ function initShareToast() {
   // CTA — dismiss toast (scroll handled by anchor href)
   document.getElementById('shareToastCta')?.addEventListener('click', dismissToast);
 
-  // Show after 8s — only once per session (not on every page load)
+  // Show only after user has scrolled past the gallery — once per session
   const SESSION_KEY = 'shareToastSeen';
   if (!sessionStorage.getItem(SESSION_KEY)) {
-    setTimeout(() => {
-      sessionStorage.setItem(SESSION_KEY, '1');
-      showToast();
-    }, 8000);
+    const galleryEl = document.getElementById('gallery');
+    if (galleryEl && 'IntersectionObserver' in window) {
+      const galleryObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          // Trigger when the gallery has been scrolled past (leaves viewport going up)
+          if (!entry.isIntersecting && entry.boundingClientRect.top < 0) {
+            sessionStorage.setItem(SESSION_KEY, '1');
+            showToast();
+            galleryObserver.disconnect();
+          }
+        });
+      }, { threshold: 0 });
+      galleryObserver.observe(galleryEl);
+    }
   }
 }
 
