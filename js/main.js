@@ -837,6 +837,14 @@ function initGallery() {
   galleryItems.forEach((item, i) => {
     item.addEventListener('click', () => Lightbox.open(items, i));
   });
+
+  const heroBtn = document.getElementById('heroViewGallery');
+  if (heroBtn) {
+    heroBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      Lightbox.open(items, 0);
+    });
+  }
 }
 
 /* --- Park Carousel --- */
