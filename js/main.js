@@ -832,19 +832,26 @@ function initGallery() {
     }
   });
 
+  // Attach hero button handler early using config data so it works even if gallery DOM isn't ready
+  const heroBtn = document.getElementById('heroViewGallery');
+  if (heroBtn) {
+    heroBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      // Build items from config if DOM items aren't available yet
+      const lightboxItems = items.length > 0 ? items : (C.gallery || []).map(g => ({
+        src: g.src,
+        alt: g.alt,
+        isVideo: /\.(mp4|webm|ogg)$/i.test(g.src)
+      }));
+      if (lightboxItems.length > 0) Lightbox.open(lightboxItems, 0);
+    });
+  }
+
   if (items.length === 0) return;
 
   galleryItems.forEach((item, i) => {
     item.addEventListener('click', () => Lightbox.open(items, i));
   });
-
-  const heroBtn = document.getElementById('heroViewGallery');
-  if (heroBtn) {
-    heroBtn.addEventListener('click', (e) => {
-      e.preventDefault();
-      Lightbox.open(items, 0);
-    });
-  }
 }
 
 /* --- Park Carousel --- */
