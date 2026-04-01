@@ -185,7 +185,7 @@ window.CONFIG = {
     { label: "Garden Office", src: "images/plans/garden_office_plan.svg" },
   ],
   openHouse: [],
-  socialProof: { viewingsBooked: 3, showWidget: true },
+  socialProof: { viewingsBooked: 1, showWidget: true },
   galleryPlaceholders: [
     "Front Exterior",
     "Living Room",
