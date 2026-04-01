@@ -268,11 +268,11 @@ window.CONFIG = {
   epcCertificateUrl: "https://find-energy-certificate.service.gov.uk/energy-certificate/8583-6625-4040-1504-7922",
   auction: {
     enabled: true,
-    deadline: "2026-03-31T18:00:00",
+    deadline: "2026-04-30T18:00:00",
     label: "Best Offers By",
     guidePrice: "525,000",
     guidePriceLabel: "Offers in excess of",
-    heroBadge: "No Chain · Best Offers By 31 March",
+    heroBadge: "No Chain · Best Offers By 30 April",
     ctaText: "Submit Your Best Offer",
     smallPrint: "All offers considered. Sellers reserve the right to accept any offer at any time before the deadline.",
   },
