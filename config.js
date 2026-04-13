@@ -36,7 +36,7 @@ window.CONFIG = {
     tenure: "Freehold",
     yearBuilt: "1960s",
     chainStatus: "No chain",
-    priceContext: "Homes on Sheridan Avenue regularly sell above asking — <strong>24 Sheridan Ave</strong> sold for <strong>£592,500</strong> in 2023 and <strong>76 Sheridan Ave</strong> sold for <strong>£650,000</strong> in March 2025. At £525,000 this home — with a garden office, no chain, and no agent fees — represents exceptional value.",
+    priceContext: "Homes on Sheridan Avenue regularly sell above asking — <strong>24 Sheridan Ave</strong> sold for <strong>£592,500</strong> in 2023 and <strong>76 Sheridan Ave</strong> sold for <strong>£650,000</strong> in March 2025. At £550,000 this home — with a garden office, no chain, and no agent fees — represents exceptional value.",
   },
   description: [
     "Step through the front door into a welcoming, light-filled hallway. This beautifully presented chain-free family house offers well-proportioned rooms across every floor, modern garden office for professionals, double parking and generous green space for you to enjoy.",
@@ -207,7 +207,7 @@ window.CONFIG = {
     {
       key: "askingPrice",
       q: "What is the asking price?",
-      a: "The guide price is &pound;525,000. This has been competitively positioned considering average property values in the RG4 7 area, which currently stand at approximately &pound;590,000.",
+      a: "The guide price is &pound;550,000. This has been competitively positioned considering average property values in the RG4 7 area, which currently stand at approximately &pound;590,000.",
       enabled: true,
     },
     {
@@ -270,7 +270,7 @@ window.CONFIG = {
     enabled: true,
     deadline: "2026-04-30T18:00:00",
     label: "Best Offers By",
-    guidePrice: "525,000",
+    guidePrice: "550,000",
     guidePriceLabel: "Offers in excess of",
     heroBadge: "No Chain · Best Offers By 30 April",
     ctaText: "Submit Your Best Offer",

@@ -11,7 +11,7 @@ Everything below is **100% free**. No agent fees, no portal fees.
 ### Facebook Marketplace
 1. Go to https://www.facebook.com/marketplace
 2. Click "Create new listing" > "Property for Sale"
-3. Fill in: price £525,000, 3 bed, 1 bath, Caversham Reading RG4 7QD
+3. Fill in: price £550,000, 3 bed, 1 bath, Caversham Reading RG4 7QD
 4. Upload 10-15 of your best photos
 5. In the description, include the link: https://40sheridan.xyz
 6. Publish — visible to anyone searching in the Reading area
@@ -34,7 +34,7 @@ Search for these on Facebook, request to join, then post your listing. Always ch
 ```
 3 Bed Detached House For Sale — Caversham, Reading
 40 Sheridan Avenue, RG4 7QD
-Guide Price: £525,000 | NO CHAIN
+Guide Price: £550,000 | NO CHAIN
 
 3 bedrooms, 1 bathroom, 860 sq ft
 Conservatory, south-facing garden, garden office
@@ -53,7 +53,7 @@ Best offers by 31 March. DM for viewings!
 1. Go to https://www.thehouseshop.com/sell-for-free
 2. Click "Sell for Free" > "I'm a private seller"
 3. Create a free account
-4. Fill in property details: 3 bed detached, £525,000, RG4 7QD
+4. Fill in property details: 3 bed detached, £550,000, RG4 7QD
 5. Upload up to 20 photos
 6. Add your website link in the description
 7. Publish — free, auto-distributes to multiple property sites
@@ -61,7 +61,7 @@ Best offers by 31 March. DM for viewings!
 ### Gumtree
 1. Go to https://www.gumtree.com/flats-houses/property-for-sale
 2. Click "Post an Ad" > Property for Sale
-3. Set location to RG4 7QD, price £525,000
+3. Set location to RG4 7QD, price £550,000
 4. Upload photos (up to 10)
 5. Add description with link to https://40sheridan.xyz
 6. Publish — free, no payment needed
