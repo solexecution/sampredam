@@ -20,7 +20,7 @@ window.CONFIG = {
     locality: "Caversham, Reading",
     postcode: "RG4 7QD",
     propertyType: "Detached",
-    price: "525,000",
+    price: "550,000",
     bedrooms: "3",
     bathrooms: "1",
     receptionRooms: "1",
