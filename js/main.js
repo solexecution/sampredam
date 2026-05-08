@@ -171,7 +171,18 @@ const HIGHLIGHT_ICONS = {
 
 function hydrateServices() {
   // Umami — dynamically inject script with correct website ID
+  // Opt-out: if localStorage has 'umami.disabled' set to any truthy value,
+  // skip analytics entirely so owner visits don't skew stats.
+  // To opt out: localStorage.setItem('umami.disabled', '1')
+  // To opt back in: localStorage.removeItem('umami.disabled')
   if (filled(SITE.umamiWebsiteId)) {
+    const isOptedOut = (() => {
+      try { return !!localStorage.getItem('umami.disabled'); } catch (_) { return false; }
+    })();
+    if (isOptedOut) {
+      console.info('%c[Umami] Analytics disabled — owner mode active. Remove localStorage key "umami.disabled" to re-enable.', 'color:#f59e0b;font-weight:bold');
+      return;
+    }
     const s = document.createElement('script');
     s.defer = true;
     s.src = 'https://cloud.umami.is/script.js';
