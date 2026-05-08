@@ -1452,8 +1452,17 @@ function renderShareAndEarnSection() {
   function setShareUrls(url) {
     const siteTitle = encodeURIComponent(`This Caversham home is exactly what you're looking for 🏡`);
     const urlEnc = encodeURIComponent(url);
+    // Derive deadline label from auction config so it never goes stale
+    const auctionDeadlineLabel = (() => {
+      const d = C.auction?.deadline;
+      if (!d) return '';
+      const dt = new Date(d);
+      if (isNaN(dt)) return '';
+      return dt.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+    })();
+    const deadlineLine = auctionDeadlineLabel ? `\n\n⏳ Best offers deadline: ${auctionDeadlineLabel}` : '';
     const waText = encodeURIComponent(
-      `🏡 Check out this stunning 3-bed family home in Caversham, Reading — private sale, no agent fees, no chain!\n\n${url}\n\n⏳ Best offers deadline: 31 March 2026`
+      `🏡 Check out this stunning 3-bed family home in Caversham, Reading — private sale, no agent fees, no chain!\n\n${url}${deadlineLine}`
     );
 
     const waBtn = document.getElementById('earnShareWhatsApp');
