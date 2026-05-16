@@ -229,16 +229,18 @@ function hydrateHero() {
   specs.push('Garden Office');
 
   if (specs.length > 0) {
-    heroSpecs.innerHTML = specs.map((s, i) =>
-      `<span>${s}</span>${i < specs.length - 1 ? '<span class="spec-divider">|</span>' : ''}`
-    ).join('');
+    heroSpecs.innerHTML = specs.map((s, i) => {
+      const isHighlight = s === 'Garden Office';
+      const cls = isHighlight ? ' class="spec-highlight"' : '';
+      return `<span${cls}>${s}</span>${i < specs.length - 1 ? '<span class="spec-divider">|</span>' : ''}`;
+    }).join('');
   } else {
     hide(heroSpecs);
   }
 
   // Price
   if (filled(P.price)) {
-    heroPrice.innerHTML = `Guide Price: &pound;${P.price}`;
+    heroPrice.innerHTML = `<span class="hero-price-label">Guide Price:</span> <span class="hero-price-value">&pound;${P.price}</span>`;
   } else {
     hide(heroPrice);
   }
@@ -672,8 +674,15 @@ function hydrateMeta() {
       const slider = document.getElementById('calcPrice');
       slider.max = Math.max(parseInt(slider.max), priceNum);
       slider.value = priceNum;
+
+      // Update trust strip price
+      const trustPrice = document.getElementById('calcTrustPrice');
+      if (trustPrice) trustPrice.innerHTML = '&pound;' + P.price;
     }
   }
+
+  // Trigger initial calculation so all values are populated
+  calculateMortgage();
 }
 
 /* ==============================
@@ -1008,6 +1017,27 @@ function calculateMortgage() {
       umami.track('mortgage-calculate', { price, deposit: depositPercent, monthlyPayment: Math.round(monthly) });
     }
   }, 1500);
+
+  // Update rental yield panel dynamically based on price
+  updateRentalYield(price);
+}
+
+function updateRentalYield(price) {
+  const rentalLow = 1500;
+  const rentalHigh = 1700;
+  const annualLow = rentalLow * 12;
+  const annualHigh = rentalHigh * 12;
+
+  const yieldLow = price > 0 ? ((annualLow / price) * 100).toFixed(1) : '0.0';
+  const yieldHigh = price > 0 ? ((annualHigh / price) * 100).toFixed(1) : '0.0';
+
+  const amountEl = document.getElementById('rentalYieldAmount');
+  const grossEl = document.getElementById('rentalGrossYield');
+  const annualEl = document.getElementById('rentalAnnualIncome');
+
+  if (amountEl) amountEl.textContent = 'Estimated rental income: ' + formatCurrency(rentalLow) + '\u2013' + formatCurrency(rentalHigh) + '/month';
+  if (grossEl) grossEl.textContent = yieldLow + '%\u2013' + yieldHigh + '%';
+  if (annualEl) annualEl.textContent = formatCurrency(annualLow) + '\u2013' + formatCurrency(annualHigh);
 }
 
 function formatCurrency(amount) {
